@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import CustomInputs from "./CustomInputs";
 
 type Props = {};
 
@@ -12,69 +13,52 @@ const RegisterForm = (props: Props) => {
   };
   return (
     <form className="space-y-4 md:space-y-3">
-      <label className="block  text-sm font-medium text-gray-700 w-1/2 inline-block pe-2  ">
-        Nombre
-        <input
-          type="text"
-          name="name"
-          id="name"
-          className="bg-gray-50 border mt-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full  p-2.5 "
-          placeholder="Nombre"
-        />
-      </label>
+      <CustomInputs
+        class="w-1/2 inline-block pe-2"
+        label="Nombre"
+        disabled={false}
+        placeholder="Nombre"
+        type="text"
+      />
 
-      <label className="block  text-sm font-medium text-gray-700 w-1/2 inline-block  ps-2">
-        Apellido
-        <input
-          type="text"
-          name="lastname"
-          id="lastname"
-          placeholder="Apellido"
-          className="bg-gray-50 border mt-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
-        />
-      </label>
-      <label className="block  text-sm font-medium text-gray-700 w-1/2 inline-block pe-2  ">
-        Correo
-        <input
-          type="email"
-          name="email"
-          id="email"
-          className="bg-gray-50 border mt-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full  p-2.5 "
-          placeholder="name@company.com"
-        />
-      </label>
+      <CustomInputs
+        class="w-1/2 inline-block ps-2"
+        label="Apellido"
+        disabled={false}
+        placeholder="Apellido"
+        type="text"
+      />
 
-      <label className="block  text-sm font-medium text-gray-700 w-1/2 inline-block  ps-2">
-        Teléfono
-        <input
-          type="tel"
-          name="phone"
-          id="phone"
-          placeholder="+54 656546456"
-          className="bg-gray-50 border mt-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
-        />
-      </label>
-      <label className="block  text-sm font-medium text-gray-700 w-1/2 inline-block pe-2  ">
-        Contraseña
-        <input
-          type="password"
-          name="password"
-          id="password"
-          className="bg-gray-50 border mt-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full  p-2.5 "
-          placeholder="*********"
-        />
-      </label>
+      <CustomInputs
+        class="w-1/2 inline-block pe-2"
+        label="Correo electrónico"
+        disabled={false}
+        placeholder="name@company.com"
+        type="email"
+      />
+      <CustomInputs
+        class="w-1/2 inline-block ps-2"
+        label="Teléfono"
+        disabled={false}
+        placeholder="+54 656546456"
+        type="tel"
+      />
 
-      <label className="block  text-sm font-medium text-gray-700 w-1/2 inline-block  ps-2">
-        Confirmar Contraseña
-        <input
-          type="password"
-          name="repeatpassword"
-          id="repeatpassword"
-          placeholder="*********"
-          className="bg-gray-50 border mt-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
-        />
-      </label>
+      <CustomInputs
+        class="w-1/2 inline-block pe-2"
+        label="Teléfono"
+        disabled={false}
+        placeholder="+54 656546456"
+        type="tel"
+      />
+
+      <CustomInputs
+        class="w-1/2 inline-block ps-2"
+        label="Confirmar Contraseña"
+        disabled={false}
+        placeholder="*********"
+        type="*********"
+      />
 
       <button
         type="button"

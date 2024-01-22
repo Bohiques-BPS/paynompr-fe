@@ -1,0 +1,153 @@
+[
+    {
+      "id": 1,
+      "title": "Bohiques Business",
+      "contact": "Jose Ortiz"
+    },
+    {
+      "id": 2,
+      "title": "Ubiquo Tecnologías",
+      "contact": "Jose Ortiz"
+    },
+    {
+      "id": 3,
+      "title": "Innova Soluciones",
+      "contact": "Maria Perez"
+    },
+    {
+      "id": 4,
+      "title": "Data Tech",
+      "contact": "Carlos Gomez"
+    },
+    {
+      "id": 5,
+      "title": "Smart Systems",
+      "contact": "Ana Rodriguez"
+    },
+    {
+      "id": 6,
+      "title": "Digital World",
+      "contact": "Pedro Sanchez"
+    },
+    {
+      "id": 7,
+      "title": "Web Design",
+      "contact": "Laura Diaz"
+    },
+    {
+      "id": 8,
+      "title": "Cloud Services",
+      "contact": "Juan Lopez"
+    },
+    {
+      "id": 9,
+      "title": "AI Solutions",
+      "contact": "Sara Garcia"
+    },
+    {
+      "id": 10,
+      "title": "Cyber Security",
+      "contact": "David Martin"
+    },
+    {
+      "id": 11,
+      "title": "Mobile Apps",
+      "contact": "Elena Gonzalez"
+    },
+    {
+      "id": 12,
+      "title": "E-commerce",
+      "contact": "Luis Fernandez"
+    },
+    {
+      "id": 13,
+      "title": "Social Media",
+      "contact": "Marta Torres"
+    },
+    {
+      "id": 14,
+      "title": "SEO Marketing",
+      "contact": "Jorge Rodriguez"
+    },
+    {
+      "id": 15,
+      "title": "Video Games",
+      "contact": "Lucia Sanchez"
+    },
+    {
+      "id": 16,
+      "title": "Virtual Reality",
+      "contact": "Pablo Garcia"
+    },
+    {
+      "id": 17,
+      "title": "Blockchain",
+      "contact": "Carmen Lopez"
+    },
+    {
+      "id": 18,
+      "title": "Big Data",
+      "contact": "Alberto Gonzalez"
+    },
+    {
+      "id": 19,
+      "title": "Machine Learning",
+      "contact": "Isabel Fernandez"
+    },
+    {
+      "id": 20,
+      "title": "Internet of Things",
+      "contact": "Raul Martin"
+    },
+    {
+      "id": 21,
+      "title": "Biotechnology",
+      "contact": "Maria Diaz"
+    },
+    {
+      "id": 22,
+      "title": "Nanotechnology",
+      "contact": "Carlos Perez"
+    },
+    {
+      "id": 23,
+      "title": "Robotics",
+      "contact": "Ana Gomez"
+    },
+    {
+      "id": 24,
+      "title": "Space Exploration",
+      "contact": "Luis Rodriguez"
+    },
+    {
+      "id": 25,
+      "title": "Renewable Energy",
+      "contact": "Sara Sanchez"
+    },
+    {
+      "id": 26,
+      "title": "Smart Cities",
+      "contact": "David Lopez"
+    },
+    {
+      "id": 27,
+      "title": "Education",
+      "contact": "Elena Gonzalez"
+    },
+    {
+      "id": 28,
+      "title": "Healthcare",
+      "contact": "Jorge Fernandez"
+    },
+    {
+      "id": 29,
+      "title": "Entertainment",
+      "contact": "Lucia Martin"
+    },
+    {
+      "id": 30,
+      "title": "Artificial Intelligence",
+      "contact": "Pablo Diaz"
+    }
+  ]
+  

@@ -12,13 +12,16 @@ const OutLayout = () => {
         className="h-[30vh] grid content-center relative  align-middle bg-no-repeat bg-cover"
         style={{ backgroundImage: `url(${top_bar})` }}
       >
-        <h2 className="text-white font-bold z-10 text-4xl text-center">
+        <h2 className="text-white font-bold z-10 text-3xl md:text-4xl text-center">
           ¡Bienvenido a Paymon!
         </h2>
-        <img className="absolute left-16 w-48  -bottom-1/4" src={icon}></img>
+        <img
+          className="absolute md:left-16 left-8 md:w-48 sm:w-14 w-28 -bottom-10 md:-bottom-1/4"
+          src={icon}
+        ></img>
       </div>
       <div className="bg-[#E1E1E1]  h-[64vh] mx-auto flex align-middle items-center">
-        <div className=" md:container  py-12 mx-auto">
+        <div className=" md:container p-4 py-12 mx-auto">
           <Outlet />
         </div>
       </div>

@@ -12,6 +12,13 @@ const InLayout = () => {
   );
 
   const toggleSidebar = () => {
+    if (window.innerWidth < 700) {
+      if (sidebarOpen === "true") setSidebarOpen("false");
+      else setSidebarOpen("true");
+    }
+  };
+
+  const toggleSidebarOption = () => {
     if (sidebarOpen === "true") setSidebarOpen("false");
     else setSidebarOpen("true");
   };
@@ -23,26 +30,35 @@ const InLayout = () => {
         {/* <!-- ===== Content Area Start ===== --> */}
         <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
           {/* <!-- ===== Header Start ===== --> */}
-          <Header />
+          <Header sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
           {/* <!-- ===== Header End ===== --> */}
           <div className="flex">
             {/* <!-- ===== Sidebar Start ===== --> */}
-            <Sidebar sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+            <Sidebar
+              sidebarOpen={sidebarOpen}
+              toggleSidebar={toggleSidebar}
+              toggleSidebarOption={toggleSidebarOption}
+            />
             {/* <!-- ===== Sidebar End ===== --> */}
 
             {/* <!-- ===== Main Content Start ===== --> */}
 
             <div
-              className={` transition-all duration-300 max-w-screen-2xl p-4 md:p-6 2xl:p-10 bg-[#E1E1E1] min-h-[calc(100vh-14vh)] ${
-                sidebarOpen === "true" ? " w-3/4" : "w-11/12"
+              className={` transition-all duration-500 w-full mt-[88px] relative   xl:mt-[8vh]    2xl:p-10 bg-[#E1E1E1] overflow-auto h-[calc(100vh-8vh)]  ${
+                sidebarOpen === "true"
+                  ? "  md:ms-[25%] md:w-3/4 "
+                  : " md:ms-[8.333333%] md:w-11/12 "
               } `}
             >
-              <Outlet />
+              <div className="container  mx-auto p-4  md:p-10 min-h-[calc(100vh-14vh)] ">
+                <Outlet />
+              </div>
+              <Footer sidebarOpen={sidebarOpen} />
             </div>
           </div>
           {/* <!-- ===== Main Content End ===== --> */}
         </div>
-        <Footer />
+
         {/* <!-- ===== Content Area End ===== --> */}
       </div>
       {/* <!-- ===== Page Wrapper End ===== --> */}
