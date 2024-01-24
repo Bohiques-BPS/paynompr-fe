@@ -1,29 +1,57 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import CustomInputs from "./CustomInputs";
-import { showSuccess } from "../../utils/consts";
+import { showError, showSuccess } from "../../utils/consts";
+import { setLogin } from "../../utils/requestOptions";
 
-type Props = {};
-
-const LoginForm = (props: Props) => {
+const LoginForm = () => {
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
+
+  const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+    const value = e.currentTarget.value;
+    console.log(value);
+    setFormData({
+      ...formData,
+      [e.currentTarget.name]: value,
+    });
+  };
 
   const handleLogin = () => {
-    showSuccess("Bienvenido José Ortiz.");
-    navigate("/escritorio/dash");
+    setLogin(formData)
+      .then((response) => {
+        // Data retrieval and processing
+        console.log(response);
+        showSuccess("Bienvenido José Ortiz.");
+        navigate("/escritorio/dash");
+      })
+      .catch((error) => {
+        // If the query fails, an error will be displayed on the terminal.
+        showError(error.response.data.detail);
+      });
   };
+
   return (
     <form className="space-y-4 md:space-y-3" action="#">
       <CustomInputs
         label="Correo electrónico"
+        name="username"
+        value={formData.username}
+        onChange={handleInputChange}
         disabled={false}
         placeholder="name@company.com"
         type="email"
       />
       <CustomInputs
         label="Contraseña"
+        value={formData.password}
+        onChange={handleInputChange}
         disabled={false}
+        name="password"
         placeholder="********"
         type="password"
       />

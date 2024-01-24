@@ -1,10 +1,7 @@
-import React from "react";
 import CustomInputs from "../../components/forms/CustomInputs";
 import CustomSelect from "../../components/forms/CustomSelect";
 
-type Props = {};
-
-const Cargar = (props: Props) => {
+const Cargar = () => {
   return (
     <>
       <div className="text-[#EED102] bg-[#333160] p-6 rounded-lg text-center">

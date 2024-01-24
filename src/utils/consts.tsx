@@ -17,3 +17,8 @@ export function showSuccess(text: string) {
   const notify = () => toast.success(text);
   notify();
 }
+
+export function showError(text: string) {
+  const notify = () => toast.error(text);
+  notify();
+}

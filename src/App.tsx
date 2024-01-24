@@ -1,4 +1,3 @@
-import React from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 
 import OutLayout from "./layouts/OutLayout";
@@ -16,6 +15,8 @@ import Process from "./pages/Process";
 import Cargar from "./pages/process/Cargar";
 import ForgotPassword from "./pages/out/ForgotPassword";
 import AddCounter from "./pages/employee/AddCounter";
+import Codes from "./pages/code/Codes";
+import AddCode from "./pages/code/AddCodes";
 
 const App = () => {
   return (
@@ -29,17 +30,23 @@ const App = () => {
         </Route>
         <Route path="/escritorio" element={<InLayout />}>
           <Route index path="dash" element={<Dashboard />} />
+
           <Route path="empresas" element={<Empresas />} />
           <Route path="empresas/agregar" element={<AddCompany />} />
+
           <Route path="contador" element={<AddCounter />} />
 
           <Route path="procesos" element={<Process />} />
           <Route path="procesos/:id/cargar" element={<Cargar />} />
+
           <Route path="empresas/:id/empleados" element={<Empleados />} />
           <Route
             path="empresas/:id/empleados/agregar"
             element={<AddEmployee />}
           />
+
+          <Route path="codigos" element={<Codes />} />
+          <Route path="codigos/agregar" element={<AddCode />} />
         </Route>
       </Routes>
     </BrowserRouter>

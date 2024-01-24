@@ -1,30 +1,36 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { faEdit, faUserMinus } from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
+
 import ModalAlert from "../../components/dashboard/ModalAlert";
 import FloatButton from "../../components/dashboard/FloatButton";
-import data from "../../utils/data.json";
+
 import CustomInputs from "../../components/forms/CustomInputs";
+import { getCodes } from "../../utils/requestOptions";
+import { showError } from "../../utils/consts";
 
-const getRoute = (id: string) => {
-  return id + "/empleados";
-};
-
-const Empresas = () => {
+const Codes = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const [data, setData] = useState([]);
 
   const columns: any = [
     {
-      name: "Empresa",
-      selector: (row: { title: any }) => row.title,
+      name: "Código",
+      selector: (row: { code: string }) => row.code,
     },
     {
-      name: "Persona de Contacto",
-      selector: (row: { contact: any }) => row.contact,
+      name: "Amount",
+      selector: "amount",
+    },
+    {
+      name: "Dueño",
+      cell: (row: { owner: string }) => (
+        <>{row.owner ? <h3>{row.owner}</h3> : <h3>Dueño no asignado</h3>}</>
+      ),
+      selector: (row: { owner: any }) => row.owner,
     },
     {
       name: "Editar",
@@ -36,7 +42,6 @@ const Empresas = () => {
       ),
       selector: (row: { year: any }) => row.year,
     },
-
     {
       name: "Deshabilitar",
       button: true,
@@ -47,19 +52,21 @@ const Empresas = () => {
       ),
       selector: (row: { year: any }) => row.year,
     },
-    {
-      name: "Empleados",
-      button: true,
-      cell: (row: { id: string }) => (
-        <Link to={getRoute(row.id)}>
-          <button className="  rounded-lg px-4 py-3 font-bold bg-[#FED102]  content-center items-center">
-            Empleados
-          </button>
-        </Link>
-      ),
-      selector: (row: { year: any }) => row.year,
-    },
   ];
+
+  useEffect(() => {
+    getCodes()
+      .then((response) => {
+        console.log(response.data.result);
+        // Data retrieval and processing
+        setData(response.data.result);
+      })
+      .catch((error) => {
+        // If the query fails, an error will be displayed on the terminal.
+        showError(error.response.data.detail);
+        console.error(error);
+      });
+  }, []);
 
   const handleModal = () => {
     setIsOpen(!isOpen);
@@ -72,7 +79,7 @@ const Empresas = () => {
   return (
     <>
       <div className="text-[#EED102] bg-[#333160] p-6 rounded-lg text-center">
-        <h3>Compañías</h3>
+        <h3>Códigos</h3>
       </div>
       <div className="flex md:flex-row flex-col    gap-4  ">
         <div className="md:w-full mt-4 w-full flex flex-col   gap-2  ">
@@ -88,23 +95,21 @@ const Empresas = () => {
             <DataTable
               className="w-full"
               columns={columns}
-              data={data.filter((item) =>
-                item.title.toLowerCase().includes(search.toLowerCase())
-              )}
+              data={data}
               pagination
             />
           </div>
         </div>
+        <ModalAlert
+          isOpen={isOpen}
+          setIsOpen={handleModal}
+          title="Desactivar empleado"
+          description="¿Esta seguro que desea desactivar este usuario?"
+        />
+        <FloatButton to="agregar" />
       </div>
-      <ModalAlert
-        isOpen={isOpen}
-        setIsOpen={handleModal}
-        title="Desactivar empleado"
-        description="¿Esta seguro que desea desactivar este usuario?"
-      />
-      <FloatButton to="agregar" />
     </>
   );
 };
 
-export default Empresas;
+export default Codes;

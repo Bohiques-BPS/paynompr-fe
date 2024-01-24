@@ -6,34 +6,38 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import ModalAlert from "../../components/dashboard/ModalAlert";
 import FloatButton from "../../components/dashboard/FloatButton";
-import data from "../../utils/data.json";
+
 import CustomInputs from "../../components/forms/CustomInputs";
+import { getUsers } from "../../utils/requestOptions";
+import { showError } from "../../utils/consts";
 
-type Props = {};
-
-const getRoute = (id: string) => {
-  return id + "/empleados";
-};
-
-const Empleados = (props: Props) => {
+const Empleados = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
-
-  const columns = [
+  const [data, setData] = useState([]);
+  const columns: any = [
     {
       name: "Nombre",
-      selector: (row: { title: any }) => row.title,
+      selector: (row: { name: string }) => row.name,
+    },
+    {
+      name: "Correo",
+      selector: "email",
     },
     {
       name: "Teléfono",
-      selector: (row: { contact: any }) => row.contact,
+      selector: (row: { phone: string }) => row.phone,
     },
     {
       name: "Editar",
       button: true,
       cell: (row: { id: string }) => (
         <a rel="noopener noreferrer">
-          <FontAwesomeIcon icon={faEdit} className="text-2xl" />
+          <FontAwesomeIcon
+            data-id={row.id}
+            icon={faEdit}
+            className="text-2xl"
+          />
         </a>
       ),
       selector: (row: { year: any }) => row.year,
@@ -42,13 +46,27 @@ const Empleados = (props: Props) => {
       name: "Deshabilitar",
       button: true,
       cell: (row: { id: string }) => (
-        <a onClick={handleModal} rel="noopener noreferrer">
+        <a data-id={row.id} onClick={handleModal} rel="noopener noreferrer">
           <FontAwesomeIcon icon={faUserMinus} className="text-2xl" />
         </a>
       ),
       selector: (row: { year: any }) => row.year,
     },
   ];
+
+  useEffect(() => {
+    getUsers()
+      .then((response) => {
+        console.log(response.data.result);
+        // Data retrieval and processing
+        setData(response.data.result);
+      })
+      .catch((error) => {
+        // If the query fails, an error will be displayed on the terminal.
+        showError(error.response.data.detail);
+        console.error(error);
+      });
+  }, []);
 
   const handleModal = () => {
     setIsOpen(!isOpen);
@@ -77,9 +95,7 @@ const Empleados = (props: Props) => {
             <DataTable
               className="w-full"
               columns={columns}
-              data={data.filter((item) =>
-                item.title.toLowerCase().includes(search.toLowerCase())
-              )}
+              data={data}
               pagination
             />
           </div>

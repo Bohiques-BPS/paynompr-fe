@@ -1,4 +1,3 @@
-import React from "react";
 import ValidationForm from "../components/forms/ValidationForm";
 
 const Activation = () => {

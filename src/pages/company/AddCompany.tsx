@@ -1,10 +1,6 @@
-import React from "react";
-import QuickActions from "../../components/dashboard/QuickActions";
 import CustomInputs from "../../components/forms/CustomInputs";
 
-type Props = {};
-
-const AddCompany = (props: Props) => {
+const AddCompany = () => {
   return (
     <>
       <div className="text-[#EED102] bg-[#333160] p-6 rounded-lg text-center">

@@ -1,17 +1,8 @@
-import React from "react";
 import CustomSelect from "../components/forms/CustomSelect";
-import {
-  faClock,
-  faMoneyCheckDollar,
-  faCalendarCheck,
-} from "@fortawesome/free-solid-svg-icons";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
 import ActionProcess from "../components/dashboard/ActionProcess";
-type Props = {};
 
-const Process = (props: Props) => {
+const Process = () => {
   return (
     <>
       <div className="text-[#EED102] bg-[#333160] p-6 rounded-lg text-center shadow-xl ">

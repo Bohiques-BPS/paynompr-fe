@@ -1,10 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { NavLink } from "react-router-dom";
+import { faXmark, faBarcode } from "@fortawesome/free-solid-svg-icons";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import expand from "../../assets/imgs/navbar/expand.png";
 import dash from "../../assets/imgs/navbar/dash.png";
 import companies from "../../assets/imgs/navbar/companies.png";
 import process from "../../assets/imgs/navbar/process.png";
@@ -32,7 +30,7 @@ const Sidebar = ({
         className={`h-full p-6  transition-all  duration-300 grid ${
           sidebarOpen === "true"
             ? " ps-12   "
-            : "  justify-items-center  hidden xl:grid ps-5"
+            : "  justify-items-center  hidden sm:grid ps-5"
         }`}
       >
         <ul className="space-y-2 font-medium">
@@ -90,6 +88,28 @@ const Sidebar = ({
               </div>
               {sidebarOpen === "true" && (
                 <span className="ms-3 text-white">Procesos</span>
+              )}
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              onClick={toggleSidebar}
+              to="/escritorio/codigos"
+              className={({ isActive }) =>
+                [
+                  "flex items-center py-4 justify-items-center  text-gray-900 rounded-lg text-white ",
+                  isActive ? " active group" : "",
+                ].join("")
+              }
+            >
+              <div className="p-3 rounded-lg border-white border group-[.active]:bg-[#a29dc5ad]">
+                <FontAwesomeIcon
+                  className="text-2xl text-white"
+                  icon={faBarcode}
+                />
+              </div>
+              {sidebarOpen === "true" && (
+                <span className="ms-3 text-white">Codigos</span>
               )}
             </NavLink>
           </li>

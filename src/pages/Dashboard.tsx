@@ -1,10 +1,6 @@
-import React from "react";
-
 import QuickActions from "../components/dashboard/QuickActions";
 import companie from "../assets/imgs/Out/icon.png";
 import CardText from "../components/dashboard/CardText";
-import { getTodo } from "../utils/requestOptions";
-type Props = {};
 
 const item = [
   { img: companie, text: "Bohiques Business and Personal" },
@@ -12,7 +8,7 @@ const item = [
   { img: companie, text: "Agregar Empresa" },
 ];
 
-const Dashboard = (props: Props) => {
+const Dashboard = () => {
   //getTodo();
   return (
     <div className="flex md:flex-row flex-col    gap-4  ">

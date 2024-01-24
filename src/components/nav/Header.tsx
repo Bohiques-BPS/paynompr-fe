@@ -7,11 +7,10 @@ import notification from "../../assets/imgs/navbar/notification.png";
 import { showSuccess } from "../../utils/consts";
 
 interface SidebarProps {
-  sidebarOpen: string;
   toggleSidebar: () => void;
 }
 
-const Header = ({ sidebarOpen, toggleSidebar }: SidebarProps) => {
+const Header = ({ toggleSidebar }: SidebarProps) => {
   return (
     <div className="z-20 grid px-4 fixed w-full xl:fix  md:px-12 py-3 grid-cols-2 grid-flow-col gap-4 min-h-[8vh] bg-[#fdfdfd]">
       <div className=" flex content-start justify-start md:content-center items-center   ">

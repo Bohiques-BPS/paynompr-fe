@@ -1,11 +1,7 @@
-import React from "react";
-import QuickActions from "../../components/dashboard/QuickActions";
 import CustomInputs from "../../components/forms/CustomInputs";
 import CustomSelect from "../../components/forms/CustomSelect";
 
-type Props = {};
-
-const AddEmployee = (props: Props) => {
+const AddEmployee = () => {
   return (
     <>
       <div className="text-[#EED102] bg-[#333160] p-6 rounded-lg text-center">

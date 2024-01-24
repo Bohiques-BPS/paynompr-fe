@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import Header from "../components/nav/Header";
 import Sidebar from "../components/nav/Sidebar";
 import { Outlet } from "react-router-dom";
@@ -30,7 +29,7 @@ const InLayout = () => {
         {/* <!-- ===== Content Area Start ===== --> */}
         <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
           {/* <!-- ===== Header Start ===== --> */}
-          <Header sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+          <Header toggleSidebar={toggleSidebar} />
           {/* <!-- ===== Header End ===== --> */}
           <div className="flex">
             {/* <!-- ===== Sidebar Start ===== --> */}
@@ -44,7 +43,7 @@ const InLayout = () => {
             {/* <!-- ===== Main Content Start ===== --> */}
 
             <div
-              className={` transition-all duration-500 w-full mt-[88px] relative   xl:mt-[8vh]    2xl:p-10 bg-[#E1E1E1] overflow-auto h-[calc(100vh-8vh)]  ${
+              className={` transition-all duration-500 w-full mt-[88px] relative   xl:mt-[8vh]     bg-[#E1E1E1] overflow-auto h-[calc(100vh-8vh)]  ${
                 sidebarOpen === "true"
                   ? "  md:ms-[25%] md:w-3/4 "
                   : " md:ms-[8.333333%] md:w-11/12 "

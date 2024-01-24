@@ -4,12 +4,9 @@ import {
   faMoneyCheckDollar,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
 import { Link } from "react-router-dom";
 
-type Props = {};
-
-const ActionProcess = (props: Props) => {
+const ActionProcess = () => {
   return (
     <div className="flex md:flex-row flex-col   mt-4 gap-4  ">
       <Link

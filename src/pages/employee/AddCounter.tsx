@@ -1,10 +1,6 @@
-import React from "react";
-import CustomSelect from "../../components/forms/CustomSelect";
 import CustomInputs from "../../components/forms/CustomInputs";
 
-type Props = {};
-
-const AddCounter = (props: Props) => {
+const AddCounter = () => {
   return (
     <>
       <div className="text-[#EED102] bg-[#333160] p-6 rounded-lg text-center">

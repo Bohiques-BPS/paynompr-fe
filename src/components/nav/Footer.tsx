@@ -1,7 +1,5 @@
-import React from "react";
-
 interface SidebarProps {
-  sidebarOpen: string;
+  sidebarOpen?: string;
 }
 
 const Footer = ({ sidebarOpen }: SidebarProps) => {

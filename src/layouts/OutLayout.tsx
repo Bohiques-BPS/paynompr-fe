@@ -1,4 +1,3 @@
-import React from "react";
 import { Outlet } from "react-router-dom";
 
 import top_bar from "../assets/imgs/Out/top_bar.png";
@@ -20,7 +19,7 @@ const OutLayout = () => {
           src={icon}
         ></img>
       </div>
-      <div className="bg-[#E1E1E1]  h-[64vh] mx-auto flex align-middle items-center">
+      <div className="bg-[#E1E1E1]  min-h-[64vh] mx-auto flex align-middle items-center">
         <div className=" md:container p-4 py-12 mx-auto">
           <Outlet />
         </div>

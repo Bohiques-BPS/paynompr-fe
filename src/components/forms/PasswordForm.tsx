@@ -1,15 +1,16 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+
 import CustomInputs from "./CustomInputs";
 import { showSuccess } from "../../utils/consts";
 
-type Props = {};
-
-const PasswordForm = (props: Props) => {
-  const navigate = useNavigate();
+const PasswordForm = () => {
   const [error, setError] = useState(false);
 
+  const handleSubmit = () => {
+    setError(true);
+    showSuccess("Verifique su correo");
+  };
   return (
     <form>
       <CustomInputs
@@ -29,7 +30,7 @@ const PasswordForm = (props: Props) => {
 
         <button
           type="button"
-          onClick={() => showSuccess("Verifique su correo")}
+          onClick={() => handleSubmit()}
           className="w-1/2 mt-2  bg-[#333160]  py-4 text-[#EED102] bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
         >
           Enviar

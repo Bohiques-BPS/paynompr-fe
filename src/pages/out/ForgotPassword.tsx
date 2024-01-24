@@ -1,10 +1,6 @@
-import React from "react";
-import ValidationForm from "../../components/forms/ValidationForm";
 import PasswordForm from "../../components/forms/PasswordForm";
 
-type Props = {};
-
-const ForgotPassword = (props: Props) => {
+const ForgotPassword = () => {
   return (
     <div className="flex flex-col items-center justify-center  mx-auto  ">
       <div className="w-full bg-white rounded-lg shadow  md:mt-0 max-w-xl			 xl:p-0 ">

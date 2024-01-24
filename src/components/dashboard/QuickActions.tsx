@@ -1,11 +1,8 @@
 import { faUser, faPlus, faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
 import { Link } from "react-router-dom";
 
-type Props = {};
-
-const QuickActions = (props: Props) => {
+const QuickActions = () => {
   return (
     <div className="bg-white rounded-lg shadow  p-4 mt-2">
       <p className="text-xl text-[#333160] font-medium">

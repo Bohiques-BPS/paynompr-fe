@@ -1,55 +1,100 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import CustomInputs from "./CustomInputs";
+import { showError, showSuccess } from "../../utils/consts";
+import { setRegister } from "../../utils/requestOptions";
 
-type Props = {};
-
-const RegisterForm = (props: Props) => {
+const RegisterForm = () => {
   const navigate = useNavigate();
 
-  const handleRegister = () => {
-    navigate("/activacion");
+  const [formData, setFormData] = useState({
+    name: "",
+    lastname: "",
+    email: "",
+    phone: "",
+    role_id: 2,
+    user_code: "",
+    password: "",
+  });
+
+  const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+    const value = e.currentTarget.value;
+    console.log(value);
+    setFormData({
+      ...formData,
+      [e.currentTarget.name]: value,
+    });
   };
+
+  const handleRegister = () => {
+    setRegister(formData)
+      .then((response) => {
+        // Data retrieval and processing
+        if (response) {
+          showSuccess("Cuenta creada exitosamente.");
+          navigate("../");
+        }
+      })
+      .catch((error) => {
+        showError(error.response.data.detail);
+      });
+  };
+
   return (
     <form className="space-y-4 md:space-y-3">
       <CustomInputs
+        onChange={handleInputChange}
         class="w-1/2 inline-block pe-2"
         label="Nombre"
+        value={formData.name}
+        name="name"
         disabled={false}
         placeholder="Nombre"
         type="text"
       />
 
       <CustomInputs
+        onChange={handleInputChange}
         class="w-1/2 inline-block ps-2"
         label="Apellido"
+        value={formData.lastname}
+        name="lastname"
         disabled={false}
         placeholder="Apellido"
         type="text"
       />
 
       <CustomInputs
+        onChange={handleInputChange}
         class="w-1/2 inline-block pe-2"
         label="Correo electrónico"
+        name="email"
+        value={formData.email}
         disabled={false}
         placeholder="name@company.com"
         type="email"
       />
       <CustomInputs
+        onChange={handleInputChange}
         class="w-1/2 inline-block ps-2"
         label="Teléfono"
+        name="phone"
+        value={formData.phone}
         disabled={false}
         placeholder="+54 656546456"
         type="tel"
       />
 
       <CustomInputs
+        onChange={handleInputChange}
         class="w-1/2 inline-block pe-2"
-        label="Teléfono"
+        label="Contraseña"
+        name="password"
+        value={formData.password}
         disabled={false}
-        placeholder="+54 656546456"
-        type="tel"
+        placeholder="*********"
+        type="password"
       />
 
       <CustomInputs
@@ -57,7 +102,18 @@ const RegisterForm = (props: Props) => {
         label="Confirmar Contraseña"
         disabled={false}
         placeholder="*********"
-        type="*********"
+        type="password"
+      />
+      <CustomInputs
+        onChange={handleInputChange}
+        class="w-full inline-block text-center text-xl"
+        label="Código"
+        name="user_code"
+        value={formData.user_code}
+        inputCss="text-xl text-center"
+        disabled={false}
+        placeholder=""
+        type="text"
       />
 
       <button
