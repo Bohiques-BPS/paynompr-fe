@@ -1,38 +1,40 @@
 import Axios from "axios";
 
-function setOptions(url: string, method: string, data?: {}) {
+const baseURL = import.meta.env.VITE_BASE_URL;
+
+function setOptions(url: string, method: string, data?: object) {
   return {
     url: url,
     method: method,
     data: data,
-    baseURL: "http://localhost:8000/api/",
+    baseURL,
     headers: {
       "Content-Type": "application/json; charset=utf-8",
     },
   };
 }
 
-function setLoginForm(url: string, method: string, data?: {}) {
+function setLoginForm(url: string, method: string, data?: object) {
   return {
     url: url,
     method: method,
     data: data,
-    baseURL: "http://localhost:8000/api/",
+    baseURL,
     headers: {
       "Content-Type": "multipart/form-data",
     },
   };
 }
 
-export function setLogin(data: {}) {
+export function setLogin(data: object) {
   return Axios.request(setLoginForm("auth/token", "POST", data)); // Using a post request, specifying the user
 }
 
-export function setRegister(data: {}) {
+export function setRegister(data: object) {
   return Axios.request(setOptions("users/", "POST", data)); // Using a post request, specifying the user
 }
 
-export function setCode(data: {}) {
+export function setCode(data: object) {
   return Axios.request(setOptions("codes/", "POST", data)); // Using a post request, specifying the user
 }
 
