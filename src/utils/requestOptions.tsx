@@ -7,7 +7,7 @@ function setOptions(url: string, method: string, data?: object) {
     url: url,
     method: method,
     data: data,
-    baseURL: `${baseURL}/api/`,
+    baseURL,
     headers: {
       "Content-Type": "application/json; charset=utf-8",
     },
