@@ -3,13 +3,14 @@ import { fetchToken } from "../services/auth.services";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-function setOptions(url: string, method: string, data?: {}) {
-  console.log(fetchToken());
+function setOptions(url: string, method: string, data?: object) {
   return {
     url: url,
     method: method,
     data: data,
+
     baseURL: BASE_URL,
+
     headers: {
       "Content-Type": "application/json; charset=utf-8",
       Authorization: `Bearer ${fetchToken()}`,
@@ -22,7 +23,9 @@ function setOutForm(url: string, method: string, data?: {}) {
     url: url,
     method: method,
     data: data,
+
     baseURL: BASE_URL,
+
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -33,11 +36,11 @@ export function setLogin(data: {}) {
   return Axios.request(setOutForm("auth/login", "POST", data)); // Using a post request, specifying the user
 }
 
-export function setRegister(data: {}) {
+export function setRegister(data: object) {
   return Axios.request(setOptions("users/", "POST", data)); // Using a post request, specifying the user
 }
 
-export function setCode(data: {}) {
+export function setCode(data: object) {
   return Axios.request(setOptions("codes/", "POST", data)); // Using a post request, specifying the user
 }
 

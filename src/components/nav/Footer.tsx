@@ -9,7 +9,7 @@ const Footer = ({ sidebarOpen }: SidebarProps) => {
         sidebarOpen === "true" ? "   md:w-full " : "  md:w-full "
       } `}
     >
-      <p className="text-gray-600">© 2023 Paynom</p>
+      <p className="text-gray-600">© 2023 PaynomPR</p>
       <p className="text-[#111031] text-end">Version multiple</p>
     </div>
   );
