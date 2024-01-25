@@ -2,27 +2,30 @@ import { useState } from "react";
 
 import CustomInputs from "../../components/forms/CustomInputs";
 import { makeid } from "../../utils/functions";
-import { showError, showSuccess } from "../../utils/consts";
+import { showSuccess } from "../../utils/consts";
 
 import { setCode } from "../../utils/requestOptions";
+import { useNavigate } from "react-router-dom";
 
 const AddCode = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     code: "",
+    owner: "",
+    email: "",
     amount: 1,
   });
 
   const handleAddCode = () => {
     setCode(formData)
-      .then((response) => {
+      .then(() => {
         // Data retrieval and processing
-        console.log(response);
-        showSuccess("Bienvenido José Ortiz.");
+        showSuccess("Creado exitosamente.");
+        navigate("../codigos");
       })
-      .catch((error) => {
+      .catch(() => {
         // If the query fails, an error will be displayed on the terminal.
-        showError(error.response.data.detail);
-        console.error(error);
       });
   };
 
@@ -36,7 +39,12 @@ const AddCode = () => {
     });
   };
   const handleCode = () => {
-    setFormData({ code: makeid(6), amount: formData.amount });
+    setFormData({
+      code: makeid(6),
+      amount: formData.amount,
+      owner: formData.owner,
+      email: formData.email,
+    });
   };
   return (
     <>
@@ -48,9 +56,24 @@ const AddCode = () => {
           <div className="xl:w-1/3 mx-auto  w-full">
             <CustomInputs
               class="w-full mx-auto  inline-block "
-              label="Cantidad"
+              label="Nombre"
+              name="owner"
+              onChange={handleInputChange}
+              value={formData.owner}
+              type="text"
+            />
+            <CustomInputs
+              class="w-full mx-auto  inline-block "
+              label="Correo electrónico"
+              name="email"
+              onChange={handleInputChange}
+              value={formData.email}
+              type="text"
+            />
+            <CustomInputs
+              class="w-full mx-auto  inline-block "
+              label="Numero de empresas"
               name="amount"
-              disabled={false}
               onChange={handleInputChange}
               value={formData.amount}
               type="number"

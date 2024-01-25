@@ -4,17 +4,18 @@ import { useNavigate } from "react-router-dom";
 import CustomInputs from "./CustomInputs";
 import { showError, showSuccess } from "../../utils/consts";
 import { setLogin } from "../../utils/requestOptions";
+import { setToken } from "../../services/auth.services";
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    username: "",
-    password: "",
+    username: "admin@admin.com",
+    password: "123456",
   });
 
   const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
     const value = e.currentTarget.value;
-    console.log(value);
+
     setFormData({
       ...formData,
       [e.currentTarget.name]: value,
@@ -25,8 +26,8 @@ const LoginForm = () => {
     setLogin(formData)
       .then((response) => {
         // Data retrieval and processing
-        console.log(response);
-        showSuccess("Bienvenido José Ortiz.");
+        setToken(response);
+        showSuccess("Bienvenido " + response.data.name);
         navigate("/escritorio/dash");
       })
       .catch((error) => {
@@ -36,7 +37,7 @@ const LoginForm = () => {
   };
 
   return (
-    <form className="space-y-4 md:space-y-3" action="#">
+    <form className="space-y-4 md:space-y-3">
       <CustomInputs
         label="Correo electrónico"
         name="username"

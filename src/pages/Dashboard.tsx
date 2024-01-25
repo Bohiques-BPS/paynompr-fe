@@ -1,6 +1,8 @@
 import QuickActions from "../components/dashboard/QuickActions";
 import companie from "../assets/imgs/Out/icon.png";
 import CardText from "../components/dashboard/CardText";
+import { useEffect } from "react";
+import { getCurrentUser } from "../utils/requestOptions";
 
 const item = [
   { img: companie, text: "Bohiques Business and Personal" },
@@ -9,6 +11,16 @@ const item = [
 ];
 
 const Dashboard = () => {
+  useEffect(() => {
+    getCurrentUser()
+      .then((response) => {
+        // Data retrieval and processing
+        console.log(response);
+      })
+      .catch(() => {
+        // If the query fails, an error will be displayed on the terminal.
+      });
+  }, []);
   //getTodo();
   return (
     <div className="flex md:flex-row flex-col    gap-4  ">

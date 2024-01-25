@@ -22,7 +22,7 @@ const Empleados = () => {
     },
     {
       name: "Correo",
-      selector: "email",
+      selector: (row: { email: string }) => row.email,
     },
     {
       name: "Teléfono",

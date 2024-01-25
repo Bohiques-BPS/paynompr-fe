@@ -12,7 +12,7 @@ const OutLayout = () => {
         style={{ backgroundImage: `url(${top_bar})` }}
       >
         <h2 className="text-white font-bold z-10 text-3xl md:text-4xl text-center">
-          ¡Bienvenido a Paymon!
+          ¡Bienvenido a PaynomPR!
         </h2>
         <img
           className="absolute md:left-16 left-8 md:w-48 sm:w-14 w-28 -bottom-10 md:-bottom-1/4"

@@ -15,6 +15,7 @@ type Props = {
 const defaultProps = {
   inputCss: "text-sm",
   class: "",
+  disabled: false,
 };
 
 const CustomInputs = (props: Props) => {

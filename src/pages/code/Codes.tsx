@@ -18,20 +18,22 @@ const Codes = () => {
 
   const columns: any = [
     {
+      name: "Dueño",
+      cell: (row: { owner: string }) => row.owner,
+    },
+    {
+      name: "Correo",
+      cell: (row: { email: string }) => row.email,
+    },
+    {
       name: "Código",
       selector: (row: { code: string }) => row.code,
     },
     {
       name: "Amount",
-      selector: "amount",
+      selector: (row: { amount: number }) => row.amount,
     },
-    {
-      name: "Dueño",
-      cell: (row: { owner: string }) => (
-        <>{row.owner ? <h3>{row.owner}</h3> : <h3>Dueño no asignado</h3>}</>
-      ),
-      selector: (row: { owner: any }) => row.owner,
-    },
+
     {
       name: "Editar",
       button: true,
@@ -57,7 +59,6 @@ const Codes = () => {
   useEffect(() => {
     getCodes()
       .then((response) => {
-        console.log(response.data.result);
         // Data retrieval and processing
         setData(response.data.result);
       })

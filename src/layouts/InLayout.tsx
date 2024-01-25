@@ -43,7 +43,7 @@ const InLayout = () => {
             {/* <!-- ===== Main Content Start ===== --> */}
 
             <div
-              className={` transition-all duration-500 w-full mt-[88px] relative   xl:mt-[8vh]     bg-[#E1E1E1] overflow-auto h-[calc(100vh-8vh)]  ${
+              className={` transition-all duration-500 w-full mt-[88px] relative   sm:mt-[8vh]     bg-[#E1E1E1] overflow-auto h-[calc(100vh-8vh)]  ${
                 sidebarOpen === "true"
                   ? "  md:ms-[25%] md:w-3/4 "
                   : " md:ms-[8.333333%] md:w-11/12 "

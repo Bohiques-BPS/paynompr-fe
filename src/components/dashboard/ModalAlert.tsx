@@ -23,9 +23,7 @@ const ModalAlert = (props: Props) => {
       <div className="relative p-4 w-full mx-auto mt-[25vh] max-w-2xl max-h-full">
         <div className="relative bg-white rounded-lg shadow ">
           <div className="flex items-center justify-between p-4 md:p-5 ">
-            <h3 className="text-xl font-semibold text-[#333160]">
-              {props.title}
-            </h3>
+            <h3 className="text-xl font-semibold text-[#333160]"></h3>
             <button
               onClick={props.setIsOpen}
               type="button"
