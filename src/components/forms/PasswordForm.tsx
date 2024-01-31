@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import CustomInputs from "./CustomInputs";
-import { showSuccess } from "../../utils/consts";
+import { showSuccess } from "../../utils/functions";
 
 const PasswordForm = () => {
   const [error, setError] = useState(false);

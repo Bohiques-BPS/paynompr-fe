@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import CustomInputs from "./CustomInputs";
-import { showError, showSuccess } from "../../utils/consts";
-import { setRegister } from "../../utils/requestOptions";
+import { showError, showSuccess } from "../../utils/functions";
+import { setRegister } from "../../services/auth.services";
 
 const RegisterForm = () => {
   const navigate = useNavigate();

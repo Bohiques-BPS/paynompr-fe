@@ -3,9 +3,9 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import OutLayout from "./layouts/OutLayout";
 import InLayout from "./layouts/InLayout";
 
-import Login from "./pages/Login";
-import Activation from "./pages/Activation";
-import Register from "./pages/Register";
+import Login from "./pages/out/Login";
+
+import Register from "./pages/out/Register";
 import Dashboard from "./pages/Dashboard";
 import Empresas from "./pages/company/Company";
 import Empleados from "./pages/employee/Employee";
@@ -14,11 +14,16 @@ import AddEmployee from "./pages/employee/AddEmployee";
 import Process from "./pages/Process";
 import Cargar from "./pages/process/Cargar";
 import ForgotPassword from "./pages/out/ForgotPassword";
-import AddCounter from "./pages/employee/AddCounter";
+import AddCounter from "./pages/accountants/AddAccountants";
 import Codes from "./pages/code/Codes";
 import AddCode from "./pages/code/AddCodes";
 import PrivateRoutes from "./services/PrivateRoutes";
 import PublicRoutes from "./services/PublicRoutes";
+import Accountants from "./pages/accountants/Accountants";
+import EditCodes from "./pages/code/EditCodes";
+import EditAccountants from "./pages/accountants/EditAccountants";
+import EditCompany from "./pages/company/EditCompany";
+import EditEmployee from "./pages/employee/EditEmployee";
 
 const App = () => {
   return (
@@ -29,7 +34,6 @@ const App = () => {
             <Route index element={<Login />} />
             <Route path="registro" element={<Register />} />
             <Route path="recuperar" element={<ForgotPassword />} />
-            <Route path="activacion" element={<Activation />} />
           </Route>
         </Route>
         <Route element={<PrivateRoutes />}>
@@ -38,8 +42,11 @@ const App = () => {
 
             <Route path="empresas" element={<Empresas />} />
             <Route path="empresas/agregar" element={<AddCompany />} />
+            <Route path="empresas/editar/:id" element={<EditCompany />} />
 
-            <Route path="contador" element={<AddCounter />} />
+            <Route path="contadores" element={<Accountants />} />
+            <Route path="contadores/agregar" element={<AddCounter />} />
+            <Route path="contadores/editar/:id" element={<EditAccountants />} />
 
             <Route path="procesos" element={<Process />} />
             <Route path="procesos/:id/cargar" element={<Cargar />} />
@@ -49,9 +56,14 @@ const App = () => {
               path="empresas/:id/empleados/agregar"
               element={<AddEmployee />}
             />
+            <Route
+              path="empresas/:id/empleados/:id_employer/editar"
+              element={<EditEmployee />}
+            />
 
             <Route path="codigos" element={<Codes />} />
             <Route path="codigos/agregar" element={<AddCode />} />
+            <Route path="codigos/editar/:id" element={<EditCodes />} />
           </Route>
         </Route>
       </Routes>

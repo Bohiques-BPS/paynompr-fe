@@ -1,14 +1,21 @@
 import Header from "../components/nav/Header";
 import Sidebar from "../components/nav/Sidebar";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import Footer from "../components/nav/Footer";
 import { useLocalStorage } from "../utils/UseLocalStorage";
+import { useEffect } from "react";
+import { getAccountants, getCurrentUser } from "../utils/requestOptions";
+import { removeToken } from "../services/auth.services";
+import { blockPage } from "../utils/permision";
 
 const InLayout = () => {
+  const navigate = useNavigate();
+
   const [sidebarOpen, setSidebarOpen] = useLocalStorage(
     "sidebar-expanded",
     "false"
   );
+  const [role, setRole] = useLocalStorage("role", "3");
 
   const toggleSidebar = () => {
     if (window.innerWidth < 700) {
@@ -16,6 +23,30 @@ const InLayout = () => {
       else setSidebarOpen("true");
     }
   };
+  useEffect(() => {
+    getCurrentUser()
+      .then((response) => {
+        const data: any = response;
+        setRole(data.data.user.role_id);
+      })
+      .catch(() => {
+        removeToken();
+        setRole("0");
+        navigate("../");
+        // If the query fails, an error will be displayed on the terminal.
+      });
+    getAccountants()
+      .then((response) => {
+        // TODO Declarar un modelo para user
+
+        if (blockPage(response.data.result.length == 0)) {
+          navigate("/escritorio/contadores/agregar");
+        }
+      })
+      .catch(() => {
+        // If the query fails, an error will be displayed on the terminal.
+      });
+  }, []);
 
   const toggleSidebarOption = () => {
     if (sidebarOpen === "true") setSidebarOpen("false");
@@ -35,6 +66,7 @@ const InLayout = () => {
             {/* <!-- ===== Sidebar Start ===== --> */}
             <Sidebar
               sidebarOpen={sidebarOpen}
+              role={role}
               toggleSidebar={toggleSidebar}
               toggleSidebarOption={toggleSidebarOption}
             />

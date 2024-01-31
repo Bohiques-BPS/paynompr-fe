@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import CustomInputs from "./CustomInputs";
-import { showError, showSuccess } from "../../utils/consts";
-import { setLogin } from "../../utils/requestOptions";
-import { setToken } from "../../services/auth.services";
+
+import { setLogin, setToken } from "../../services/auth.services";
+import { showError, showSuccess } from "../../utils/functions";
 
 const LoginForm = () => {
   const navigate = useNavigate();

@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 export function makeid(length: number) {
   let result = "";
   const characters =
@@ -9,4 +11,14 @@ export function makeid(length: number) {
     counter += 1;
   }
   return result;
+}
+
+export function showSuccess(text: string) {
+  const notify = () => toast.success(text);
+  notify();
+}
+
+export function showError(text: string) {
+  const notify = () => toast.error(text);
+  notify();
 }

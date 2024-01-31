@@ -1,29 +1,28 @@
 import { useNavigate, useParams } from "react-router-dom";
 import CustomInputs from "../../components/forms/CustomInputs";
 import CustomSelect from "../../components/forms/CustomSelect";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { showError, showSuccess } from "../../utils/functions";
-import { setEmployers } from "../../utils/requestOptions";
+import { editEmployers, getEmployer } from "../../utils/requestOptions";
 
-const AddEmployee = () => {
+const EditEmployee = () => {
   const navigate = useNavigate();
   const params = useParams();
 
   const [formData, setFormData] = useState({
-    name: "Prueba",
-    last_name: "Prueba",
-    mother_last_name: "Prueba",
-    first_name: "Prueba",
-    middle_name: "Prueba",
+    last_name: "Rodríguez",
+    mother_last_name: "Santos",
+    first_name: "Luis",
+    middle_name: "Enrique",
     employee_type: "1",
-    social_security_number: "2323",
+    social_security_number: "123-45-6789",
     marital_status: "1",
-    address: "Prueba",
-    address_state: "Prueba",
+    address: "Calle San Juan",
+    address_state: "San Juan",
     address_country: "2",
-    address_number: "Prueba",
-    phone_number: "Prueba",
-    smartphone_number: "Prueba",
+    address_number: "25",
+    phone_number: "787-555-1234",
+    smartphone_number: "787-555-4321",
   });
 
   const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
@@ -43,13 +42,24 @@ const AddEmployee = () => {
     });
   };
 
-  const handleCreate = () => {
-    setEmployers(formData, Number(params.id))
-      .then(() => {
-        // Data retrieval and processing
+  useEffect(() => {
+    getEmployer(Number(params.id), Number(params.id_employer))
+      .then((response) => {
+        setFormData(response.data.result);
 
-        showSuccess("Creado exitosamente.");
-        navigate("../empresas");
+        // Data retrieval and processing
+      })
+      .catch((error) => {
+        // If the query fails, an error will be displayed on the terminal.
+        showError(error.response.data.detail);
+      });
+  }, []);
+
+  const handleCreate = () => {
+    editEmployers(formData, Number(params.id_employer))
+      .then(() => {
+        showSuccess("Editado exitosamente.");
+        navigate(-1);
       })
       .catch((error) => {
         // If the query fails, an error will be displayed on the terminal.
@@ -60,7 +70,7 @@ const AddEmployee = () => {
   return (
     <>
       <div className="text-[#EED102] bg-[#333160] p-6 rounded-lg text-center">
-        <h3 className="text-3xl">Crear Empleado</h3>
+        <h3 className="text-3xl">Editar Empleado</h3>
 
         <p className="text-white mt-4">Tipo de empleado</p>
         <CustomSelect
@@ -100,9 +110,9 @@ const AddEmployee = () => {
             <CustomInputs
               class="w-1/2 mx-auto pe-1  inline-block "
               label="Nombre"
-              name="name"
+              name="first_name"
               onChange={handleInputChange}
-              value={formData.name}
+              value={formData.first_name}
               disabled={false}
               placeholder=""
               type="text"
@@ -417,4 +427,4 @@ const AddEmployee = () => {
   );
 };
 
-export default AddEmployee;
+export default EditEmployee;

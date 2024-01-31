@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { faEdit, faUserMinus } from "@fortawesome/free-solid-svg-icons";
 
@@ -6,8 +6,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import ModalAlert from "../../components/dashboard/ModalAlert";
 import FloatButton from "../../components/dashboard/FloatButton";
-import data from "../../utils/data.json";
+
 import CustomInputs from "../../components/forms/CustomInputs";
+import { getCompanies } from "../../utils/requestOptions";
 
 const getRoute = (id: string) => {
   return id + "/empleados";
@@ -16,23 +17,43 @@ const getRoute = (id: string) => {
 const Empresas = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    getCompanies()
+      .then((response) => {
+        // Data retrieval and processing
+        setData(response.data.result);
+      })
+      .catch(() => {
+        // If the query fails, an error will be displayed on the terminal.
+      });
+  }, []);
 
   const columns: any = [
     {
       name: "Empresa",
-      selector: (row: { title: any }) => row.title,
+      selector: (row: { name: any }) => row.name,
     },
     {
       name: "Persona de Contacto",
       selector: (row: { contact: any }) => row.contact,
     },
     {
+      name: "Registro Comercial",
+      selector: (row: { commercial_register: any }) => row.commercial_register,
+    },
+    {
+      name: "Teléfono",
+      selector: (row: { phone_number: any }) => row.phone_number,
+    },
+    {
       name: "Editar",
       button: true,
       cell: (row: { id: string }) => (
-        <a data-id={row.id} rel="noopener noreferrer">
+        <Link to={`./editar/${row.id}`} rel="noopener noreferrer">
           <FontAwesomeIcon icon={faEdit} className="text-2xl" />
-        </a>
+        </Link>
       ),
       selector: (row: { year: any }) => row.year,
     },
@@ -88,9 +109,7 @@ const Empresas = () => {
             <DataTable
               className="w-full"
               columns={columns}
-              data={data.filter((item) =>
-                item.title.toLowerCase().includes(search.toLowerCase())
-              )}
+              data={data}
               pagination
             />
           </div>

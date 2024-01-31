@@ -4,8 +4,8 @@ import user from "../../assets/imgs/navbar/user.png";
 import logo from "../../assets/imgs/Out/icon.png";
 import search from "../../assets/imgs/navbar/search.png";
 import notification from "../../assets/imgs/navbar/notification.png";
-import { showSuccess } from "../../utils/consts";
 import { fetchName, setLogout } from "../../services/auth.services";
+import { showSuccess } from "../../utils/functions";
 
 interface SidebarProps {
   toggleSidebar: () => void;

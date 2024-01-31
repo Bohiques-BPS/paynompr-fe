@@ -3,6 +3,7 @@ import { fetchToken } from "./auth.services";
 
 const PrivateRoutes = () => {
   let auth = { token: fetchToken() };
+
   return auth.token ? <Outlet /> : <Navigate to="/" />;
 };
 

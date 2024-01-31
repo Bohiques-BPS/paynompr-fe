@@ -8,37 +8,45 @@ import ModalAlert from "../../components/dashboard/ModalAlert";
 import FloatButton from "../../components/dashboard/FloatButton";
 
 import CustomInputs from "../../components/forms/CustomInputs";
-import { getUsers } from "../../utils/requestOptions";
-import { showError } from "../../utils/consts";
+import { getEmployers } from "../../utils/requestOptions";
+
+import { Link, useParams } from "react-router-dom";
 
 const Empleados = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
+  const params = useParams();
+
   const columns: any = [
     {
       name: "Nombre",
-      selector: (row: { name: string }) => row.name,
+      selector: (row: { first_name: string }) => row.first_name,
     },
     {
-      name: "Correo",
-      selector: (row: { email: string }) => row.email,
+      name: "Numero Social",
+      selector: (row: { social_security_number: string }) =>
+        row.social_security_number,
     },
     {
-      name: "Teléfono",
-      selector: (row: { phone: string }) => row.phone,
+      name: "Telefono",
+      selector: (row: { smartphone_number: string }) => row.smartphone_number,
+    },
+    {
+      name: "Tipo",
+      selector: (row: { employee_type: string }) => row.employee_type,
     },
     {
       name: "Editar",
       button: true,
       cell: (row: { id: string }) => (
-        <a rel="noopener noreferrer">
+        <Link to={`./${row.id}/editar`} rel="noopener noreferrer">
           <FontAwesomeIcon
             data-id={row.id}
             icon={faEdit}
             className="text-2xl"
           />
-        </a>
+        </Link>
       ),
       selector: (row: { year: any }) => row.year,
     },
@@ -55,17 +63,12 @@ const Empleados = () => {
   ];
 
   useEffect(() => {
-    getUsers()
+    getEmployers(Number(params.id))
       .then((response) => {
-        console.log(response.data.result);
         // Data retrieval and processing
-        setData(response.data.result);
+        if (response.data.result) setData(response.data.result);
       })
-      .catch((error) => {
-        // If the query fails, an error will be displayed on the terminal.
-        showError(error.response.data.detail);
-        console.error(error);
-      });
+      .catch(() => {});
   }, []);
 
   const handleModal = () => {

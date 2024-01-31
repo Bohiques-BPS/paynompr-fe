@@ -1,19 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import CustomInputs from "../../components/forms/CustomInputs";
-import { makeid, showSuccess } from "../../utils/functions";
+import { showError, showSuccess } from "../../utils/functions";
 
-import { useNavigate } from "react-router-dom";
-import { setCode } from "../../services/code.services";
+import { useNavigate, useParams } from "react-router-dom";
+import { editCode, getCode } from "../../services/code.services";
 import { Code } from "../../models/code";
 
-const AddCode = () => {
+const EditCodes = () => {
   const navigate = useNavigate();
+  const params = useParams();
 
   const [formData, setFormData] = useState(Code);
 
   const handleAddCode = () => {
-    setCode(formData)
+    editCode(formData, Number(params.id))
       .then(() => {
         // Data retrieval and processing
         showSuccess("Editado exitosamente.");
@@ -24,6 +25,20 @@ const AddCode = () => {
       });
   };
 
+  useEffect(() => {
+    getCode(Number(params.id))
+      .then((response) => {
+        setFormData(response.data.result);
+        console.log(response);
+        // Data retrieval and processing
+      })
+      .catch((error) => {
+        // If the query fails, an error will be displayed on the terminal.
+        showError(error.response.data.detail);
+        console.error(error);
+      });
+  }, []);
+
   const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
@@ -33,14 +48,7 @@ const AddCode = () => {
           : e.currentTarget.value,
     });
   };
-  const handleCode = () => {
-    setFormData({
-      code: makeid(6),
-      amount: formData.amount,
-      owner: formData.owner,
-      email: formData.email,
-    });
-  };
+
   return (
     <>
       <div className="text-[#EED102] bg-[#333160] p-6 rounded-lg text-center">
@@ -61,6 +69,7 @@ const AddCode = () => {
               class="w-full mx-auto  inline-block "
               label="Correo electrónico"
               name="email"
+              disabled={true}
               onChange={handleInputChange}
               value={formData.email}
               type="text"
@@ -75,7 +84,7 @@ const AddCode = () => {
             />
 
             <CustomInputs
-              class="w-1/2 pe-2 mx-auto  inline-block "
+              class="w-full pe-2 mx-auto  inline-block "
               label="Codigo"
               name="code"
               onChange={handleInputChange}
@@ -84,14 +93,6 @@ const AddCode = () => {
               placeholder="00820"
               type="text"
             />
-            <div className="ps-2 w-1/2  inline-block">
-              <button
-                onClick={handleCode}
-                className=" w-full  bg-[#333160] py-3  text-[#EED102] bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-8 text-center "
-              >
-                Generar Código
-              </button>
-            </div>
           </div>
         </div>
         <div className="w-full text-center">
@@ -107,4 +108,4 @@ const AddCode = () => {
   );
 };
 
-export default AddCode;
+export default EditCodes;

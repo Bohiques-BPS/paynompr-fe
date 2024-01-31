@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
-import { faEdit, faUserMinus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEdit,
+  faBan,
+  faCircleCheck,
+} from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -8,33 +12,32 @@ import ModalAlert from "../../components/dashboard/ModalAlert";
 import FloatButton from "../../components/dashboard/FloatButton";
 
 import CustomInputs from "../../components/forms/CustomInputs";
-import { getCodes } from "../../services/code.services";
-import { showError } from "../../utils/functions";
+import {
+  changeStatusAccountant,
+  getAccountants,
+} from "../../utils/requestOptions";
+import { showError, showSuccess } from "../../utils/functions";
 import { Link } from "react-router-dom";
 
-const Codes = () => {
+const Accountants = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const [row, setRow] = useState({ name: "", id: 0, is_deleted: false });
   const [data, setData] = useState([]);
-
   const columns: any = [
     {
-      name: "Dueño",
-      cell: (row: { owner: string }) => row.owner,
+      name: "Nombre",
+      selector: (row: { name: string }) => row.name,
     },
     {
       name: "Correo",
-      cell: (row: { email: string }) => row.email,
+      selector: (row: { email: string }) => row.email,
     },
     {
-      name: "Código",
-      selector: (row: { code: string }) => row.code,
-    },
-    {
-      name: "Amount",
-      selector: (row: { amount: number }) => row.amount,
-    },
+      name: "Teléfono",
 
+      selector: (row: { phone: string }) => row.phone,
+    },
     {
       name: "Editar",
       button: true,
@@ -43,22 +46,35 @@ const Codes = () => {
           <FontAwesomeIcon icon={faEdit} className="text-2xl" />
         </Link>
       ),
-      selector: (row: { year: any }) => row.year,
     },
     {
-      name: "Deshabilitar",
+      name: "Estado",
       button: true,
-      cell: (row: { id: string }) => (
-        <a data-id={row.id} onClick={handleModal} rel="noopener noreferrer">
-          <FontAwesomeIcon icon={faUserMinus} className="text-2xl" />
-        </a>
+      cell: (row: { name: string; id: number; is_deleted: boolean }) => (
+        <>
+          {!row.is_deleted ? (
+            <a onClick={() => handleModalClick(row)} rel="noopener noreferrer">
+              <FontAwesomeIcon
+                icon={faCircleCheck}
+                className="text-2xl text-green-800"
+              />
+            </a>
+          ) : (
+            <a onClick={() => handleModalClick(row)} rel="noopener noreferrer">
+              <FontAwesomeIcon icon={faBan} className="text-2xl text-red-800" />
+            </a>
+          )}
+        </>
       ),
-      selector: (row: { year: any }) => row.year,
     },
   ];
 
   useEffect(() => {
-    getCodes()
+    getData();
+  }, []);
+
+  const getData = () => {
+    getAccountants()
       .then((response) => {
         // Data retrieval and processing
         setData(response.data.result);
@@ -66,11 +82,33 @@ const Codes = () => {
       .catch((error) => {
         // If the query fails, an error will be displayed on the terminal.
         showError(error.response.data.detail);
-        console.error(error);
       });
-  }, []);
+  };
 
   const handleModal = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const changeStatus = () => {
+    changeStatusAccountant(row.id)
+      .then(() => {
+        // Data retrieval and processing
+        showSuccess("Cambiando exitosamente");
+        getData();
+        handleModal();
+      })
+      .catch((error) => {
+        // If the query fails, an error will be displayed on the terminal.
+        showError(error.response.data.detail);
+      });
+  };
+
+  const handleModalClick = (data: {
+    name: string;
+    id: number;
+    is_deleted: boolean;
+  }) => {
+    setRow(data);
     setIsOpen(!isOpen);
   };
 
@@ -81,7 +119,7 @@ const Codes = () => {
   return (
     <>
       <div className="text-[#EED102] bg-[#333160] p-6 rounded-lg text-center">
-        <h3>Códigos</h3>
+        <h3>Contadores</h3>
       </div>
       <div className="flex md:flex-row flex-col    gap-4  ">
         <div className="md:w-full mt-4 w-full flex flex-col   gap-2  ">
@@ -102,11 +140,15 @@ const Codes = () => {
             />
           </div>
         </div>
+
         <ModalAlert
           isOpen={isOpen}
+          action={changeStatus}
           setIsOpen={handleModal}
-          title="Desactivar empleado"
-          description="¿Esta seguro que desea desactivar este usuario?"
+          title={`${row.is_deleted ? "Activar" : "Desactivar"}`}
+          description={`¿Esta seguro que desea ${
+            row.is_deleted ? "activar" : "desactivar"
+          } al contador: ${row.name}?`}
         />
         <FloatButton to="agregar" />
       </div>
@@ -114,4 +156,4 @@ const Codes = () => {
   );
 };
 
-export default Codes;
+export default Accountants;

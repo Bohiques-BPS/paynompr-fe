@@ -1,0 +1,17 @@
+export const Accountants = {
+  first_last_name: "Arismendiz",
+  middle_name: "Manuel",
+  second_last_name: "Paez",
+  company: "Google",
+  phone: "697 730 067",
+  country: "San Juan",
+  name: "Jesus",
+  email: "prueba@prueba2.com",
+  state: "Texas",
+  zip_code: "2324",
+  identidad_ssa: "Prueba",
+  identidad_bso: "Prueba",
+  identidad_efile: "Prueba",
+  address: "Prueba",
+  employer_insurance_number: "Prueba",
+};

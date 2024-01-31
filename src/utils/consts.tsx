@@ -1,5 +1,3 @@
-import { toast } from "react-toastify";
-
 export const data_company = [
   {
     id: 1,
@@ -12,13 +10,3 @@ export const data_company = [
     contact: "Jose Ortiz",
   },
 ];
-
-export function showSuccess(text: string) {
-  const notify = () => toast.success(text);
-  notify();
-}
-
-export function showError(text: string) {
-  const notify = () => toast.error(text);
-  notify();
-}

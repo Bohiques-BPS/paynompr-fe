@@ -1,41 +1,55 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomInputs from "../../components/forms/CustomInputs";
 import CustomSelect from "../../components/forms/CustomSelect";
-import { setCompanies } from "../../utils/requestOptions";
+import { editCompanies, getCompanie } from "../../utils/requestOptions";
 import { showError, showSuccess } from "../../utils/functions";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const AddCompany = () => {
+const EditCompany = () => {
   const navigate = useNavigate();
+  const params = useParams();
 
   const [formData, setFormData] = useState({
-    name: "Empresa S.A.",
-    commercial_register: "45678901",
-    jurisdiction: "España",
+    name: "Prueba",
+    commercial_register: "123",
+    jurisdiction: "123",
     accountant_id: 1,
-    email: "empresa@empresa.com",
-    contact: "Juan Pérez",
-    contact_number: "912345678",
-    website: "www.empresa.com",
-    postal_address: "Calle Falsa, 123",
-    zipcode_postal_address: "28001",
-    country_postal_address: "España",
-    state_postal_addess: "Madrid",
-    physical_address: "Calle Real, 456",
-    zipcode_physical_address: "28002",
-    country_physical_address: "España",
-    state_physical_address: "Madrid",
-    phone_number: "912345679",
-    fax_number: "912345670",
-    industrial_code: "CNAE 6201",
-    payer: "Empresa S.A.",
-    desem: "0.5",
-    disabled_percent: "0",
-    driver: "Pedro García",
-    polize_number: "12345678",
-    driver_code: "A1",
-    driver_rate: "0.8",
+    email: "prueba@prueba.com",
+    contact: "2222",
+    contact_number: "222",
+    website: "www.prueba.com",
+    postal_address: "232",
+    zipcode_postal_address: "232",
+    country_postal_address: "3232",
+    state_postal_addess: "3232",
+    physical_address: "3232",
+    zipcode_physical_address: "2323",
+    country_physical_address: "2323",
+    state_physical_address: "2323",
+    phone_number: "2323",
+    fax_number: "23232",
+    industrial_code: "232",
+    payer: "2323",
+    desem: "2323",
+    disabled_percent: "2323",
+    driver: "2323",
+    polize_number: "23232",
+    driver_code: "2323",
+    driver_rate: "2323",
   });
+
+  useEffect(() => {
+    getCompanie(Number(params.id))
+      .then((response) => {
+        setFormData(response.data.result);
+
+        // Data retrieval and processing
+      })
+      .catch((error) => {
+        // If the query fails, an error will be displayed on the terminal.
+        showError(error.response.data.detail);
+      });
+  }, []);
 
   const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
     const value = e.currentTarget.value;
@@ -55,11 +69,11 @@ const AddCompany = () => {
   };
 
   const handleCreate = () => {
-    setCompanies(formData)
+    editCompanies(formData, Number(params.id))
       .then((response) => {
         // Data retrieval and processing
         console.log(response);
-        showSuccess("Creado exitosamente.");
+        showSuccess("Editado exitosamente.");
         navigate("../empresas");
       })
       .catch((error) => {
@@ -71,7 +85,7 @@ const AddCompany = () => {
   return (
     <>
       <div className="text-[#EED102] bg-[#333160] p-6 rounded-lg text-center">
-        <h3 className="text-3xl">Crear Compañía</h3>
+        <h3 className="text-3xl">Editar Compañía</h3>
 
         <p className="text-white mt-4">
           Ingresa los datos de la compañía que deseas crear. ¡Empecemos por el
@@ -353,4 +367,4 @@ const AddCompany = () => {
   );
 };
 
-export default AddCompany;
+export default EditCompany;

@@ -3,7 +3,7 @@ import { fetchToken } from "../services/auth.services";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-function setOptions(url: string, method: string, data?: object) {
+export function setOptions(url: string, method: string, data?: object) {
   return {
     url: url,
     method: method,
@@ -18,7 +18,7 @@ function setOptions(url: string, method: string, data?: object) {
   };
 }
 
-function setOutForm(url: string, method: string, data?: {}) {
+export function setOutForm(url: string, method: string, data?: {}) {
   return {
     url: url,
     method: method,
@@ -32,26 +32,58 @@ function setOutForm(url: string, method: string, data?: {}) {
   };
 }
 
-export function setLogin(data: {}) {
-  return Axios.request(setOutForm("auth/login", "POST", data)); // Using a post request, specifying the user
+export function getEmployers(id_company: number) {
+  return Axios.request(setOptions("employers/" + id_company, "GET")); // Using a post request, specifying the user
 }
 
-export function setRegister(data: object) {
-  return Axios.request(setOptions("users/", "POST", data)); // Using a post request, specifying the user
+export function setEmployers(data: object, id_company: number) {
+  return Axios.request(setOptions("employers/" + id_company, "POST", data)); // Using a post request, specifying the user
 }
 
-export function setCode(data: object) {
-  return Axios.request(setOptions("codes/", "POST", data)); // Using a post request, specifying the user
+export function editEmployers(data: object, id_employer: number) {
+  return Axios.request(setOptions("employers/" + id_employer, "PUT", data)); // Using a post request, specifying the user
 }
 
-export function getCodes() {
-  return Axios.request(setOptions("codes/", "GET")); // Using a post request, specifying the user
-}
-
-export function getUsers() {
-  return Axios.request(setOptions("users/", "GET")); // Using a post request, specifying the user
+export function getEmployer(id_company: number, id_employer: number) {
+  return Axios.request(
+    setOptions("employers/" + id_company + "/" + id_employer, "GET")
+  ); // Using a post request, specifying the user
 }
 
 export function getCurrentUser() {
   return Axios.request(setOptions("auth/", "GET")); // Using a post request, specifying the user
+}
+
+export function getAccountants() {
+  return Axios.request(setOptions("accountant/", "GET"));
+}
+export function getAccountant(id: number) {
+  return Axios.request(setOptions("accountant/" + id, "GET"));
+}
+
+export function changeStatusAccountant(id: number) {
+  return Axios.request(setOptions("accountant/" + id, "DELETE"));
+}
+
+export function getCompanies() {
+  return Axios.request(setOptions("companies/", "GET")); // Using a post request, specifying the user
+}
+export function getCompanie(id: number) {
+  return Axios.request(setOptions("companies/" + id, "GET")); // Using a post request, specifying the user
+}
+
+export function setCompanies(data: object) {
+  return Axios.request(setOptions("companies/", "POST", data)); // Using a post request, specifying the user
+}
+
+export function editCompanies(data: object, id: number) {
+  return Axios.request(setOptions("companies/" + id, "PUT", data)); // Using a post request, specifying the user
+}
+
+export function setAccountants(data: object) {
+  return Axios.request(setOptions("accountant/", "POST", data)); // Using a post request, specifying the user
+}
+
+export function editAccountants(data: object, id: number) {
+  return Axios.request(setOptions("accountant/" + id, "PUT", data)); // Using a post request, specifying the user
 }
