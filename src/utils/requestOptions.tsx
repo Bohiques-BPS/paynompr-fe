@@ -76,6 +76,10 @@ export function setCompanies(data: object) {
   return Axios.request(setOptions("companies/", "POST", data)); // Using a post request, specifying the user
 }
 
+export function changeStatusCompanie(id: number) {
+  return Axios.request(setOptions("companies/" + id, "DELETE"));
+}
+
 export function editCompanies(data: object, id: number) {
   return Axios.request(setOptions("companies/" + id, "PUT", data)); // Using a post request, specifying the user
 }
