@@ -55,7 +55,7 @@ export function getCurrentUser() {
 }
 
 export function getAccountants() {
-  return Axios.request(setOptions("accountant/", "GET"));
+  return Axios.request(setOptions("accountant", "GET"));
 }
 export function getAccountant(id: number) {
   return Axios.request(setOptions("accountant/" + id, "GET"));
@@ -66,14 +66,14 @@ export function changeStatusAccountant(id: number) {
 }
 
 export function getCompanies() {
-  return Axios.request(setOptions("companies/", "GET")); // Using a post request, specifying the user
+  return Axios.request(setOptions("companies", "GET")); // Using a post request, specifying the user
 }
 export function getCompanie(id: number) {
   return Axios.request(setOptions("companies/" + id, "GET")); // Using a post request, specifying the user
 }
 
 export function setCompanies(data: object) {
-  return Axios.request(setOptions("companies/", "POST", data)); // Using a post request, specifying the user
+  return Axios.request(setOptions("companies", "POST", data)); // Using a post request, specifying the user
 }
 
 export function changeStatusCompanie(id: number) {
@@ -85,7 +85,7 @@ export function editCompanies(data: object, id: number) {
 }
 
 export function setAccountants(data: object) {
-  return Axios.request(setOptions("accountant/", "POST", data)); // Using a post request, specifying the user
+  return Axios.request(setOptions("accountant", "POST", data)); // Using a post request, specifying the user
 }
 
 export function editAccountants(data: object, id: number) {

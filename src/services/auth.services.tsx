@@ -39,5 +39,5 @@ export function setLogin(data: {}) {
 }
 
 export function setRegister(data: object) {
-  return Axios.request(setOptions("users/", "POST", data)); // Using a post request, specifying the user
+  return Axios.request(setOptions("users", "POST", data)); // Using a post request, specifying the user
 }
