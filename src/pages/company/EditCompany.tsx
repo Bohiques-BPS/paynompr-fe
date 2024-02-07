@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import CustomInputs from "../../components/forms/CustomInputs";
-import CustomSelect from "../../components/forms/CustomSelect";
 import { editCompanies, getCompanie } from "../../utils/requestOptions";
 import { showError, showSuccess } from "../../utils/functions";
 import { useNavigate, useParams } from "react-router-dom";
-import { COUNTRY, JURISDICTION, PAYER } from "../../utils/consts";
 import { COMPANY_DATA } from "../../models/company";
 import CompanyForm from "../../components/forms/CompanyForm";
 

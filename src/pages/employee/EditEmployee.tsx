@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import CustomInputs from "../../components/forms/CustomInputs";
+
 import CustomSelect from "../../components/forms/CustomSelect";
 import { useEffect, useState } from "react";
 import { showError, showSuccess } from "../../utils/functions";

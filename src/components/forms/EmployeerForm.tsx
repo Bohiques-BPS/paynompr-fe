@@ -2,15 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import CustomInputs from "../../components/forms/CustomInputs";
 import CustomSelect from "../../components/forms/CustomSelect";
 import { EMPLOYEER } from "../../models/employeer";
-import {
-  COUNTRY,
-  GENDER,
-  JURISDICTION,
-  NO_OPTION,
-  PAYER,
-  STATUS_CIVIL,
-} from "../../utils/consts";
-import { PatternFormat } from "react-number-format";
+import { COUNTRY, GENDER, NO_OPTION, STATUS_CIVIL } from "../../utils/consts";
 
 type Props = {
   formData: EMPLOYEER;

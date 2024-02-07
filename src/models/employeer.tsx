@@ -52,7 +52,7 @@ export interface EMPLOYEER {
   address: string;
   marbete: string;
   type: number;
-  date_marb: string;
+  date_marb: any;
   clipboard: string;
   exec_personal: number;
   choferil: string;
@@ -61,13 +61,13 @@ export interface EMPLOYEER {
   licence: string;
   category_cfse: string;
   gender: number;
-  birthday: string;
-  date_admission: string;
-  date_egress: string;
+  birthday: any;
+  date_admission: any;
+  date_egress: any;
   about_time: string;
   mealtime: string;
   vacation_hours: string;
-  vacation_date: string;
+  vacation_date: any;
   number_dependents: string;
   shared_custody: string;
   number_concessions: string;

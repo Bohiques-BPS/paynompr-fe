@@ -36,7 +36,7 @@ export interface COMPANY {
   accountant_id: number;
   email: string;
   number_patronal: string;
-  coml: string;
+  coml: any;
   contact: string;
   contact_number: string;
   website: string;

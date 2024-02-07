@@ -1,10 +1,10 @@
 import { useNavigate, useParams } from "react-router-dom";
-import CustomInputs from "../../components/forms/CustomInputs";
+
 import CustomSelect from "../../components/forms/CustomSelect";
 import { useState } from "react";
 import { showError, showSuccess } from "../../utils/functions";
 import { setEmployers } from "../../utils/requestOptions";
-import { COUNTRY, STATUS_CIVIL } from "../../utils/consts";
+
 import { EMPLOYER_DATA } from "../../models/employeer";
 import EmployeerForm from "../../components/forms/EmployeerForm";
 

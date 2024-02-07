@@ -12,9 +12,6 @@ type Props = {
 };
 
 const CompanyForm = (props: Props) => {
-  const parseDate = (date: string) => {
-    return date;
-  };
   return (
     <>
       <div className="xl:w-1/2  w-full">
