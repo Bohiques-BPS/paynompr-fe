@@ -5,12 +5,12 @@ import { makeid, showSuccess } from "../../utils/functions";
 
 import { useNavigate } from "react-router-dom";
 import { setCode } from "../../services/code.services";
-import { Code } from "../../models/code";
+import { CODE } from "../../models/code";
 
 const AddCode = () => {
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState(Code);
+  const [formData, setFormData] = useState(CODE);
 
   const handleAddCode = () => {
     setCode(formData)

@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
-import { faEdit, faUserMinus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBan,
+  faCircleCheck,
+  faEdit,
+  faUserMinus,
+} from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -8,13 +13,16 @@ import ModalAlert from "../../components/dashboard/ModalAlert";
 import FloatButton from "../../components/dashboard/FloatButton";
 
 import CustomInputs from "../../components/forms/CustomInputs";
-import { getEmployers } from "../../utils/requestOptions";
+import { changeStatusEmployer, getEmployers } from "../../utils/requestOptions";
 
 import { Link, useParams } from "react-router-dom";
+import { showError, showSuccess } from "../../utils/functions";
 
 const Empleados = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const [row, setRow] = useState({ first_name: "", id: 0, is_deleted: false });
+
   const [data, setData] = useState([]);
   const params = useParams();
 
@@ -53,23 +61,61 @@ const Empleados = () => {
     {
       name: "Deshabilitar",
       button: true,
-      cell: (row: { id: string }) => (
-        <a data-id={row.id} onClick={handleModal} rel="noopener noreferrer">
-          <FontAwesomeIcon icon={faUserMinus} className="text-2xl" />
-        </a>
+      cell: (row: { first_name: string; id: number; is_deleted: boolean }) => (
+        <>
+          {!row.is_deleted ? (
+            <a onClick={() => handleModalClick(row)} rel="noopener noreferrer">
+              <FontAwesomeIcon
+                icon={faCircleCheck}
+                className="text-2xl text-green-800"
+              />
+            </a>
+          ) : (
+            <a onClick={() => handleModalClick(row)} rel="noopener noreferrer">
+              <FontAwesomeIcon icon={faBan} className="text-2xl text-red-800" />
+            </a>
+          )}
+        </>
       ),
       selector: (row: { year: any }) => row.year,
     },
   ];
 
+  const changeStatus = () => {
+    changeStatusEmployer(row.id)
+      .then(() => {
+        // Data retrieval and processing
+        showSuccess("Cambiando exitosamente");
+        getData();
+        handleModal();
+      })
+      .catch((error: any) => {
+        // If the query fails, an error will be displayed on the terminal.
+        showError(error.response.data.detail);
+      });
+  };
+
+  const handleModalClick = (data: {
+    first_name: string;
+    id: number;
+    is_deleted: boolean;
+  }) => {
+    setRow(data);
+    setIsOpen(!isOpen);
+  };
+
   useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = () => {
     getEmployers(Number(params.id))
       .then((response) => {
         // Data retrieval and processing
         if (response.data.result) setData(response.data.result);
       })
       .catch(() => {});
-  }, []);
+  };
 
   const handleModal = () => {
     setIsOpen(!isOpen);
@@ -105,9 +151,12 @@ const Empleados = () => {
         </div>
         <ModalAlert
           isOpen={isOpen}
+          action={changeStatus}
           setIsOpen={handleModal}
-          title="Desactivar empleado"
-          description="¿Esta seguro que desea desactivar este usuario?"
+          title={`${row.is_deleted ? "Activar" : "Desactivar"}`}
+          description={`¿Esta seguro que desea ${
+            row.is_deleted ? "activar" : "desactivar"
+          } el empleado: ${row.first_name}?`}
         />
         <FloatButton to="agregar" />
       </div>

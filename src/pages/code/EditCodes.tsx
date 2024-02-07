@@ -5,13 +5,13 @@ import { showError, showSuccess } from "../../utils/functions";
 
 import { useNavigate, useParams } from "react-router-dom";
 import { editCode, getCode } from "../../services/code.services";
-import { Code } from "../../models/code";
+import { CODE } from "../../models/code";
 
 const EditCodes = () => {
   const navigate = useNavigate();
   const params = useParams();
 
-  const [formData, setFormData] = useState(Code);
+  const [formData, setFormData] = useState(CODE);
 
   const handleAddCode = () => {
     editCode(formData, Number(params.id))

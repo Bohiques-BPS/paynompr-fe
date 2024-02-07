@@ -4,10 +4,10 @@ import { editAccountants, getAccountant } from "../../utils/requestOptions";
 
 import { showError, showSuccess } from "../../utils/functions";
 import { useNavigate, useParams } from "react-router-dom";
-import { Accountants } from "../../models/accountants";
+import { ACCOUNTANTS } from "../../models/accountants";
 
 const EditAccountants = () => {
-  const [formData, setFormData] = useState(Accountants);
+  const [formData, setFormData] = useState(ACCOUNTANTS);
   const navigate = useNavigate();
   const params = useParams();
 

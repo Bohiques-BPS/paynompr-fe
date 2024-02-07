@@ -44,6 +44,10 @@ export function editEmployers(data: object, id_employer: number) {
   return Axios.request(setOptions("employers/" + id_employer, "PUT", data)); // Using a post request, specifying the user
 }
 
+export function changeStatusEmployer(id: number) {
+  return Axios.request(setOptions("employers/" + id, "DELETE"));
+}
+
 export function getEmployer(id_company: number, id_employer: number) {
   return Axios.request(
     setOptions("employers/" + id_company + "/" + id_employer, "GET")

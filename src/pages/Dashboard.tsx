@@ -1,16 +1,28 @@
 import QuickActions from "../components/dashboard/QuickActions";
-import companie from "../assets/imgs/Out/icon.png";
 import CardText from "../components/dashboard/CardText";
 
 import { fetchName } from "../services/auth.services";
-
-const item = [
-  { img: companie, text: "Bohiques Business and Personal" },
-  { img: companie, text: "Ubiquo Tecnologías" },
-  { img: companie, text: "Agregar Empresa" },
-];
+import { getCompanies } from "../utils/requestOptions";
+import { useEffect, useState } from "react";
+import { COMPANY_DATA } from "../models/company";
 
 const Dashboard = () => {
+  const [data, setData] = useState([COMPANY_DATA]);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = () => {
+    getCompanies()
+      .then((response) => {
+        // Data retrieval and processing
+        setData(response.data.result);
+      })
+      .catch(() => {
+        // If the query fails, an error will be displayed on the terminal.
+      });
+  };
   //getTodo();
   return (
     <div className="flex md:flex-row flex-col    gap-4  ">
@@ -25,7 +37,7 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="md:w-1/2 w-full   ">
-        <CardText items={item} />
+        <CardText items={data} />
       </div>
     </div>
   );

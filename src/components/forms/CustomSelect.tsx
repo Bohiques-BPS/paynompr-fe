@@ -3,16 +3,18 @@ type Props = {
   placeholder?: string;
   type: string;
   inputCss?: string;
+  options: any;
   name?: string;
   disabled?: boolean;
   class?: string;
   value?: any;
-  onChange?: (e: React.FormEvent<HTMLSelectElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 } & typeof defaultProps;
 
 const defaultProps = {
   inputCss: "text-sm",
   class: "",
+  options: [{ id: 0, name: "" }],
   disabled: false,
 };
 
@@ -31,9 +33,11 @@ const CustomSelect = (props: Props) => {
         value={props.value}
         disabled={props.disabled}
       >
-        <option value={1}>Select option</option>
-        <option value={2}>Option 1</option>
-        <option value={3}>Option 2</option>
+        {props.options.map((item: any, i: number) => (
+          <option key={i} value={item.id}>
+            {item.name}
+          </option>
+        ))}
       </select>
     </label>
   );

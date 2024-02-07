@@ -1,4 +1,4 @@
-export const Accountants = {
+export const ACCOUNTANTS = {
   first_last_name: "Arismendiz",
   middle_name: "Manuel",
   second_last_name: "Paez",

@@ -1,4 +1,4 @@
-export const Code = {
+export const CODE = {
   amount: 0,
   code: "",
   owner: "",
