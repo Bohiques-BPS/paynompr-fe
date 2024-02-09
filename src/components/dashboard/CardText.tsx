@@ -11,7 +11,7 @@ const CardText = (props: Props) => {
       <p className="text-xl text-[#333160] font-medium">
         Compañías visitadas desde la ultima sesión
       </p>
-      {props.items.slice(0, 3).map((item, i) => (
+      {props.items.map((item, i) => (
         <div
           key={i}
           className="mt-4 flex  flex-row content-center items-center"
