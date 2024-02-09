@@ -17,7 +17,7 @@ const Dashboard = () => {
     getCompanies()
       .then((response) => {
         // Data retrieval and processing
-        setData(response.data.result);
+        setData(response.data);
       })
       .catch(() => {
         // If the query fails, an error will be displayed on the terminal.
