@@ -6,6 +6,7 @@ import { showError, showSuccess } from "../../utils/functions";
 import { editEmployers, getEmployer } from "../../utils/requestOptions";
 import { EMPLOYER_DATA } from "../../models/employeer";
 import EmployeerForm from "../../components/forms/EmployeerForm";
+import { TYPE_EMPLOYER } from "../../utils/consts";
 
 const EditEmployee = () => {
   const navigate = useNavigate();
@@ -64,6 +65,7 @@ const EditEmployee = () => {
         <CustomSelect
           class="w-2/6 mx-auto mt-4 inline-block "
           label=""
+          options={TYPE_EMPLOYER}
           name="employee_type"
           onChange={handleSelectChange}
           value={formData.employee_type}

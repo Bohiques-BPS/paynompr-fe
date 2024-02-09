@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import {
   faBan,
+  faCaretLeft,
   faCircleCheck,
   faEdit,
 } from "@fortawesome/free-solid-svg-icons";
@@ -14,7 +15,7 @@ import FloatButton from "../../components/dashboard/FloatButton";
 import CustomInputs from "../../components/forms/CustomInputs";
 import { changeStatusEmployer, getEmployers } from "../../utils/requestOptions";
 
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { showError, showSuccess } from "../../utils/functions";
 
 const Empleados = () => {
@@ -24,6 +25,7 @@ const Empleados = () => {
 
   const [data, setData] = useState([]);
   const params = useParams();
+  const navigate = useNavigate();
 
   const columns: any = [
     {
@@ -120,14 +122,32 @@ const Empleados = () => {
     setIsOpen(!isOpen);
   };
 
+  const backButton = () => {
+    navigate(-1);
+  };
+
   const handleSearch = (e: React.FormEvent<HTMLInputElement>) => {
     setSearch(e.currentTarget.value);
   };
 
   return (
     <>
-      <div className="text-[#EED102] bg-[#333160] p-6 rounded-lg text-center">
-        <h3>Empleados</h3>
+      <div className="text-[#EED102] bg-[#333160] p-6 rounded-lg text-center flex">
+        <button
+          onClick={backButton}
+          className="flex-2 flex items-center align-middle text-white"
+        >
+          {" "}
+          <FontAwesomeIcon
+            icon={faCaretLeft}
+            className="text-2xl text-white pe-2"
+          />{" "}
+          Volver
+        </button>
+
+        <button className="flex-1">
+          <h3>Empleados</h3>
+        </button>
       </div>
       <div className="flex md:flex-row flex-col    gap-4  ">
         <div className="md:w-full mt-4 w-full flex flex-col   gap-2  ">

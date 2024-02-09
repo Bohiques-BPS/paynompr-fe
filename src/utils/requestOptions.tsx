@@ -36,6 +36,10 @@ export function getEmployers(id_company: number) {
   return Axios.request(setOptions("employers/" + id_company, "GET")); // Using a post request, specifying the user
 }
 
+export function getAllEmployers() {
+  return Axios.request(setOptions("employers/", "GET")); // Using a post request, specifying the user
+}
+
 export function setEmployers(data: object, id_company: number) {
   return Axios.request(setOptions("employers/" + id_company, "POST", data)); // Using a post request, specifying the user
 }
@@ -94,4 +98,8 @@ export function setAccountants(data: object) {
 
 export function editAccountants(data: object, id: number) {
   return Axios.request(setOptions("accountant/" + id, "PUT", data)); // Using a post request, specifying the user
+}
+
+export function getTime(id_employer: number) {
+  return Axios.request(setOptions("time/" + id_employer, "GET")); // Using a post request, specifying the user
 }

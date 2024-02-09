@@ -90,7 +90,7 @@ const CompanyForm = (props: Props) => {
           type="text"
         />
 
-        <label className=" mb-2  font-medium text-gray-700 w-1/2 mx-auto ps-1  inline-block">
+        <label className=" mb-2  font-medium text-gray-700 w-1/2 mx-auto pe-1  inline-block">
           <span>Numero de teléfono</span>
           <PatternFormat
             className="bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 "
@@ -129,16 +129,29 @@ const CompanyForm = (props: Props) => {
             format="##-#######"
           />
         </label>
-        <CustomInputs
-          name="driver"
-          onChange={props.onChange}
-          value={props.formData.driver}
-          class="w-1/2 mx-auto pe-1  inline-block "
-          label="Chófer"
-          placeholder="Puerto Rico"
-          type="text"
-        />
-        <label className="block mb-2  font-medium text-gray-700 w-1/2 mx-auto ps-1  inline-block">
+
+        <label className=" mb-2  font-medium text-gray-700 w-1/3 mx-auto ps-1  inline-block">
+          <span>% DE Desempleo</span>
+          <PatternFormat
+            name="driver"
+            onChange={props.onChange}
+            value={props.formData.driver}
+            className="bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 "
+            format="##%"
+          />
+        </label>
+        <label className=" mb-2  font-medium text-gray-700 w-1/3 mx-auto ps-1  inline-block">
+          <span>% DE Incapacitados</span>
+          <PatternFormat
+            name="disabled_percent"
+            onChange={props.onChange}
+            value={props.formData.disabled_percent}
+            className="bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 "
+            format="##%"
+          />
+        </label>
+
+        <label className="block mb-2  font-medium text-gray-700 w-1/3 mx-auto ps-1  inline-block">
           <span>Registro Comerciante</span>
           <PatternFormat
             className="bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 "
@@ -154,8 +167,15 @@ const CompanyForm = (props: Props) => {
           name="contact"
           onChange={props.onChange}
           value={props.formData.contact}
-          class="w-full mx-auto  inline-block "
+          class="w-1/2 mx-auto pe-1  inline-block "
           label="Persona de Contacto"
+          placeholder=""
+          type="text"
+        />
+        <CustomInputs
+          name="contact"
+          class="w-1/2 mx-auto ps-1  inline-block "
+          label="Teléfono Contacto"
           placeholder=""
           type="text"
         />
@@ -178,7 +198,7 @@ const CompanyForm = (props: Props) => {
           type="text"
         />
         <CustomInputs
-          class="w-full mx-auto pe-1  inline-block "
+          class="w-1/2 mx-auto pe-1  inline-block "
           label="COML (mm/dd/yyyy)"
           onChange={props.onChange}
           value={props.formData.coml}
@@ -190,7 +210,7 @@ const CompanyForm = (props: Props) => {
           name="jurisdiction"
           onChange={props.onChange}
           value={props.formData.jurisdiction}
-          class="w-1/3 mx-auto pe-1  inline-block "
+          class="w-1/2 mx-auto ps-1  inline-block "
           options={JURISDICTION}
           label="Jurisdicción"
           placeholder=""
@@ -201,10 +221,11 @@ const CompanyForm = (props: Props) => {
           name="driver_code"
           onChange={props.onChange}
           value={props.formData.driver_code}
-          label="Choferil"
+          label="Aportación Patronal"
           placeholder=""
           type="text"
         />
+
         <CustomInputs
           name="driver_code"
           onChange={props.onChange}
@@ -212,6 +233,13 @@ const CompanyForm = (props: Props) => {
           class="w-1/3 mx-auto ps-1  inline-block "
           label="Rate Choferil"
           placeholder="00820"
+          type="text"
+        />
+        <CustomInputs
+          class="w-1/3 mx-auto ps-1 pe-1  inline-block "
+          name="driver_code"
+          label="Aportación Empleado"
+          placeholder=""
           type="text"
         />
         <CustomSelect
@@ -224,15 +252,7 @@ const CompanyForm = (props: Props) => {
           placeholder=""
           type="text"
         />
-        <CustomInputs
-          name="disabled_percent"
-          onChange={props.onChange}
-          value={props.formData.disabled_percent}
-          class="w-1/2 mx-auto ps-1  inline-block "
-          label="Porcentaje de incapacitados"
-          placeholder="00820"
-          type="text"
-        />
+
         <CustomInputs
           name="industrial_code"
           onChange={props.onChange}

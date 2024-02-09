@@ -1,7 +1,22 @@
+import { useEffect } from "react";
 import CustomInputs from "../../components/forms/CustomInputs";
 import CustomSelect from "../../components/forms/CustomSelect";
+import { getTime } from "../../utils/requestOptions";
+import { useParams } from "react-router-dom";
 
 const Cargar = () => {
+  const params = useParams();
+
+  useEffect(() => {
+    getTime(Number(params.id_employer))
+      .then((response) => {
+        // Data retrieval and processing
+        console.log(response);
+      })
+      .catch(() => {
+        // If the query fails, an error will be displayed on the terminal.
+      });
+  }, []);
   return (
     <>
       <div className="text-[#EED102] bg-[#333160] p-6 rounded-lg text-center">
@@ -39,35 +54,30 @@ const Cargar = () => {
             <CustomInputs
               class="w-1/3 mx-auto pe-1  inline-block "
               label="Horas regulares"
-              disabled={false}
               placeholder="Dirección"
               type="text"
             />
             <CustomInputs
               class="w-1/3 mx-auto pe-1  inline-block "
-              label="EHoras de sobre tiempo (overtime)"
-              disabled={false}
+              label="Horas de sobre tiempo (overtime)"
               placeholder="Dirección"
               type="text"
             />
             <CustomInputs
               class="w-1/3 mx-auto pe-1  inline-block "
               label="Horas de almuerzo (meal time)"
-              disabled={false}
               placeholder="Dirección"
               type="text"
             />
             <CustomInputs
               class="w-1/2 mx-auto pe-1  inline-block "
               label="Horas de enfermedad"
-              disabled={false}
               placeholder="Dirección"
               type="text"
             />
             <CustomInputs
               class="w-1/2 mx-auto pe-1  inline-block "
               label="Horas de vacaciones"
-              disabled={false}
               placeholder="Dirección"
               type="text"
             />

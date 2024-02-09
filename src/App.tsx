@@ -49,7 +49,10 @@ const App = () => {
             <Route path="contadores/editar/:id" element={<EditAccountants />} />
 
             <Route path="procesos" element={<Process />} />
-            <Route path="procesos/:id/cargar" element={<Cargar />} />
+            <Route
+              path="procesos/:id_company/:id_employer/cargar"
+              element={<Cargar />}
+            />
 
             <Route path="empresas/:id/empleados" element={<Empleados />} />
             <Route

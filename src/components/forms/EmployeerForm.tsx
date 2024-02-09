@@ -2,7 +2,13 @@ import { Dispatch, SetStateAction } from "react";
 import CustomInputs from "../../components/forms/CustomInputs";
 import CustomSelect from "../../components/forms/CustomSelect";
 import { EMPLOYEER } from "../../models/employeer";
-import { COUNTRY, GENDER, NO_OPTION, STATUS_CIVIL } from "../../utils/consts";
+import {
+  COUNTRY,
+  GENDER,
+  STATUS_CIVIL,
+  EXENCIÓN_PERSONAL,
+  PERIOD_PAYROLL,
+} from "../../utils/consts";
 
 type Props = {
   formData: EMPLOYEER;
@@ -35,9 +41,9 @@ const EmployeerForm = (props: Props) => {
         <CustomInputs
           class="w-1/2 mx-auto pe-1  inline-block "
           label="Nombre"
-          name="name"
+          name="first_name"
           onChange={props.onChange}
-          value={props.formData.name}
+          value={props.formData.first_name}
           placeholder=""
           type="text"
         />
@@ -161,7 +167,7 @@ const EmployeerForm = (props: Props) => {
           type="text"
         />
         <CustomSelect
-          options={NO_OPTION}
+          options={EXENCIÓN_PERSONAL}
           inputCss="xl:inline-block xl:w-1/2 mt-0"
           class="xl:w-1/2 w-1/2 mx-auto pe-1  inline-block xl:inline-flex  justify-between items-center"
           label="Exec. personal"
@@ -172,7 +178,7 @@ const EmployeerForm = (props: Props) => {
           type="number"
         />
         <CustomSelect
-          options={NO_OPTION}
+          options={PERIOD_PAYROLL}
           inputCss="xl:inline-block xl:w-1/2 mt-0"
           class="xl:w-1/2 w-1/2 mx-auto ps-1  inline-block xl:inline-flex  justify-between items-center"
           label="Período de norma"
@@ -285,20 +291,20 @@ const EmployeerForm = (props: Props) => {
           type="text"
         />
         <CustomInputs
-          inputCss="xl:inline-block xl:w-1/3  "
-          class="xl:w-2/5 w-1/2 mx-auto pe-1  inline-block xl:inline-flex justify-between items-center  "
+          class="xl:w-1/4 w-1/2 mx-auto pe-1  inline-block   "
           label="El empleado tiene"
           name="vacation_hours"
           onChange={props.onChange}
+          disabled={true}
           value={props.formData.vacation_hours}
           placeholder=""
           type="number"
         />
         <CustomInputs
-          inputCss="xl:inline-block xl:w-1/3 mt-0"
-          class="xl:w-3/5 w-1/2 mx-auto ps-2  inline-block xl:inline-flex  justify-between items-center "
-          label="Horas vacaciones acumuladas"
+          class="xl:w-9/12 w-1/2 mx-auto ps-2  inline-block  "
+          label="Horas de vacaciones acumuladas"
           name="vacation_date"
+          disabled={true}
           onChange={props.onChange}
           value={props.formData.vacation_date}
           placeholder=""
@@ -306,16 +312,16 @@ const EmployeerForm = (props: Props) => {
         />
 
         <CustomInputs
-          inputCss="xl:inline-block xl:w-1/3  mt-0"
-          class="xl:w-2/5 w-1/2 mx-auto   inline-block xl:inline-flex  justify-between items-center "
+          class="xl:w-1/4 w-1/2 mx-auto   inline-block  "
           label="El empleado tiene"
           placeholder=""
+          disabled={true}
           type="number"
         />
         <CustomInputs
-          inputCss="xl:inline-block xl:w-1/3 mt-0"
-          class="xl:w-3/5 w-1/2 mx-auto   ps-2 inline-block xl:inline-flex  justify-between items-center "
-          label="Horas vacaciones acumuladas"
+          disabled={true}
+          class="xl:w-9/12 w-1/2 mx-auto   ps-2 inline-block  "
+          label="Horas de vacaciones acumuladas por Enfermedad"
           placeholder=""
           type="date"
         />
@@ -360,27 +366,6 @@ const EmployeerForm = (props: Props) => {
           value={props.formData.veteran}
           placeholder=""
           type="number"
-        />
-
-        <CustomSelect
-          class="w-1/2 mx-auto pe-1  inline-block "
-          label="Tipo de nómina"
-          name="type_payroll"
-          options={NO_OPTION}
-          onChange={props.onChange}
-          value={props.formData.type_payroll}
-          placeholder=""
-          type="text"
-        />
-        <CustomSelect
-          class="w-1/2 mx-auto ps-1  inline-block "
-          label="Tipo de horario"
-          name="schedule_type"
-          options={NO_OPTION}
-          onChange={props.onChange}
-          value={props.formData.schedule_type}
-          placeholder="San Juan"
-          type="text"
         />
       </div>
     </>

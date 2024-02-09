@@ -7,6 +7,7 @@ import { setEmployers } from "../../utils/requestOptions";
 
 import { EMPLOYER_DATA } from "../../models/employeer";
 import EmployeerForm from "../../components/forms/EmployeerForm";
+import { TYPE_EMPLOYER } from "../../utils/consts";
 
 const AddEmployee = () => {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ const AddEmployee = () => {
         // Data retrieval and processing
 
         showSuccess("Creado exitosamente.");
-        navigate("../empresas");
+        navigate(-1);
       })
       .catch((error) => {
         // If the query fails, an error will be displayed on the terminal.
@@ -55,6 +56,7 @@ const AddEmployee = () => {
           class="w-2/6 mx-auto mt-4 inline-block "
           label=""
           name="employee_type"
+          options={TYPE_EMPLOYER}
           onChange={handleSelectChange}
           value={formData.employee_type}
           disabled={false}

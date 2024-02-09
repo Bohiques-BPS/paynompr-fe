@@ -26,16 +26,18 @@ const CustomSelect = (props: Props) => {
       <span> {props.label}</span>
 
       <select
-        className={` bg-gray-50 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 ${props.inputCss} `}
+        className={` bg-gray-50 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-3 ${props.inputCss} `}
         tabIndex={0}
         name={props.name}
         onChange={props.onChange}
         value={props.value}
         disabled={props.disabled}
       >
+        <option value={0}>Seleccione una opción</option>
         {props.options.map((item: any, i: number) => (
           <option key={i} value={item.id}>
             {item.name}
+            {item.first_name} {item.last_name}
           </option>
         ))}
       </select>
