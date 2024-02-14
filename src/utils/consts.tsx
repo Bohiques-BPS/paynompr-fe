@@ -53,7 +53,309 @@ export const PAYER = [
   },
 ];
 
-export const COUNTRY = [];
+export const COUNTRY = [
+  {
+    id: 1,
+    name: "Adjuntas",
+  },
+  {
+    id: 2,
+    name: "Aguada",
+  },
+  {
+    id: 3,
+    name: "Aguadilla",
+  },
+  {
+    id: 4,
+    name: "Aguas Buenas",
+  },
+  {
+    id: 5,
+    name: "Añasco",
+  },
+  {
+    id: 6,
+    name: "Arecibo",
+  },
+  {
+    id: 7,
+    name: "Arroyo",
+  },
+  {
+    id: 8,
+    name: "Barceloneta",
+  },
+  {
+    id: 9,
+    name: "Barranquitas",
+  },
+  {
+    id: 10,
+    name: "Bayamón",
+  },
+  {
+    id: 11,
+    name: "Cabo Rojo",
+  },
+  {
+    id: 12,
+    name: "Caguas",
+  },
+  {
+    id: 13,
+    name: "Camuy",
+  },
+
+  {
+    id: 14,
+    name: "Canóvanas",
+  },
+  {
+    id: 15,
+    name: "Carolina",
+  },
+  {
+    id: 16,
+    name: "Cataño",
+  },
+  {
+    id: 17,
+    name: "Cayey",
+  },
+  {
+    id: 18,
+    name: "Ceiba",
+  },
+  {
+    id: 19,
+    name: "Ciales",
+  },
+  {
+    id: 20,
+    name: "Cidra",
+  },
+  {
+    id: 21,
+    name: "Coamo",
+  },
+  {
+    id: 22,
+    name: "Comerío",
+  },
+  {
+    id: 23,
+    name: "Corozal",
+  },
+  {
+    id: 24,
+    name: "Culebra",
+  },
+  {
+    id: 25,
+    name: "Dorado",
+  },
+  {
+    id: 26,
+    name: "Fajardo",
+  },
+  {
+    id: 27,
+    name: "Florida",
+  },
+  {
+    id: 28,
+    name: "Guánica",
+  },
+  {
+    id: 29,
+    name: "Guayama",
+  },
+  {
+    id: 30,
+    name: "Guayanilla",
+  },
+  {
+    id: 31,
+    name: "Guaynabo",
+  },
+  {
+    id: 32,
+    name: "Gurabo",
+  },
+  {
+    id: 33,
+    name: "Hatillo",
+  },
+  {
+    id: 34,
+    name: "Hormigueros",
+  },
+  {
+    id: 35,
+    name: "Humacao",
+  },
+  {
+    id: 36,
+    name: "Jayuya",
+  },
+  {
+    id: 37,
+    name: "Juana Díaz",
+  },
+  {
+    id: 38,
+    name: "Juncos",
+  },
+  {
+    id: 39,
+    name: "Lajas",
+  },
+  {
+    id: 40,
+    name: "Lares",
+  },
+  {
+    id: 41,
+    name: "Las Marías",
+  },
+  {
+    id: 42,
+    name: "Las Piedras",
+  },
+  {
+    id: 43,
+    name: "Loíza",
+  },
+  {
+    id: 44,
+    name: "Luquillo",
+  },
+  {
+    id: 45,
+    name: "Manatí",
+  },
+  {
+    id: 46,
+    name: "Maricao",
+  },
+  {
+    id: 47,
+    name: "Maunabo",
+  },
+  {
+    id: 48,
+    name: "Mayagüez",
+  },
+  {
+    id: 49,
+    name: "Moca",
+  },
+  {
+    id: 50,
+    name: "Morovis",
+  },
+  {
+    id: 51,
+    name: "Naguabo",
+  },
+  {
+    id: 52,
+    name: "Naranjito",
+  },
+  {
+    id: 53,
+    name: "Orocovis",
+  },
+  {
+    id: 54,
+    name: "Patillas",
+  },
+  {
+    id: 55,
+    name: "Peñuelas",
+  },
+  {
+    id: 56,
+    name: "Ponce",
+  },
+  {
+    id: 57,
+    name: "Quebradillas",
+  },
+  {
+    id: 58,
+    name: "Rincón",
+  },
+  {
+    id: 59,
+    name: "Río Grande",
+  },
+  {
+    id: 60,
+    name: "Sabana Grande",
+  },
+  {
+    id: 61,
+    name: "Salinas",
+  },
+  {
+    id: 62,
+    name: "San Germán",
+  },
+  {
+    id: 63,
+    name: "San Juan",
+  },
+  {
+    id: 64,
+    name: "San Lorenzo",
+  },
+  {
+    id: 65,
+    name: "Santa Isabel",
+  },
+  {
+    id: 66,
+    name: "Toa Alta",
+  },
+  {
+    id: 67,
+    name: "Toa Baja",
+  },
+  {
+    id: 68,
+    name: "Trujillo Alto",
+  },
+  {
+    id: 69,
+    name: "Utuado",
+  },
+  {
+    id: 70,
+    name: "Vega Alta",
+  },
+  {
+    id: 71,
+    name: "Vega Baja",
+  },
+  {
+    id: 72,
+    name: "Vieques",
+  },
+  {
+    id: 73,
+    name: "Villalba",
+  },
+  {
+    id: 74,
+    name: "Yabucoa",
+  },
+  {
+    id: 75,
+    name: "Yauco",
+  },
+];
 
 export const GENDER = [
   {

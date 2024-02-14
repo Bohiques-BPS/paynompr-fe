@@ -15,13 +15,19 @@ const AddEmployee = () => {
 
   const [formData, setFormData] = useState(EMPLOYER_DATA);
 
-  const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
-    const value = e.currentTarget.value;
-
+  const handleInputChange = (e: React.FormEvent<any>) => {
     setFormData({
       ...formData,
-      [e.currentTarget.name]: value,
+      [e.currentTarget.name]: getValue(e),
     });
+  };
+
+  const getValue = (e: React.FormEvent<any>) => {
+    if (e.currentTarget.type === "number")
+      return parseInt(e.currentTarget.value);
+    if (e.currentTarget.type === "checkbox") return e.currentTarget.checked;
+
+    return e.currentTarget.value;
   };
   const handleSelectChange = (e: React.FormEvent<HTMLSelectElement>) => {
     const value = e.currentTarget.value;

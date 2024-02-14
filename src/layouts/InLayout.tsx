@@ -7,6 +7,8 @@ import { useEffect } from "react";
 import { getAccountants, getCurrentUser } from "../utils/requestOptions";
 import { removeToken } from "../services/auth.services";
 import { blockPage } from "../utils/permision";
+import { faCaretLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const InLayout = () => {
   const navigate = useNavigate();
@@ -53,6 +55,10 @@ const InLayout = () => {
     else setSidebarOpen("true");
   };
 
+  const backButton = () => {
+    navigate(-1);
+  };
+
   return (
     <div className="dark:bg-boxdark-2 dark:text-bodydark">
       {/* <!-- ===== Page Wrapper Start ===== --> */}
@@ -82,6 +88,17 @@ const InLayout = () => {
               } `}
             >
               <div className="container  mx-auto p-4  md:p-10 min-h-[calc(100vh-14vh)] ">
+                <button
+                  onClick={backButton}
+                  className="flex-2 flex items-center align-middle text-[#333160] mb-4"
+                >
+                  {" "}
+                  <FontAwesomeIcon
+                    icon={faCaretLeft}
+                    className="text-2xl text-[#333160] pe-2"
+                  />{" "}
+                  Volver
+                </button>
                 <Outlet />
               </div>
               <Footer sidebarOpen={sidebarOpen} />

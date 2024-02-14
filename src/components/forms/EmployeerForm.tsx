@@ -9,6 +9,8 @@ import {
   EXENCIÓN_PERSONAL,
   PERIOD_PAYROLL,
 } from "../../utils/consts";
+import { PatternFormat } from "react-number-format";
+import CustomCheckBox from "./CustomCheckBox";
 
 type Props = {
   formData: EMPLOYEER;
@@ -17,6 +19,18 @@ type Props = {
 };
 
 const EmployeerForm = (props: Props) => {
+  const handleRegularTime = (e: React.ChangeEvent<any>) => {
+    const overtime = e.currentTarget.value * 1.5;
+    const mealtime = e.currentTarget.value * 2;
+    const value = e.currentTarget.value;
+
+    props.setFormData({
+      ...props.formData,
+      [e.currentTarget.name]: value,
+      ["mealtime"]: Number(mealtime.toFixed(2)),
+      ["overtime"]: Number(overtime.toFixed(2)),
+    });
+  };
   return (
     <>
       <div className="xl:w-1/2 w-full ">
@@ -258,7 +272,7 @@ const EmployeerForm = (props: Props) => {
           class="xl:w-1/5 w-1/3 mx-auto pe-1  inline-block "
           label="Hora regular"
           name="regular_time"
-          onChange={props.onChange}
+          onChange={handleRegularTime}
           value={props.formData.regular_time}
           placeholder=""
           type="text"
@@ -266,9 +280,9 @@ const EmployeerForm = (props: Props) => {
         <CustomInputs
           class="xl:w-1/5 w-1/3 mx-auto pe-1  inline-block "
           label="Sobretiempo"
-          name="about_time"
+          name="overtime"
           onChange={props.onChange}
-          value={props.formData.about_time}
+          value={props.formData.overtime}
           placeholder=""
           type="text"
         />
@@ -281,15 +295,17 @@ const EmployeerForm = (props: Props) => {
           placeholder=""
           type="text"
         />
-        <CustomInputs
-          class="xl:w-1/5 w-1/2 mx-auto pe-1  inline-block "
-          label="% de pago"
-          name="payment_percentage"
-          onChange={props.onChange}
-          value={props.formData.payment_percentage}
-          placeholder=""
-          type="text"
-        />
+        <label className=" mb-2  font-medium text-gray-700 w-1/2 xl:w-1/5 mx-auto ps-1  inline-block">
+          <span>% de pago</span>
+          <PatternFormat
+            name="payment_percentage"
+            onChange={props.onChange}
+            value={props.formData.payment_percentage}
+            className="bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 "
+            format="##%"
+          />
+        </label>
+
         <CustomInputs
           class="xl:w-1/4 w-1/2 mx-auto pe-1  inline-block   "
           label="El empleado tiene"
@@ -329,14 +345,14 @@ const EmployeerForm = (props: Props) => {
         <CustomInputs
           inputCss="xl:inline-block xl:w-1/3  mt-0"
           class="xl:w-1/2 w-1/2 mx-auto   inline-block xl:inline-flex  justify-between items-center "
-          label="Numero de dependientes"
+          label="Num de dependientes"
           placeholder=""
           name="number_dependents"
           onChange={props.onChange}
           value={props.formData.number_dependents}
           type="number"
         />
-        <CustomInputs
+        <CustomCheckBox
           inputCss="xl:inline-block xl:w-1/3 mt-0"
           class="xl:w-1/2 w-1/2 mx-auto ps-2  inline-block xl:inline-flex  justify-between items-center"
           label="Custodia compartida"
@@ -344,20 +360,20 @@ const EmployeerForm = (props: Props) => {
           onChange={props.onChange}
           value={props.formData.shared_custody}
           placeholder=""
-          type="number"
+          type="checkbox"
         />
 
         <CustomInputs
           inputCss="xl:inline-block xl:w-1/3  mt-0"
           class="xl:w-1/2 w-1/2 mx-auto   inline-block xl:inline-flex   justify-between items-center "
-          label="Numero de Concesiones"
+          label="Num de Concesiones"
           name="number_concessions"
           onChange={props.onChange}
           value={props.formData.number_concessions}
           placeholder=""
           type="number"
         />
-        <CustomInputs
+        <CustomCheckBox
           inputCss="xl:inline-block xl:w-1/3 mt-0"
           class="xl:w-1/2 w-1/2 mx-auto  ps-2 inline-block xl:inline-flex  justify-between items-center"
           label="Veterano"
@@ -365,7 +381,7 @@ const EmployeerForm = (props: Props) => {
           onChange={props.onChange}
           value={props.formData.veteran}
           placeholder=""
-          type="number"
+          type="checkbox"
         />
       </div>
     </>

@@ -122,10 +122,6 @@ const Empleados = () => {
     setIsOpen(!isOpen);
   };
 
-  const backButton = () => {
-    navigate(-1);
-  };
-
   const handleSearch = (e: React.FormEvent<HTMLInputElement>) => {
     setSearch(e.currentTarget.value);
   };
@@ -133,18 +129,6 @@ const Empleados = () => {
   return (
     <>
       <div className="text-[#EED102] bg-[#333160] p-6 rounded-lg text-center flex">
-        <button
-          onClick={backButton}
-          className="flex-2 flex items-center align-middle text-white"
-        >
-          {" "}
-          <FontAwesomeIcon
-            icon={faCaretLeft}
-            className="text-2xl text-white pe-2"
-          />{" "}
-          Volver
-        </button>
-
         <button className="flex-1">
           <h3>Empleados</h3>
         </button>

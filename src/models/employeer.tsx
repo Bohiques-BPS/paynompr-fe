@@ -14,7 +14,7 @@ export const EMPLOYER_DATA = {
   clipboard: "23",
   exec_personal: 1,
   choferil: "23",
-  regular_time: "23",
+  regular_time: 0,
   period_norma: "1",
   licence: "23",
   category_cfse: "23",
@@ -22,14 +22,14 @@ export const EMPLOYER_DATA = {
   birthday: null,
   date_admission: null,
   date_egress: null,
-  about_time: "23",
-  mealtime: "23",
+  overtime: 0,
+  mealtime: 0,
   vacation_hours: "23",
   vacation_date: null,
   number_dependents: "23",
-  shared_custody: "23",
+  shared_custody: false,
   number_concessions: "23",
-  veteran: "23",
+  veteran: false,
   type_payroll: 1,
   schedule_type: 1,
   payment_percentage: "23",
@@ -56,7 +56,7 @@ export interface EMPLOYEER {
   clipboard: string;
   exec_personal: number;
   choferil: string;
-  regular_time: string;
+  regular_time: number;
   period_norma: string;
   licence: string;
   category_cfse: string;
@@ -64,14 +64,14 @@ export interface EMPLOYEER {
   birthday: any;
   date_admission: any;
   date_egress: any;
-  about_time: string;
-  mealtime: string;
+  overtime: number;
+  mealtime: number;
   vacation_hours: string;
   vacation_date: any;
   number_dependents: string;
-  shared_custody: string;
+  shared_custody: boolean;
   number_concessions: string;
-  veteran: string;
+  veteran: boolean;
   type_payroll: number;
   schedule_type: number;
   payment_percentage: string;
