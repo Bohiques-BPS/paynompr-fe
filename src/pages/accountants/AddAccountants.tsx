@@ -5,12 +5,14 @@ import { setAccountants } from "../../utils/requestOptions";
 import { showError, showSuccess } from "../../utils/functions";
 import { useNavigate } from "react-router-dom";
 import { ACCOUNTANTS } from "../../models/accountants";
+import CustomSelect from "../../components/forms/CustomSelect";
+import { COUNTRY } from "../../utils/consts";
 
 const AddCounter = () => {
   const [formData, setFormData] = useState(ACCOUNTANTS);
   const navigate = useNavigate();
 
-  const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.FormEvent<any>) => {
     setFormData({
       ...formData,
       [e.currentTarget.name]:
@@ -108,16 +110,17 @@ const AddCounter = () => {
               name="address"
               onChange={handleInputChange}
               value={formData.address}
-              placeholder="Dirección"
+              placeholder=""
               type="text"
             />
-            <CustomInputs
-              class="w-1/3 mx-auto pe-1  inline-block "
+            <CustomSelect
+              class="w-1/3 mx-auto  inline-block "
               label=""
               name="country"
+              options={COUNTRY}
               onChange={handleInputChange}
               value={formData.country}
-              placeholder="Dirección"
+              placeholder=""
               type="text"
             />
             <CustomInputs
@@ -126,16 +129,16 @@ const AddCounter = () => {
               name="state"
               onChange={handleInputChange}
               value={formData.state}
-              placeholder="San Juan"
+              placeholder=""
               type="text"
             />
             <CustomInputs
-              class="w-1/3 mx-auto pe-1  inline-block "
+              class="w-1/3 mx-auto ps-1  inline-block "
               label=""
               name="zip_code"
               onChange={handleInputChange}
               value={formData.zip_code}
-              placeholder="Dirección"
+              placeholder=""
               type="text"
             />
             <CustomInputs

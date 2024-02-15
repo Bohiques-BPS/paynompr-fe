@@ -5,13 +5,15 @@ import { editAccountants, getAccountant } from "../../utils/requestOptions";
 import { showError, showSuccess } from "../../utils/functions";
 import { useNavigate, useParams } from "react-router-dom";
 import { ACCOUNTANTS } from "../../models/accountants";
+import CustomSelect from "../../components/forms/CustomSelect";
+import { COUNTRY } from "../../utils/consts";
 
 const EditAccountants = () => {
   const [formData, setFormData] = useState(ACCOUNTANTS);
   const navigate = useNavigate();
   const params = useParams();
 
-  const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.FormEvent<any>) => {
     setFormData({
       ...formData,
       [e.currentTarget.name]:
@@ -126,13 +128,14 @@ const EditAccountants = () => {
               placeholder="Dirección"
               type="text"
             />
-            <CustomInputs
-              class="w-1/3 mx-auto pe-1  inline-block "
+            <CustomSelect
+              class="w-1/3 mx-auto  inline-block "
               label=""
               name="country"
+              options={COUNTRY}
               onChange={handleInputChange}
               value={formData.country}
-              placeholder="Dirección"
+              placeholder=""
               type="text"
             />
             <CustomInputs

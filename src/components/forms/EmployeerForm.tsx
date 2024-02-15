@@ -107,15 +107,15 @@ const EmployeerForm = (props: Props) => {
           placeholder=""
           type="text"
         />
-        <CustomInputs
-          class="w-1/2 mx-auto pe-1  inline-block "
-          label="Numero de teléfono fijo"
-          name="phone_number"
-          onChange={props.onChange}
-          value={props.formData.phone_number}
-          placeholder=""
-          type="text"
-        />
+        <label className=" mb-2  font-medium text-gray-700 w-1/2 mx-auto pe-1  inline-block">
+          <span>Numero de teléfono</span>
+          <PatternFormat
+            className="bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 "
+            value={props.formData.phone_number}
+            name="phone_number"
+            format="###-###-####"
+          />
+        </label>
         <CustomInputs
           class="w-1/2 mx-auto ps-1  inline-block "
           label="Numero de teléfono celular"

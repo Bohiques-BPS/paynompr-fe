@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import {
   faBan,
-  faCaretLeft,
   faCircleCheck,
   faEdit,
 } from "@fortawesome/free-solid-svg-icons";
@@ -15,7 +14,7 @@ import FloatButton from "../../components/dashboard/FloatButton";
 import CustomInputs from "../../components/forms/CustomInputs";
 import { changeStatusEmployer, getEmployers } from "../../utils/requestOptions";
 
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { showError, showSuccess } from "../../utils/functions";
 
 const Empleados = () => {
@@ -25,7 +24,6 @@ const Empleados = () => {
 
   const [data, setData] = useState([]);
   const params = useParams();
-  const navigate = useNavigate();
 
   const columns: any = [
     {

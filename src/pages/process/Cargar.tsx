@@ -71,7 +71,7 @@ const Cargar = () => {
           console.log(timesData);
         }
       })
-      .catch((error) => {
+      .catch(() => {
         // If the query fails, an error will be displayed on the terminal.
       });
   };
