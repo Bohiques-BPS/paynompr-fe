@@ -39,7 +39,7 @@ const AddCompany = () => {
   return (
     <>
       <div className="text-[#EED102] bg-[#333160] p-6 rounded-lg text-center">
-        <h3 className="text-3xl">Crear Compañía</h3>
+        <h3 className="text-2xl">Crear Compañía</h3>
 
         <p className="text-white mt-4">
           Ingresa los datos de la compañía que deseas crear. ¡Empecemos por el

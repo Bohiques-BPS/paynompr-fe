@@ -119,7 +119,7 @@ const Accountants = () => {
   return (
     <>
       <div className="text-[#EED102] bg-[#333160] p-6 rounded-lg text-center">
-        <h3>Contadores</h3>
+        <h3 className="text-2xl">Contadores</h3>
       </div>
       <div className="flex md:flex-row flex-col    gap-4  ">
         <div className="md:w-full mt-4 w-full flex flex-col   gap-2  ">

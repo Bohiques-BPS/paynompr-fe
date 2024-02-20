@@ -20,7 +20,7 @@ const RegisterForm = () => {
 
   const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
     const value = e.currentTarget.value;
-    console.log(value);
+
     setFormData({
       ...formData,
       [e.currentTarget.name]: value,

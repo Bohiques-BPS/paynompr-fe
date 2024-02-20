@@ -7,6 +7,7 @@ export const TIME_DATA = {
   meal_time: 0,
   medicare: 0,
   regular_pay: 0,
+  sswitheld: 0,
   vacations_hours: 0,
   sick_hours: 0,
 };
@@ -16,6 +17,7 @@ export interface TIME {
   period: number;
   regular_pay: number;
   medicare: number;
+  sswitheld: number;
   disability: number;
   regular_time: number;
   overtime: number;

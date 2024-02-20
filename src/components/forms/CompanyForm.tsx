@@ -3,7 +3,7 @@ import CustomInputs from "../../components/forms/CustomInputs";
 import CustomSelect from "../../components/forms/CustomSelect";
 import { COMPANY } from "../../models/company";
 import { COUNTRY, JURISDICTION, PAYER } from "../../utils/consts";
-import { PatternFormat } from "react-number-format";
+import { NumericFormat, PatternFormat } from "react-number-format";
 
 type Props = {
   formData: COMPANY;
@@ -95,6 +95,7 @@ const CompanyForm = (props: Props) => {
           <PatternFormat
             className="bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 "
             value={props.formData.phone_number}
+            onChange={props.onChange}
             name="phone_number"
             format="###-###-####"
           />
@@ -105,6 +106,7 @@ const CompanyForm = (props: Props) => {
           <PatternFormat
             className="bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 "
             value={props.formData.fax_number}
+            onChange={props.onChange}
             name="fax_number"
             format="###-###-####"
           />
@@ -132,22 +134,28 @@ const CompanyForm = (props: Props) => {
 
         <label className=" mb-2  font-medium text-gray-700 w-1/3 mx-auto ps-1  inline-block">
           <span>% DE Desempleo</span>
-          <PatternFormat
-            name="driver"
+          <NumericFormat
+            name="unemployment_percentage"
+            allowNegative={false}
+            max={100}
+            maxLength={6}
             onChange={props.onChange}
-            value={props.formData.driver}
+            value={props.formData.unemployment_percentage}
             className="bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 "
-            format="##%"
+            suffix={"%"}
           />
         </label>
         <label className=" mb-2  font-medium text-gray-700 w-1/3 mx-auto ps-1  inline-block">
           <span>% DE Incapacitados</span>
-          <PatternFormat
+          <NumericFormat
             name="disabled_percent"
+            allowNegative={false}
+            max={100}
+            maxLength={6}
             onChange={props.onChange}
             value={props.formData.disabled_percent}
             className="bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 "
-            format="##%"
+            suffix={"%"}
           />
         </label>
 
@@ -172,13 +180,17 @@ const CompanyForm = (props: Props) => {
           placeholder=""
           type="text"
         />
-        <CustomInputs
-          name="contact"
-          class="w-1/2 mx-auto ps-1  inline-block "
-          label="Teléfono Contacto"
-          placeholder=""
-          type="text"
-        />
+
+        <label className=" mb-2  font-medium text-gray-700 w-1/2 mx-auto ps-1  inline-block">
+          <span>Numero de teléfono</span>
+          <PatternFormat
+            className="bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 "
+            value={props.formData.contact_number}
+            onChange={props.onChange}
+            name="contact_number"
+            format="###-###-####"
+          />
+        </label>
         <CustomInputs
           name="website"
           onChange={props.onChange}
@@ -227,7 +239,7 @@ const CompanyForm = (props: Props) => {
         />
 
         <CustomInputs
-          name="driver_code"
+          name="driver_rate"
           onChange={props.onChange}
           value={props.formData.driver_rate}
           class="w-1/3 mx-auto ps-1  inline-block "
@@ -237,7 +249,9 @@ const CompanyForm = (props: Props) => {
         />
         <CustomInputs
           class="w-1/3 mx-auto ps-1 pe-1  inline-block "
-          name="driver_code"
+          name="employed_contribution"
+          onChange={props.onChange}
+          value={props.formData.employed_contribution}
           label="Aportación Empleado"
           placeholder=""
           type="text"

@@ -55,7 +55,7 @@ const AddEmployee = () => {
   return (
     <>
       <div className="text-[#EED102] bg-[#333160] p-6 rounded-lg text-center">
-        <h3 className="text-3xl">Crear Empleado</h3>
+        <h3 className="text-2xl">Crear Empleado</h3>
 
         <p className="text-white mt-4">Tipo de empleado</p>
         <CustomSelect

@@ -17,15 +17,30 @@ const Cargar = () => {
 
   useEffect(() => {
     const regular_pay =
+      employerData.regular_time * formData.vacations_hours +
+      employerData.regular_time * formData.sick_hours +
       employerData.regular_time * formData.regular_time +
       employerData.overtime * formData.overtime +
       employerData.mealtime * formData.meal_time;
+
+    const sswitheld = regular_pay * 0.062;
+    const disability = regular_pay * 0.013;
+    const medicare = regular_pay * 0.014;
     setFormData({
       ...formData,
+      ["sswitheld"]: Number(sswitheld.toFixed(2)),
 
+      ["disability"]: Number(disability.toFixed(2)),
+      ["medicare"]: Number(medicare.toFixed(2)),
       ["regular_pay"]: Number(regular_pay.toFixed(2)),
     });
-  }, [formData.regular_time, formData.overtime, formData.meal_time]);
+  }, [
+    formData.regular_time,
+    formData.overtime,
+    formData.meal_time,
+    formData.vacations_hours,
+    formData.sick_hours,
+  ]);
 
   const handleInputChange = (e: React.FormEvent<any>) => {
     const value = e.currentTarget.value;
@@ -47,6 +62,7 @@ const Cargar = () => {
     setTime(formData, Number(params.id_employer))
       .then(() => {
         // Data retrieval and processing
+        setFormData(TIME_DATA);
         getData();
         showSuccess("Creado exitosamente.");
       })
@@ -83,7 +99,7 @@ const Cargar = () => {
   return (
     <>
       <div className="text-[#EED102] bg-[#333160] p-6 rounded-lg text-center">
-        <h3 className="text-3xl">Cargar Tiempo</h3>
+        <h3 className="text-2xl">Cargar Tiempo</h3>
 
         <p className="text-white mt-4">Seleccionar período de trabajo</p>
         <label
@@ -105,14 +121,14 @@ const Cargar = () => {
         </label>
       </div>
       <div className="w-full  mt-4 bg-white rounded-lg shadow p-4 ">
-        <div className="flex xl:flex-row flex-col gap-4">
-          <div className="xl:w-3/4 w-full ">
+        <div className="flex xl:flex-col flex-col gap-4">
+          <div className="xl:w-full w-full ">
             <CustomInputs
               class="w-1/2 mx-auto pe-1  inline-block "
               label=""
               disabled={true}
               value={companyData.name}
-              placeholder="Dirección"
+              placeholder=""
               type="text"
             />
             <CustomInputs
@@ -120,7 +136,7 @@ const Cargar = () => {
               label=""
               value={employerData.first_name + " " + employerData.last_name}
               disabled={true}
-              placeholder="San Juan"
+              placeholder=""
               type="text"
             />
 
@@ -132,7 +148,7 @@ const Cargar = () => {
               name="regular_time"
               value={formData.regular_time}
               placeholder=""
-              type="text"
+              type="number"
             />
             <CustomInputs
               class="w-1/3 mx-auto pe-1 ps-1  inline-block "
@@ -142,7 +158,7 @@ const Cargar = () => {
               name="overtime"
               onChange={handleInputChange}
               value={formData.overtime}
-              type="text"
+              type="number"
             />
             <CustomInputs
               class="w-1/3 mx-auto ps-1  inline-block "
@@ -152,7 +168,7 @@ const Cargar = () => {
               name="meal_time"
               disabled={formData.period < 0}
               value={formData.meal_time}
-              type="text"
+              type="number"
             />
             <CustomInputs
               class="w-1/2 mx-auto pe-1  inline-block "
@@ -162,7 +178,7 @@ const Cargar = () => {
               disabled={formData.period < 0}
               value={formData.sick_hours}
               placeholder=""
-              type="text"
+              type="number"
             />
             <CustomInputs
               class="w-1/2 mx-auto ps-1  inline-block "
@@ -172,42 +188,42 @@ const Cargar = () => {
               onChange={handleInputChange}
               value={formData.vacations_hours}
               placeholder=""
-              type="text"
+              type="number"
             />
           </div>
 
-          <div className="xl:w-1/4 w-full ">
+          <div className="xl:w-full w-full ">
             <CustomInputs
               class="w-1/2 mx-auto pe-1  inline-block "
               label="REG. PAY"
               disabled={true}
               value={formData.regular_pay}
               placeholder=""
-              type="text"
+              type="number"
             />
             <CustomInputs
               class="w-1/2 mx-auto pe-1  inline-block "
               label="MEDICARE"
               disabled={true}
-              value={0}
+              value={formData.medicare}
               placeholder=""
-              type="text"
+              type="number"
             />
             <CustomInputs
               class="w-1/2 mx-auto pe-1  inline-block "
               label="DISABILITY"
               disabled={true}
-              value={0}
+              value={formData.disability}
               placeholder=""
-              type="text"
+              type="number"
             />
             <CustomInputs
               class="w-1/2 mx-auto pe-1  inline-block "
               label="SSWITHELD21"
               disabled={true}
-              value={0}
+              value={formData.sswitheld}
               placeholder=""
-              type="text"
+              type="number"
             />
           </div>
         </div>

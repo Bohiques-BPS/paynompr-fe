@@ -9,7 +9,7 @@ import {
   EXENCIÓN_PERSONAL,
   PERIOD_PAYROLL,
 } from "../../utils/consts";
-import { PatternFormat } from "react-number-format";
+import { NumericFormat, PatternFormat } from "react-number-format";
 import CustomCheckBox from "./CustomCheckBox";
 
 type Props = {
@@ -113,18 +113,21 @@ const EmployeerForm = (props: Props) => {
             className="bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 "
             value={props.formData.phone_number}
             name="phone_number"
+            onChange={props.onChange}
             format="###-###-####"
           />
         </label>
-        <CustomInputs
-          class="w-1/2 mx-auto ps-1  inline-block "
-          label="Numero de teléfono celular"
-          name="smartphone_number"
-          onChange={props.onChange}
-          value={props.formData.smartphone_number}
-          placeholder="San Juan"
-          type="text"
-        />
+
+        <label className=" mb-2  font-medium text-gray-700 w-1/2 mx-auto pe-1  inline-block">
+          <span>Numero de teléfono celular</span>
+          <PatternFormat
+            className="bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 "
+            name="smartphone_number"
+            onChange={props.onChange}
+            value={props.formData.smartphone_number}
+            format="###-###-####"
+          />
+        </label>
         <CustomInputs
           class="w-1/3 mx-auto pe-1  inline-block "
           label="Num. de Seguro social"
@@ -275,7 +278,7 @@ const EmployeerForm = (props: Props) => {
           onChange={handleRegularTime}
           value={props.formData.regular_time}
           placeholder=""
-          type="text"
+          type="number"
         />
         <CustomInputs
           class="xl:w-1/5 w-1/3 mx-auto pe-1  inline-block "
@@ -284,7 +287,7 @@ const EmployeerForm = (props: Props) => {
           onChange={props.onChange}
           value={props.formData.overtime}
           placeholder=""
-          type="text"
+          type="number"
         />
         <CustomInputs
           class="xl:w-1/5 w-1/2  mx-auto pe-1  inline-block "
@@ -293,34 +296,37 @@ const EmployeerForm = (props: Props) => {
           onChange={props.onChange}
           value={props.formData.mealtime}
           placeholder=""
-          type="text"
+          type="number"
         />
         <label className=" mb-2  font-medium text-gray-700 w-1/2 xl:w-1/5 mx-auto ps-1  inline-block">
           <span>% de pago</span>
-          <PatternFormat
+
+          <NumericFormat
             name="payment_percentage"
+            allowNegative={false}
+            max={100}
+            maxLength={6}
             onChange={props.onChange}
             value={props.formData.payment_percentage}
             className="bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 "
-            format="##%"
+            suffix={"%"}
           />
         </label>
 
         <CustomInputs
-          class="xl:w-1/4 w-1/2 mx-auto pe-1  inline-block   "
-          label="El empleado tiene"
+          class="xl:w-1/5 w-1/2 mx-auto pe-1  inline-block   "
+          label=""
           name="vacation_hours"
           onChange={props.onChange}
-          disabled={true}
           value={props.formData.vacation_hours}
           placeholder=""
           type="number"
         />
         <CustomInputs
-          class="xl:w-9/12 w-1/2 mx-auto ps-2  inline-block  "
-          label="Horas de vacaciones acumuladas"
+          class="xl:w-4/5 w-1/2 mx-auto ps-2  inline-block  "
+          label="Horas acumuladas"
+          inputCss="xl:inline-block xl:w-1/3  mt-0"
           name="vacation_date"
-          disabled={true}
           onChange={props.onChange}
           value={props.formData.vacation_date}
           placeholder=""
@@ -328,16 +334,21 @@ const EmployeerForm = (props: Props) => {
         />
 
         <CustomInputs
-          class="xl:w-1/4 w-1/2 mx-auto   inline-block  "
-          label="El empleado tiene"
+          class="xl:w-1/5 w-1/2 mx-auto   inline-block  "
+          label=""
           placeholder=""
-          disabled={true}
+          onChange={props.onChange}
+          value={props.formData.sicks_hours}
+          name="sicks_hours"
           type="number"
         />
         <CustomInputs
-          disabled={true}
-          class="xl:w-9/12 w-1/2 mx-auto   ps-2 inline-block  "
-          label="Horas de vacaciones acumuladas por Enfermedad"
+          class="xl:w-4/5 w-1/2 mx-auto   ps-2 inline-block  "
+          label="Horas acumuladas por Enfermedad"
+          value={props.formData.sicks_date}
+          name="sicks_date"
+          inputCss="xl:inline-block xl:w-1/3  mt-0"
+          onChange={props.onChange}
           placeholder=""
           type="date"
         />

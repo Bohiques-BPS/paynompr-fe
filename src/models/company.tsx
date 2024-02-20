@@ -17,13 +17,14 @@ export const COMPANY_DATA = {
   zipcode_physical_address: "28002",
   country_physical_address: "España",
   state_physical_address: "Madrid",
-  phone_number: "912345679",
-  fax_number: "912345670",
+  phone_number: "",
+  fax_number: "",
   industrial_code: "CNAE 6201",
   payer: "Empresa S.A.",
   desem: "0.5",
   disabled_percent: "0",
-  driver: "Pedro García",
+  unemployment_percentage: "",
+  employed_contribution: "0",
   polize_number: "12345678",
   driver_code: "A1",
   driver_rate: "0.8",
@@ -54,8 +55,9 @@ export interface COMPANY {
   payer: string;
   desem: string;
   disabled_percent: string;
-  driver: string;
+  unemployment_percentage: string;
   polize_number: string;
+  employed_contribution: string;
   driver_code: string;
   driver_rate: string;
 }

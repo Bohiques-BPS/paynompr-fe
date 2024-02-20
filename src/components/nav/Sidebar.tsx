@@ -86,6 +86,29 @@ const Sidebar = ({
                 )}
               </NavLink>
             </li>
+
+            <li>
+              <NavLink
+                onClick={toggleSidebar}
+                to="/escritorio/procesos"
+                className={({ isActive }) =>
+                  [
+                    "flex items-center py-4 justify-items-center  text-gray-900 rounded-lg text-white ",
+                    isActive ? " active group" : "",
+                  ].join("")
+                }
+              >
+                <div className="p-3 rounded-lg border-white border group-[.active]:bg-[#a29dc5ad]">
+                  <FontAwesomeIcon
+                    className="text-2xl fa-fw text-white"
+                    icon={faDiagramProject}
+                  />
+                </div>
+                {sidebarOpen === "true" && (
+                  <span className="ms-3 text-white">Procesos</span>
+                )}
+              </NavLink>
+            </li>
             {adminLevel(role) && (
               <li>
                 <NavLink
@@ -134,29 +157,6 @@ const Sidebar = ({
                 </NavLink>
               </li>
             )}
-
-            <li>
-              <NavLink
-                onClick={toggleSidebar}
-                to="/escritorio/procesos"
-                className={({ isActive }) =>
-                  [
-                    "flex items-center py-4 justify-items-center  text-gray-900 rounded-lg text-white ",
-                    isActive ? " active group" : "",
-                  ].join("")
-                }
-              >
-                <div className="p-3 rounded-lg border-white border group-[.active]:bg-[#a29dc5ad]">
-                  <FontAwesomeIcon
-                    className="text-2xl fa-fw text-white"
-                    icon={faDiagramProject}
-                  />
-                </div>
-                {sidebarOpen === "true" && (
-                  <span className="ms-3 text-white">Procesos</span>
-                )}
-              </NavLink>
-            </li>
 
             <li className=" block xl:hidden">
               <NavLink

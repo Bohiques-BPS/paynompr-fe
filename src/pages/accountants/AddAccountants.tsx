@@ -36,7 +36,7 @@ const AddCounter = () => {
   return (
     <>
       <div className="text-[#EED102] bg-[#333160] p-6 rounded-lg text-center">
-        <h3 className="text-3xl">Crear Contador</h3>
+        <h3 className="text-2xl">Crear Contador</h3>
       </div>
       <div className="w-full  mt-4 bg-white rounded-lg shadow p-4 ">
         <div className="flex xl:flex-row flex-col gap-4">

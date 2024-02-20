@@ -24,20 +24,22 @@ export const EMPLOYER_DATA = {
   date_egress: null,
   overtime: 0,
   mealtime: 0,
-  vacation_hours: "23",
+  vacation_hours: 0,
   vacation_date: null,
-  number_dependents: "23",
+  sicks_hours: 0,
+  sicks_date: null,
+  number_dependents: 0,
   shared_custody: false,
-  number_concessions: "23",
+  number_concessions: 0,
   veteran: false,
   type_payroll: 1,
   schedule_type: 1,
   payment_percentage: "23",
-  address_state: "Prueba",
+  address_state: "",
   address_country: "2",
-  address_number: "Prueba",
-  phone_number: "Prueba",
-  smartphone_number: "Prueba",
+  address_number: "",
+  phone_number: "",
+  smartphone_number: "",
 };
 
 export interface EMPLOYEER {
@@ -66,11 +68,13 @@ export interface EMPLOYEER {
   date_egress: any;
   overtime: number;
   mealtime: number;
-  vacation_hours: string;
+  vacation_hours: number;
   vacation_date: any;
-  number_dependents: string;
+  sicks_hours: number;
+  sicks_date: any;
+  number_dependents: number;
   shared_custody: boolean;
-  number_concessions: string;
+  number_concessions: number;
   veteran: boolean;
   type_payroll: number;
   schedule_type: number;

@@ -3,6 +3,7 @@ import DataTable from "react-data-table-component";
 import {
   faBan,
   faCircleCheck,
+  faClock,
   faEdit,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -42,6 +43,24 @@ const Empleados = () => {
     {
       name: "Tipo",
       selector: (row: { employee_type: string }) => row.employee_type,
+    },
+
+    {
+      name: "Horas",
+      button: true,
+      cell: (row: { id: string }) => (
+        <Link
+          to={`../procesos/${Number(params.id)}/${row.id}/cargar`}
+          rel="noopener noreferrer"
+        >
+          <FontAwesomeIcon
+            data-id={row.id}
+            icon={faClock}
+            className="text-2xl"
+          />
+        </Link>
+      ),
+      selector: (row: { year: any }) => row.year,
     },
     {
       name: "Editar",
@@ -128,7 +147,7 @@ const Empleados = () => {
     <>
       <div className="text-[#EED102] bg-[#333160] p-6 rounded-lg text-center flex">
         <button className="flex-1">
-          <h3>Empleados</h3>
+          <h3 className="text-2xl">Empleados</h3>
         </button>
       </div>
       <div className="flex md:flex-row flex-col    gap-4  ">
