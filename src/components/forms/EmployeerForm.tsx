@@ -322,9 +322,10 @@ const EmployeerForm = (props: Props) => {
           placeholder=""
           type="number"
         />
+
         <CustomInputs
-          class="xl:w-4/5 w-1/2 mx-auto ps-2  inline-block  "
-          label="Horas acumuladas"
+          class="xl:w-4/5 w-1/2 mx-auto ps-2  inline-block xl:inline-flex  justify-between items-center  "
+          label="Horas acumuladas de vacaciones"
           inputCss="xl:inline-block xl:w-1/3  mt-0"
           name="vacation_date"
           onChange={props.onChange}
@@ -343,8 +344,8 @@ const EmployeerForm = (props: Props) => {
           type="number"
         />
         <CustomInputs
-          class="xl:w-4/5 w-1/2 mx-auto   ps-2 inline-block  "
-          label="Horas acumuladas por Enfermedad"
+          class="xl:w-4/5 w-1/2 mx-auto   ps-2 inline-block xl:inline-flex  justify-between items-center  "
+          label="Horas acumuladas de Enfermedad"
           value={props.formData.sicks_date}
           name="sicks_date"
           inputCss="xl:inline-block xl:w-1/3  mt-0"
