@@ -24,6 +24,9 @@ import EditCodes from "./pages/code/EditCodes";
 import EditAccountants from "./pages/accountants/EditAccountants";
 import EditCompany from "./pages/company/EditCompany";
 import EditEmployee from "./pages/employee/EditEmployee";
+import Taxes from "./pages/taxes/taxes";
+import AddTaxes from "./pages/taxes/AddTaxes";
+import EditTaxes from "./pages/taxes/EditTaxes";
 
 const App = () => {
   return (
@@ -52,6 +55,12 @@ const App = () => {
             <Route
               path="procesos/:id_company/:id_employer/cargar"
               element={<Cargar />}
+            />
+            <Route path="empresas/:id/taxes" element={<Taxes />} />
+            <Route path="empresas/:id/taxes/agregar" element={<AddTaxes />} />
+            <Route
+              path="empresas/:id/taxes/:id_taxes/editar"
+              element={<EditTaxes />}
             />
 
             <Route path="empresas/:id/empleados" element={<Empleados />} />

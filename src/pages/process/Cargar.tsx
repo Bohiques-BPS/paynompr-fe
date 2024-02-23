@@ -7,6 +7,7 @@ import { COMPANY_DATA } from "../../models/company";
 import { EMPLOYER_DATA } from "../../models/employeer";
 import { TIME_DATA } from "../../models/time";
 import { filterById, showError, showSuccess } from "../../utils/functions";
+import { TAXES_DATA } from "../../models/taxes";
 
 const Cargar = () => {
   const params = useParams();
@@ -14,6 +15,7 @@ const Cargar = () => {
   const [companyData, setCompanyData] = useState(COMPANY_DATA);
   const [timesData, setTimesData] = useState([TIME_DATA]);
   const [formData, setFormData] = useState(TIME_DATA);
+  const [taxesData, setTaxesData] = useState([TAXES_DATA]);
 
   useEffect(() => {
     const regular_pay =
@@ -22,12 +24,22 @@ const Cargar = () => {
       employerData.regular_time * formData.regular_time +
       employerData.overtime * formData.overtime +
       employerData.mealtime * formData.meal_time;
+    let aux = [TAXES_DATA];
+    aux = [];
+    taxesData.map((item) => {
+      item.value = regular_pay * (item.amount / 100);
+      aux.push(item);
+      console.log(item.value);
+    });
+    setTaxesData(aux);
 
     const sswitheld = regular_pay * 0.062;
     const disability = regular_pay * 0.013;
     const medicare = regular_pay * 0.014;
     setFormData({
       ...formData,
+
+      ["payments"]: taxesData,
       ["sswitheld"]: Number(sswitheld.toFixed(2)),
 
       ["disability"]: Number(disability.toFixed(2)),
@@ -42,12 +54,13 @@ const Cargar = () => {
     formData.sick_hours,
   ]);
 
-  const handleInputChange = (e: React.FormEvent<any>) => {
-    const value = e.currentTarget.value;
-
+  const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
-      [e.currentTarget.name]: value,
+      [e.currentTarget.name]:
+        e.currentTarget.type === "number"
+          ? parseInt(e.currentTarget.value)
+          : e.currentTarget.value,
     });
   };
 
@@ -64,6 +77,7 @@ const Cargar = () => {
         // Data retrieval and processing
         setFormData(TIME_DATA);
         getData();
+
         showSuccess("Creado exitosamente.");
       })
       .catch((error) => {
@@ -81,6 +95,7 @@ const Cargar = () => {
         setEmployerData(response.data.result.employer);
         setCompanyData(response.data.result.company);
         setTimesData([]);
+        setTaxesData(response.data.result.taxes);
         if (response.data.result.time.length == 0) setTimesData([TIME_DATA]);
         else {
           setTimesData([...response.data.result.time, TIME_DATA]);
@@ -201,30 +216,18 @@ const Cargar = () => {
               placeholder=""
               type="number"
             />
-            <CustomInputs
-              class="w-1/2 mx-auto pe-1  inline-block "
-              label="MEDICARE"
-              disabled={true}
-              value={formData.medicare}
-              placeholder=""
-              type="number"
-            />
-            <CustomInputs
-              class="w-1/2 mx-auto pe-1  inline-block "
-              label="DISABILITY"
-              disabled={true}
-              value={formData.disability}
-              placeholder=""
-              type="number"
-            />
-            <CustomInputs
-              class="w-1/2 mx-auto pe-1  inline-block "
-              label="SSWITHELD21"
-              disabled={true}
-              value={formData.sswitheld}
-              placeholder=""
-              type="number"
-            />
+            {taxesData.map((item, i) => (
+              <CustomInputs
+                key={i}
+                class="w-1/2 mx-auto pe-1  inline-block "
+                label={item.name}
+                name={item.name}
+                disabled={true}
+                value={item.value}
+                placeholder=""
+                type="number"
+              />
+            ))}
           </div>
         </div>
         <div className="w-full text-center">

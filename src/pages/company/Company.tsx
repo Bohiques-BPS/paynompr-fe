@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import {
   faBan,
+  faMoneyBill,
   faCircleCheck,
   faEdit,
 } from "@fortawesome/free-solid-svg-icons";
@@ -17,6 +18,10 @@ import { showError, showSuccess } from "../../utils/functions";
 
 const getRoute = (id: string) => {
   return id + "/empleados";
+};
+
+const getRouteTaxes = (id: string) => {
+  return id + "/taxes";
 };
 
 const Empresas = () => {
@@ -100,6 +105,20 @@ const Empresas = () => {
             </a>
           )}
         </>
+      ),
+      selector: (row: { year: any }) => row.year,
+    },
+
+    {
+      name: "Taxes",
+      button: true,
+      cell: (row: { id: string }) => (
+        <Link to={getRouteTaxes(row.id)}>
+          <FontAwesomeIcon
+            icon={faMoneyBill}
+            className="text-2xl text-green-800"
+          />
+        </Link>
       ),
       selector: (row: { year: any }) => row.year,
     },

@@ -36,6 +36,23 @@ export function getEmployers(id_company: number) {
   return Axios.request(setOptions("employers/" + id_company, "GET")); // Using a post request, specifying the user
 }
 
+export function getTaxes(id_company: number) {
+  return Axios.request(setOptions("taxes/" + id_company, "GET")); // Using a post request, specifying the user
+}
+export function getTaxesByID(id_company: number, id_taxes: number) {
+  return Axios.request(
+    setOptions("taxes/" + id_company + "/" + id_taxes, "GET")
+  ); // Using a post request, specifying the user
+}
+
+export function setTaxe(data: object, id_company: number) {
+  return Axios.request(setOptions("taxes/" + id_company, "POST", data)); // Using a post request, specifying the user
+}
+
+export function editTaxe(data: object, id_taxes: number) {
+  return Axios.request(setOptions("taxes/" + id_taxes, "PUT", data)); // Using a post request, specifying the user
+}
+
 export function getCompanyWithEmployer(
   id_company: number,
   id_employer: number

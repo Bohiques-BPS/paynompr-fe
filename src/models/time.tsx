@@ -1,3 +1,4 @@
+import { PAYMENT_DATA, PAYMENT } from "../models/payment";
 export const TIME_DATA = {
   id: 0,
   period: 0,
@@ -8,6 +9,7 @@ export const TIME_DATA = {
   medicare: 0,
   regular_pay: 0,
   sswitheld: 0,
+  payments: [PAYMENT_DATA],
   vacations_hours: 0,
   sick_hours: 0,
 };
@@ -19,6 +21,7 @@ export interface TIME {
   medicare: number;
   sswitheld: number;
   disability: number;
+  payments: [PAYMENT];
   regular_time: number;
   overtime: number;
   meal_time: number;
