@@ -8,6 +8,8 @@ import { EMPLOYER_DATA } from "../../models/employeer";
 import { TIME_DATA } from "../../models/time";
 import { filterById, showError, showSuccess } from "../../utils/functions";
 import { TAXES_DATA } from "../../models/taxes";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import Talonario from "../../components/files/Talonario";
 
 const Cargar = () => {
   const params = useParams();
@@ -16,6 +18,7 @@ const Cargar = () => {
   const [timesData, setTimesData] = useState([TIME_DATA]);
   const [formData, setFormData] = useState(TIME_DATA);
   const [taxesData, setTaxesData] = useState([TAXES_DATA]);
+  const [period, setPeriod] = useState(0);
 
   useEffect(() => {
     const regular_pay =
@@ -25,26 +28,28 @@ const Cargar = () => {
       employerData.overtime * formData.overtime +
       employerData.mealtime * formData.meal_time;
     let aux = [TAXES_DATA];
+
     aux = [];
+
     taxesData.map((item) => {
       item.value = regular_pay * (item.amount / 100);
       aux.push(item);
-      console.log(item.value);
     });
     setTaxesData(aux);
 
-    const sswitheld = regular_pay * 0.062;
-    const disability = regular_pay * 0.013;
-    const medicare = regular_pay * 0.014;
     setFormData({
       ...formData,
 
       ["payments"]: taxesData,
-      ["sswitheld"]: Number(sswitheld.toFixed(2)),
-
-      ["disability"]: Number(disability.toFixed(2)),
-      ["medicare"]: Number(medicare.toFixed(2)),
-      ["regular_pay"]: Number(regular_pay.toFixed(2)),
+      ["vacation_pay"]: Number(
+        employerData.regular_time * formData.vacations_hours
+      ),
+      ["sick_pay"]: Number(employerData.regular_time * formData.sick_hours),
+      ["overtime_pay"]: Number(employerData.overtime * formData.overtime),
+      ["meal_time_pay"]: Number(employerData.mealtime * formData.meal_time),
+      ["regular_pay"]: Number(
+        employerData.regular_time * formData.regular_time
+      ),
     });
   }, [
     formData.regular_time,
@@ -53,6 +58,23 @@ const Cargar = () => {
     formData.vacations_hours,
     formData.sick_hours,
   ]);
+
+  const getTotal = () => {
+    var total = 0;
+    const regular_pay =
+      employerData.regular_time * formData.vacations_hours +
+      employerData.regular_time * formData.sick_hours +
+      employerData.regular_time * formData.regular_time +
+      employerData.overtime * formData.overtime +
+      employerData.mealtime * formData.meal_time;
+    total = regular_pay;
+    taxesData.map((item) => {
+      item.value = regular_pay * (item.amount / 100);
+
+      total = total - item.value;
+    });
+    return total;
+  };
 
   const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
     setFormData({
@@ -66,6 +88,7 @@ const Cargar = () => {
 
   const handlePeriodChange = (e: React.FormEvent<any>) => {
     const value = e.currentTarget.value;
+    setPeriod(value);
 
     if (timesData.length > 0 && value >= 0)
       setFormData(filterById(timesData, value));
@@ -99,7 +122,6 @@ const Cargar = () => {
         if (response.data.result.time.length == 0) setTimesData([TIME_DATA]);
         else {
           setTimesData([...response.data.result.time, TIME_DATA]);
-          console.log(timesData);
         }
       })
       .catch(() => {
@@ -212,7 +234,43 @@ const Cargar = () => {
               class="w-1/2 mx-auto pe-1  inline-block "
               label="REG. PAY"
               disabled={true}
+              name="regular_pay"
               value={formData.regular_pay}
+              placeholder=""
+              type="number"
+            />
+            <CustomInputs
+              class="w-1/2 mx-auto pe-1  inline-block "
+              label="OVER TIME PAY"
+              disabled={true}
+              name="overtime_pay"
+              value={formData.overtime_pay}
+              placeholder=""
+              type="number"
+            />
+            <CustomInputs
+              class="w-1/2 mx-auto pe-1  inline-block "
+              label="MEAL TIME PAY"
+              disabled={true}
+              name="meal_time_pay"
+              value={formData.meal_time_pay}
+              placeholder=""
+              type="number"
+            />
+            <CustomInputs
+              class="w-1/2 mx-auto pe-1  inline-block "
+              label="VACATION PAY"
+              disabled={true}
+              name="vacation_pay"
+              value={formData.vacation_pay}
+              placeholder=""
+              type="number"
+            />
+            <CustomInputs
+              class="w-1/2 mx-auto pe-1  inline-block "
+              label="SICK PAY"
+              disabled={true}
+              value={formData.sick_pay}
               placeholder=""
               type="number"
             />
@@ -228,6 +286,14 @@ const Cargar = () => {
                 type="number"
               />
             ))}
+            <CustomInputs
+              class="w-1/2 mx-auto pe-1  inline-block "
+              label="Total"
+              disabled={true}
+              value={getTotal()}
+              placeholder=""
+              type="number"
+            />
           </div>
         </div>
         <div className="w-full text-center">
@@ -237,6 +303,30 @@ const Cargar = () => {
           >
             Cargar tiempo de empleado
           </button>
+          {formData.id != 0 && (
+            <PDFDownloadLink
+              document={
+                <Talonario
+                  id_employer={Number(params.id_employer)}
+                  id_company={Number(params.id_company)}
+                  id_period={period}
+                />
+              }
+              fileName={employerData.first_name + " " + employerData.last_name}
+            >
+              {({ loading }) =>
+                loading ? (
+                  <button className="w-auto mt-4 mx-auto mr-4 bg-[#333160] py-4 text-[#EED102] bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-8 text-center ">
+                    Descargando Talonario
+                  </button>
+                ) : (
+                  <button className="w-auto mt-4 mx-auto ms-4 bg-[#EED102] py-4 text-[#333160] bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-8 text-center ">
+                    Descargar Talonario
+                  </button>
+                )
+              }
+            </PDFDownloadLink>
+          )}
         </div>
       </div>
     </>

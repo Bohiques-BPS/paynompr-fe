@@ -1,8 +1,7 @@
 import { NavLink } from "react-router-dom";
-import { faXmark, faBarcode } from "@fortawesome/free-solid-svg-icons";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import {
   faBars,
-  faUsers,
   faHouse,
   faBuilding,
   faDiagramProject,
@@ -10,7 +9,7 @@ import {
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { adminLevel, blockPage, ownerLevel } from "../../utils/permision";
+import { blockPage } from "../../utils/permision";
 
 interface SidebarProps {
   sidebarOpen: string;
@@ -23,7 +22,6 @@ const Sidebar = ({
   sidebarOpen,
   toggleSidebar,
   toggleSidebarOption,
-  role,
 }: SidebarProps) => {
   return (
     <div
@@ -109,7 +107,7 @@ const Sidebar = ({
                 )}
               </NavLink>
             </li>
-            {adminLevel(role) && (
+            {/*     {adminLevel(role) && (
               <li>
                 <NavLink
                   onClick={toggleSidebar}
@@ -132,8 +130,8 @@ const Sidebar = ({
                   )}
                 </NavLink>
               </li>
-            )}
-            {ownerLevel(role) && (
+            )} */}
+            {/*  {ownerLevel(role) && (
               <li>
                 <NavLink
                   onClick={toggleSidebar}
@@ -156,7 +154,7 @@ const Sidebar = ({
                   )}
                 </NavLink>
               </li>
-            )}
+            )} */}
 
             <li className=" block xl:hidden">
               <NavLink

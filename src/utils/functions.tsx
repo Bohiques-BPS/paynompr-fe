@@ -12,9 +12,6 @@ export function makeid(length: number) {
   return result;
 }
 export function filterById(jsonObject: any, id: number) {
-  console.log(jsonObject);
-  console.log(id);
-
   return jsonObject.filter(function (jsonObject: any) {
     return jsonObject.id == id;
   })[0];

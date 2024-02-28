@@ -62,6 +62,19 @@ export function getCompanyWithEmployer(
   ); // Using a post request, specifying the user
 }
 
+export function getTalonario(
+  id_company: number,
+  id_employer: number,
+  id_talonario: number
+) {
+  return Axios.request(
+    setOptions(
+      "companies/" + id_company + "/" + id_employer + "/" + id_talonario,
+      "GET"
+    )
+  ); // Using a post request, specifying the user
+}
+
 export function getAllEmployers() {
   return Axios.request(setOptions("employers/", "GET")); // Using a post request, specifying the user
 }

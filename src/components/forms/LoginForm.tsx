@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import CustomInputs from "./CustomInputs";
 
@@ -81,7 +80,7 @@ const LoginForm = () => {
         Entrar
       </button>
 
-      <div className="flex items-center justify-between">
+      {/*  <div className="flex items-center justify-between">
         <Link
           to="/recuperar"
           className="text-sm font-medium text-primary-600 hover:underline "
@@ -97,7 +96,7 @@ const LoginForm = () => {
             Regístrate
           </Link>
         </p>
-      </div>
+      </div> */}
     </form>
   );
 };

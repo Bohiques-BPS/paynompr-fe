@@ -6,7 +6,6 @@ import { useLocalStorage } from "../utils/UseLocalStorage";
 import { useEffect } from "react";
 import { getAccountants, getCurrentUser } from "../utils/requestOptions";
 import { removeToken } from "../services/auth.services";
-import { blockPage } from "../utils/permision";
 import { faCaretLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -38,12 +37,11 @@ const InLayout = () => {
         // If the query fails, an error will be displayed on the terminal.
       });
     getAccountants()
-      .then((response) => {
+      .then(() => {
         // TODO Declarar un modelo para user
-
-        if (blockPage(response.data.result.length == 0)) {
+        /*   if (blockPage(response.data.result.length == 0)) {
           navigate("/escritorio/contadores/agregar");
-        }
+        } */
       })
       .catch(() => {
         // If the query fails, an error will be displayed on the terminal.
