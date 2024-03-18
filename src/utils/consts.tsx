@@ -22,6 +22,37 @@ export const JURISDICTION = [
   },
 ];
 
+export const REQUIERED = [
+  {
+    id: 1,
+    name: "Opcional",
+  },
+  {
+    id: 2,
+    name: "Requerido",
+  },
+];
+export const TYPE_AMOUNT = [
+  {
+    id: 1,
+    name: "Porcentual",
+  },
+  {
+    id: 2,
+    name: "Fijo",
+  },
+];
+export const TYPE_TAXE = [
+  {
+    id: 1,
+    name: "Descuento",
+  },
+  {
+    id: 2,
+    name: "Aumento",
+  },
+];
+
 export const PAYER = [
   {
     id: 1,

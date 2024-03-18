@@ -4,7 +4,7 @@ import { getTalonario } from "../../utils/requestOptions";
 import { EMPLOYER_DATA } from "../../models/employeer";
 import { COMPANY_DATA } from "../../models/company";
 import { TIME_DATA } from "../../models/time";
-import { PAYMENT_DATA } from "../../models/payment";
+import { PAYMENT, PAYMENT_DATA } from "../../models/payment";
 import Moment from "moment";
 
 // Create styles
@@ -14,6 +14,9 @@ const styles = StyleSheet.create({
     fontSize: "12px",
     padding: 24,
     backgroundColor: "#E4E4E4",
+  },
+  textFooter: {
+    fontSize: "16px",
   },
   table: {
     marginTop: 16,
@@ -29,6 +32,13 @@ const styles = StyleSheet.create({
 
     backgroundColor: "#E4E4E4",
   },
+  footer: {
+    flexDirection: "row",
+    fontSize: "12px",
+    marginTop: 16,
+
+    backgroundColor: "#E4E4E4",
+  },
   right: {
     textAlign: "right",
   },
@@ -36,7 +46,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   section: {
-    width: "30%",
+    width: "33%",
     flexGrow: 1,
   },
 });
@@ -53,6 +63,13 @@ const Talonario = ({ id_period, id_company, id_employer }: Props) => {
   const [timeData, setTimeData] = useState(TIME_DATA);
   const [taxesData, setTaxesData] = useState([PAYMENT_DATA]);
 
+  const setAmountTaxe = (taxe: PAYMENT) => {
+    if (taxe.type_taxe == 1 && taxe.amount >= 0) {
+      taxe.amount = taxe.amount * -1;
+    }
+
+    return taxe.amount;
+  };
   const getTotal = () => {
     var total = 0;
     const regular_pay =
@@ -63,7 +80,10 @@ const Talonario = ({ id_period, id_company, id_employer }: Props) => {
       employerData.mealtime * timeData.meal_time;
     total = regular_pay;
     taxesData.map((item) => {
-      total = total - regular_pay * (item.amount / 100);
+      item.amount = setAmountTaxe(item);
+      console.log(item.amount);
+      total = total + item.amount;
+      console.log(total);
     });
     return total;
   };
@@ -149,12 +169,25 @@ const Talonario = ({ id_period, id_company, id_employer }: Props) => {
             ))}
           </View>
         </View>
-        <View style={styles.row}>
+        <View style={styles.footer}>
           <View style={styles.section}>
-            <Text></Text>
+            <Text>VAC ACUM. ENF ACUM.</Text>
           </View>
           <View style={styles.section}>
             <Text style={styles.right}>Total ${getTotal()}</Text>
+          </View>
+        </View>
+        <View style={styles.footer}>
+          <View style={styles.section}>
+            <Text style={styles.textFooter}>
+              {employerData.first_name} {employerData.last_name}:{" "}
+              {companyData.name}
+            </Text>
+          </View>
+          <View style={styles.section}>
+            <Text style={[styles.textFooter, styles.right]}>
+              {Moment(timeData.created_at).format("MM/DD/YYYY")}
+            </Text>
           </View>
         </View>
       </Page>

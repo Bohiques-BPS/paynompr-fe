@@ -7,7 +7,7 @@ import { COMPANY_DATA } from "../../models/company";
 import { EMPLOYER_DATA } from "../../models/employeer";
 import { TIME_DATA } from "../../models/time";
 import { filterById, showError, showSuccess } from "../../utils/functions";
-import { TAXES_DATA } from "../../models/taxes";
+import { TAXES, TAXES_DATA } from "../../models/taxes";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import Talonario from "../../components/files/Talonario";
 
@@ -29,13 +29,11 @@ const Cargar = () => {
       employerData.mealtime * formData.meal_time;
     let aux = [TAXES_DATA];
 
-    aux = [];
-
     taxesData.map((item) => {
-      item.value = regular_pay * (item.amount / 100);
+      item.value = setAmountTaxe(item, regular_pay);
+
       aux.push(item);
     });
-    setTaxesData(aux);
 
     setFormData({
       ...formData,
@@ -69,9 +67,11 @@ const Cargar = () => {
       employerData.mealtime * formData.meal_time;
     total = regular_pay;
     taxesData.map((item) => {
-      item.value = regular_pay * (item.amount / 100);
+      if (item.is_active || item.requiered == 2) {
+        item.value = setAmountTaxe(item, regular_pay);
 
-      total = total - item.value;
+        total = total + item.value;
+      }
     });
     return total;
   };
@@ -84,6 +84,41 @@ const Cargar = () => {
           ? parseInt(e.currentTarget.value)
           : e.currentTarget.value,
     });
+  };
+
+  const handleCheck = (e: React.FormEvent<HTMLInputElement>, item: TAXES) => {
+    // Crea un nuevo objeto con el cambio
+
+    const isActive = e.currentTarget.checked;
+    console.log(isActive);
+    item.is_active = isActive;
+    const updatedItem = { ...item, is_active: isActive };
+
+    // Crea un nuevo array con el item actualizado
+    const updatedTaxesData = taxesData.map((el) =>
+      el === item ? updatedItem : el
+    );
+
+    // Actualiza el estado con el nuevo array
+    setTaxesData(updatedTaxesData);
+    console.log(taxesData);
+    setFormData({
+      ...formData,
+      ["payments"]: taxesData,
+    });
+  };
+
+  const setAmountTaxe = (taxe: TAXES, regular_pay: number) => {
+    if (taxe.type_amount == 1) {
+      taxe.value = regular_pay * (taxe.amount / 100);
+    } else {
+      taxe.value = taxe.amount;
+    }
+    if (taxe.type_taxe == 1) {
+      taxe.value = taxe.value * -1;
+    }
+
+    return taxe.value;
   };
 
   const handlePeriodChange = (e: React.FormEvent<any>) => {
@@ -274,17 +309,33 @@ const Cargar = () => {
               placeholder=""
               type="number"
             />
-            {taxesData.map((item, i) => (
-              <CustomInputs
-                key={i}
-                class="w-1/2 mx-auto pe-1  inline-block "
-                label={item.name}
-                name={item.name}
-                disabled={true}
-                value={item.value}
-                placeholder=""
-                type="number"
-              />
+            {taxesData.map((item) => (
+              <>
+                <label
+                  className={` block mb-2  font-medium text-gray-700 w-1/2 mx-auto pe-1  inline-block `}
+                >
+                  {item.requiered === 1 && (
+                    <>
+                      <input
+                        key={item.id}
+                        type="checkbox"
+                        checked={item.is_active}
+                        onChange={(e) => handleCheck(e, item)}
+                      />
+                    </>
+                  )}
+                  <span> {item.name}</span>
+
+                  <input
+                    className={` bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5`}
+                    tabIndex={0}
+                    type="number"
+                    name={item.name}
+                    value={item.value}
+                    disabled={true}
+                  />
+                </label>
+              </>
             ))}
             <CustomInputs
               class="w-1/2 mx-auto pe-1  inline-block "

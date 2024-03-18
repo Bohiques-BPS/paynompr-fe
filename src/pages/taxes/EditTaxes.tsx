@@ -21,6 +21,10 @@ const EditTaxes = () => {
   };
 
   const getValue = (e: React.FormEvent<any>) => {
+    if (e.currentTarget.name == "amount") {
+      e.currentTarget.value.replace("%", "");
+      return parseFloat(e.currentTarget.value);
+    }
     if (e.currentTarget.type === "number")
       return parseInt(e.currentTarget.value);
     if (e.currentTarget.type === "checkbox") return e.currentTarget.checked;

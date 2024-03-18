@@ -35,6 +35,30 @@ const Taxes = () => {
       selector: (row: { amount: string }) => row.amount,
     },
     {
+      name: "Requerido/Opcional",
+      button: true,
+      cell: (row: { requiered: number }) => (
+        <>{row.requiered === 1 ? <h1>Opcional</h1> : <h1>Requerido</h1>}</>
+      ),
+      selector: (row: { requiered: any }) => row.requiered,
+    },
+    {
+      name: "Descuento/Aumento",
+      button: true,
+      cell: (row: { type_taxe: number }) => (
+        <>{row.type_taxe === 1 ? <h1>Descuento</h1> : <h1>Aumento</h1>}</>
+      ),
+      selector: (row: { type_taxe: any }) => row.type_taxe,
+    },
+    {
+      name: "Porcentual/Fijo",
+      button: true,
+      cell: (row: { type_amount: number }) => (
+        <>{row.type_amount === 1 ? <h1>Porcentual</h1> : <h1>Fijo</h1>}</>
+      ),
+      selector: (row: { type_amount: any }) => row.type_amount,
+    },
+    {
       name: "Editar",
       button: true,
       cell: (row: { id: string }) => (

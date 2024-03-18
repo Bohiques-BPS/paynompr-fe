@@ -13,14 +13,23 @@ const AddTaxes = () => {
 
   const [formData, setFormData] = useState(TAXES_DATA);
 
-  const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.FormEvent<any>) => {
     setFormData({
       ...formData,
-      [e.currentTarget.name]:
-        e.currentTarget.type === "number"
-          ? parseInt(e.currentTarget.value)
-          : e.currentTarget.value,
+      [e.currentTarget.name]: getValue(e),
     });
+  };
+
+  const getValue = (e: React.FormEvent<any>) => {
+    if (e.currentTarget.name == "amount") {
+      e.currentTarget.value.replace("%", "");
+      return parseInt(e.currentTarget.value);
+    }
+    if (e.currentTarget.type === "number")
+      return parseInt(e.currentTarget.value);
+    if (e.currentTarget.type === "checkbox") return e.currentTarget.checked;
+
+    return e.currentTarget.value;
   };
 
   const handleCreate = () => {
