@@ -28,7 +28,6 @@ const Cargar = () => {
       employerData.overtime * formData.overtime +
       employerData.mealtime * formData.meal_time;
     let aux = [TAXES_DATA];
-
     taxesData.map((item) => {
       item.value = setAmountTaxe(item, regular_pay);
 
@@ -38,7 +37,6 @@ const Cargar = () => {
     setFormData({
       ...formData,
 
-      ["payments"]: taxesData,
       ["vacation_pay"]: Number(
         employerData.regular_time * formData.vacations_hours
       ),
@@ -86,11 +84,32 @@ const Cargar = () => {
     });
   };
 
+  const handleitem = (e: React.FormEvent<HTMLInputElement>, item: TAXES) => {
+    // Crea un nuevo objeto con el cambio
+
+    item.value = parseInt(e.currentTarget.value);
+
+    const updatedItem = { ...item };
+
+    // Crea un nuevo array con el item actualizado
+    const updatedTaxesData = taxesData.map((el) =>
+      el === item ? updatedItem : el
+    );
+
+    // Actualiza el estado con el nuevo array
+    setTaxesData(updatedTaxesData);
+
+    setFormData({
+      ...formData,
+      ["payments"]: taxesData,
+    });
+  };
+
   const handleCheck = (e: React.FormEvent<HTMLInputElement>, item: TAXES) => {
     // Crea un nuevo objeto con el cambio
 
     const isActive = e.currentTarget.checked;
-    console.log(isActive);
+
     item.is_active = isActive;
     const updatedItem = { ...item, is_active: isActive };
 
@@ -101,7 +120,7 @@ const Cargar = () => {
 
     // Actualiza el estado con el nuevo array
     setTaxesData(updatedTaxesData);
-    console.log(taxesData);
+
     setFormData({
       ...formData,
       ["payments"]: taxesData,
@@ -112,9 +131,9 @@ const Cargar = () => {
     if (taxe.type_amount == 1) {
       taxe.value = regular_pay * (taxe.amount / 100);
     } else {
-      taxe.value = taxe.amount;
+      if (!taxe.value) taxe.value = taxe.amount;
     }
-    if (taxe.type_taxe == 1) {
+    if (taxe.type_taxe == 1 && taxe.type_amount == 1) {
       taxe.value = taxe.value * -1;
     }
 
@@ -330,9 +349,9 @@ const Cargar = () => {
                     className={` bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5`}
                     tabIndex={0}
                     type="number"
+                    onChange={(e) => handleitem(e, item)}
                     name={item.name}
                     value={item.value}
-                    disabled={true}
                   />
                 </label>
               </>
