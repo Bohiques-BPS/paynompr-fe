@@ -164,7 +164,9 @@ const Talonario = ({ id_period, id_company, id_employer }: Props) => {
               <View key={i} style={styles.row}>
                 <Text style={styles.section}>{item.name}</Text>
                 <Text style={styles.section}>${item.amount}</Text>
-                <Text style={styles.section}>${item.amount * 12} </Text>
+                <Text style={styles.section}>
+                  ${(item.amount * 12).toFixed(2)}{" "}
+                </Text>
               </View>
             ))}
           </View>
