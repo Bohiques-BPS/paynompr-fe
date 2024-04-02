@@ -74,6 +74,19 @@ const Cargar = () => {
     return total;
   };
 
+  const getPreTotal = () => {
+    var total = 0;
+    const regular_pay =
+      employerData.regular_time * formData.vacations_hours +
+      employerData.regular_time * formData.sick_hours +
+      employerData.regular_time * formData.regular_time +
+      employerData.overtime * formData.overtime +
+      employerData.mealtime * formData.meal_time;
+    total = regular_pay;
+
+    return total;
+  };
+
   const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
@@ -88,6 +101,8 @@ const Cargar = () => {
     // Crea un nuevo objeto con el cambio
 
     item.value = parseInt(e.currentTarget.value);
+    item.edited = true;
+    item.amount = parseInt(e.currentTarget.value);
 
     const updatedItem = { ...item };
 
@@ -129,12 +144,12 @@ const Cargar = () => {
 
   const setAmountTaxe = (taxe: TAXES, regular_pay: number) => {
     if (taxe.type_amount == 1) {
-      taxe.value = regular_pay * (taxe.amount / 100);
+      if (!taxe.edited) taxe.value = regular_pay * (taxe.amount / 100);
     } else {
-      if (!taxe.value) taxe.value = taxe.amount;
+      if (!taxe.edited) taxe.value = taxe.amount;
     }
-    if (taxe.type_taxe == 1 && taxe.type_amount == 1) {
-      taxe.value = taxe.value * -1;
+    if (taxe.type_taxe == 1) {
+      if (taxe.value > 0) taxe.value = taxe.value * -1;
     }
 
     return taxe.value;
@@ -262,17 +277,7 @@ const Cargar = () => {
               type="number"
             />
             <CustomInputs
-              class="w-1/2 mx-auto pe-1  inline-block "
-              label="Horas de enfermedad"
-              name="sick_hours"
-              onChange={handleInputChange}
-              disabled={formData.period < 0}
-              value={formData.sick_hours}
-              placeholder=""
-              type="number"
-            />
-            <CustomInputs
-              class="w-1/2 mx-auto ps-1  inline-block "
+              class="w-1/3 mx-auto ps-1  inline-block "
               label="Horas de vacaciones"
               disabled={formData.period < 0}
               name="vacations_hours"
@@ -281,11 +286,21 @@ const Cargar = () => {
               placeholder=""
               type="number"
             />
+            <CustomInputs
+              class="w-1/3 mx-auto pe-1  inline-block "
+              label="Horas de enfermedad"
+              name="sick_hours"
+              onChange={handleInputChange}
+              disabled={formData.period < 0}
+              value={formData.sick_hours}
+              placeholder=""
+              type="number"
+            />
           </div>
 
           <div className="xl:w-full w-full ">
             <CustomInputs
-              class="w-1/2 mx-auto pe-1  inline-block "
+              class="w-1/3 mx-auto pe-1  inline-block "
               label="REG. PAY"
               disabled={true}
               name="regular_pay"
@@ -294,7 +309,7 @@ const Cargar = () => {
               type="number"
             />
             <CustomInputs
-              class="w-1/2 mx-auto pe-1  inline-block "
+              class="w-1/3 mx-auto pe-1  inline-block "
               label="OVER TIME PAY"
               disabled={true}
               name="overtime_pay"
@@ -303,7 +318,7 @@ const Cargar = () => {
               type="number"
             />
             <CustomInputs
-              class="w-1/2 mx-auto pe-1  inline-block "
+              class="w-1/3 mx-auto pe-1  inline-block "
               label="MEAL TIME PAY"
               disabled={true}
               name="meal_time_pay"
@@ -312,7 +327,7 @@ const Cargar = () => {
               type="number"
             />
             <CustomInputs
-              class="w-1/2 mx-auto pe-1  inline-block "
+              class="w-1/3 mx-auto pe-1  inline-block "
               label="VACATION PAY"
               disabled={true}
               name="vacation_pay"
@@ -321,17 +336,29 @@ const Cargar = () => {
               type="number"
             />
             <CustomInputs
-              class="w-1/2 mx-auto pe-1  inline-block "
+              class="w-1/3 mx-auto mb-4 pe-1  inline-block "
               label="SICK PAY"
               disabled={true}
               value={formData.sick_pay}
               placeholder=""
               type="number"
             />
+            <CustomInputs
+              class="w-1/3 mx-auto pe-1  inline-block "
+              label="Total"
+              name="sick_hours"
+              disabled={true}
+              value={getPreTotal()}
+              placeholder=""
+              type="number"
+            />
+            <h2 className="mt-2 text-center text-2xl">Taxes</h2>
+            <hr className="mt-2 mb-6" />
+
             {taxesData.map((item) => (
               <>
                 <label
-                  className={` block mb-2  font-medium text-gray-700 w-1/2 mx-auto pe-1  inline-block `}
+                  className={` block mb-2   font-medium text-gray-700 w-1/3 mx-auto pe-1  inline-block `}
                 >
                   {item.requiered === 1 && (
                     <>
@@ -343,7 +370,15 @@ const Cargar = () => {
                       />
                     </>
                   )}
-                  <span> {item.name}</span>
+                  <span>
+                    {" "}
+                    {item.name}{" "}
+                    {item.type_taxe != 1 ? (
+                      <span>( + )</span>
+                    ) : (
+                      <span>( - )</span>
+                    )}
+                  </span>
 
                   <input
                     className={` bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5`}
@@ -357,7 +392,7 @@ const Cargar = () => {
               </>
             ))}
             <CustomInputs
-              class="w-1/2 mx-auto pe-1  inline-block "
+              class="w-1/3 mx-auto pe-1  inline-block "
               label="Total"
               disabled={true}
               value={getTotal()}

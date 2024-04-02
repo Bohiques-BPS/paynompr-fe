@@ -6,6 +6,7 @@ export const TAXES_DATA = {
   requiered: 0,
   type_taxe: 0,
   is_active: false,
+  edited: false,
   type_amount: 0,
 };
 
@@ -17,6 +18,6 @@ export interface TAXES {
   is_active: boolean;
   requiered: number;
   type_taxe: number;
-
+  edited: boolean;
   type_amount: number;
 }
