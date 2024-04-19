@@ -5,10 +5,12 @@ import { showError, showSuccess } from "../../utils/functions";
 import { useNavigate, useParams } from "react-router-dom";
 import { COMPANY_DATA } from "../../models/company";
 import CompanyForm from "../../components/forms/CompanyForm";
+import ModalAlert from "../../components/dashboard/ModalAlert";
 
 const EditCompany = () => {
   const navigate = useNavigate();
   const params = useParams();
+  const [isOpen, setIsOpen] = useState(false);
 
   const [formData, setFormData] = useState(COMPANY_DATA);
 
@@ -24,7 +26,9 @@ const EditCompany = () => {
         showError(error.response.data.detail);
       });
   }, []);
-
+  const handleModal = () => {
+    setIsOpen(!isOpen);
+  };
   const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
     const value = e.currentTarget.value;
 
@@ -85,6 +89,13 @@ const EditCompany = () => {
           </button>
         </div>
       </div>
+      <ModalAlert
+        isOpen={isOpen}
+        action={handleEdit}
+        setIsOpen={handleModal}
+        title={`Editar Usuario`}
+        description={`¿Esta seguro que desea editar este usuario ${formData.name}?`}
+      />
     </>
   );
 };

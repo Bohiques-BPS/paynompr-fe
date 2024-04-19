@@ -6,6 +6,7 @@ import { COMPANY_DATA } from "../../models/company";
 import { TIME_DATA } from "../../models/time";
 import { PAYMENT, PAYMENT_DATA } from "../../models/payment";
 import Moment from "moment";
+import { convertTimeToHoursWithDecimals } from "../../utils/functions";
 
 // Create styles
 const styles = StyleSheet.create({
@@ -73,11 +74,16 @@ const Talonario = ({ id_period, id_company, id_employer }: Props) => {
   const getTotal = () => {
     var total = 0;
     const regular_pay =
-      employerData.regular_time * timeData.vacations_hours +
-      employerData.regular_time * timeData.sick_hours +
-      employerData.regular_time * timeData.regular_time +
-      employerData.overtime * timeData.overtime +
-      employerData.mealtime * timeData.meal_time;
+      employerData.regular_time *
+        convertTimeToHoursWithDecimals(timeData.vacations_hours) +
+      employerData.regular_time *
+        convertTimeToHoursWithDecimals(timeData.sick_hours) +
+      employerData.regular_time *
+        convertTimeToHoursWithDecimals(timeData.regular_time) +
+      employerData.overtime *
+        convertTimeToHoursWithDecimals(timeData.overtime) +
+      employerData.mealtime *
+        convertTimeToHoursWithDecimals(timeData.meal_time);
     total = regular_pay;
     taxesData.map((item) => {
       item.amount = setAmountTaxe(item);

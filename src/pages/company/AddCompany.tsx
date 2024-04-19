@@ -7,9 +7,11 @@ import { useNavigate } from "react-router-dom";
 
 import { COMPANY_DATA } from "../../models/company";
 import CompanyForm from "../../components/forms/CompanyForm";
+import ModalAlert from "../../components/dashboard/ModalAlert";
 
 const AddCompany = () => {
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
 
   const [formData, setFormData] = useState(COMPANY_DATA);
 
@@ -21,7 +23,9 @@ const AddCompany = () => {
       [e.currentTarget.name]: value,
     });
   };
-
+  const handleModal = () => {
+    setIsOpen(!isOpen);
+  };
   const handleCreate = () => {
     setCompanies(formData)
       .then((response) => {
@@ -65,13 +69,20 @@ const AddCompany = () => {
         </div>
         <div className="w-full text-center">
           <button
-            onClick={handleCreate}
+            onClick={handleModal}
             className="w-auto mt-4 mx-auto bg-[#333160] py-4 text-[#EED102] bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-8 text-center "
           >
             Guardar datos
           </button>
         </div>
       </div>
+      <ModalAlert
+        isOpen={isOpen}
+        action={handleCreate}
+        setIsOpen={handleModal}
+        title={`Editar Usuario`}
+        description={`¿Esta seguro que desea editar este usuario ${formData.name}?`}
+      />
     </>
   );
 };

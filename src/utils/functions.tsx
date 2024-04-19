@@ -26,3 +26,16 @@ export function showError(text: string) {
   const notify = () => toast.error(text);
   notify();
 }
+
+export function convertTimeToHoursWithDecimals(timeString: string): number {
+  // Split the time string into hours and minutes
+  const [hoursStr, minutesStr] = timeString.split(":");
+
+  // Convert hours and minutes to numbers
+  const hours = parseInt(hoursStr, 10);
+  const minutes = parseInt(minutesStr, 10);
+
+  // Calculate total time in decimal hours
+  const decimalHours = hours + minutes / 60;
+  return decimalHours;
+}

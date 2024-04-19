@@ -6,10 +6,19 @@ import { useParams } from "react-router-dom";
 import { COMPANY_DATA } from "../../models/company";
 import { EMPLOYER_DATA } from "../../models/employeer";
 import { TIME_DATA } from "../../models/time";
-import { filterById, showError, showSuccess } from "../../utils/functions";
+import {
+  convertTimeToHoursWithDecimals,
+  filterById,
+  showError,
+  showSuccess,
+} from "../../utils/functions";
 import { TAXES, TAXES_DATA } from "../../models/taxes";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import Talonario from "../../components/files/Talonario";
+import HoursMinutesInput from "./MinutesInput";
+import MinutesInput from "./MinutesInput";
+import TimeInput from "../../components/input/FormTIme";
+import ModalAlert from "../../components/dashboard/ModalAlert";
 
 const Cargar = () => {
   const params = useParams();
@@ -19,32 +28,66 @@ const Cargar = () => {
   const [formData, setFormData] = useState(TIME_DATA);
   const [taxesData, setTaxesData] = useState([TAXES_DATA]);
   const [period, setPeriod] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+  const handleModal = () => {
+    setIsOpen(!isOpen);
+  };
+  const handleChange = (event: any) => {
+    const value = parseInt(event.target.value);
 
+    // Ensure value is within valid range (0 to 59)
+    const clampedValue = Math.max(0, Math.min(value, 59));
+    setFormData({
+      ...formData,
+      [event.currentTarget.name]:
+        event.currentTarget.type === "number" ? clampedValue : clampedValue,
+    });
+  };
   useEffect(() => {
     const regular_pay =
-      employerData.regular_time * formData.vacations_hours +
-      employerData.regular_time * formData.sick_hours +
-      employerData.regular_time * formData.regular_time +
-      employerData.overtime * formData.overtime +
-      employerData.mealtime * formData.meal_time;
+      employerData.regular_time *
+        convertTimeToHoursWithDecimals(formData.vacations_hours) +
+      employerData.regular_time *
+        convertTimeToHoursWithDecimals(formData.sick_hours) +
+      formData.tips +
+      employerData.regular_time *
+        convertTimeToHoursWithDecimals(formData.regular_time) +
+      employerData.overtime *
+        convertTimeToHoursWithDecimals(formData.overtime) +
+      employerData.mealtime *
+        convertTimeToHoursWithDecimals(formData.meal_time);
     let aux = [TAXES_DATA];
     taxesData.map((item) => {
       item.value = setAmountTaxe(item, regular_pay);
 
       aux.push(item);
     });
-
+    console.log(
+      employerData.regular_time *
+        convertTimeToHoursWithDecimals(formData.regular_time)
+    );
     setFormData({
       ...formData,
 
       ["vacation_pay"]: Number(
-        employerData.regular_time * formData.vacations_hours
+        employerData.regular_time *
+          convertTimeToHoursWithDecimals(formData.vacations_hours)
       ),
-      ["sick_pay"]: Number(employerData.regular_time * formData.sick_hours),
-      ["overtime_pay"]: Number(employerData.overtime * formData.overtime),
-      ["meal_time_pay"]: Number(employerData.mealtime * formData.meal_time),
+      ["sick_pay"]: Number(
+        employerData.regular_time *
+          convertTimeToHoursWithDecimals(formData.sick_hours)
+      ),
+      ["overtime_pay"]: Number(
+        employerData.overtime *
+          convertTimeToHoursWithDecimals(formData.overtime)
+      ),
+      ["meal_time_pay"]: Number(
+        employerData.mealtime *
+          convertTimeToHoursWithDecimals(formData.meal_time)
+      ),
       ["regular_pay"]: Number(
-        employerData.regular_time * formData.regular_time
+        employerData.regular_time *
+          convertTimeToHoursWithDecimals(formData.regular_time)
       ),
     });
   }, [
@@ -58,11 +101,17 @@ const Cargar = () => {
   const getTotal = () => {
     var total = 0;
     const regular_pay =
-      employerData.regular_time * formData.vacations_hours +
-      employerData.regular_time * formData.sick_hours +
-      employerData.regular_time * formData.regular_time +
-      employerData.overtime * formData.overtime +
-      employerData.mealtime * formData.meal_time;
+      employerData.regular_time *
+        convertTimeToHoursWithDecimals(formData.vacations_hours) +
+      employerData.regular_time *
+        convertTimeToHoursWithDecimals(formData.sick_hours) +
+      formData.tips +
+      employerData.regular_time *
+        convertTimeToHoursWithDecimals(formData.regular_time) +
+      employerData.overtime *
+        convertTimeToHoursWithDecimals(formData.overtime) +
+      employerData.mealtime *
+        convertTimeToHoursWithDecimals(formData.meal_time);
     total = regular_pay;
     taxesData.map((item) => {
       if (item.is_active || item.requiered == 2) {
@@ -77,11 +126,17 @@ const Cargar = () => {
   const getPreTotal = () => {
     var total = 0;
     const regular_pay =
-      employerData.regular_time * formData.vacations_hours +
-      employerData.regular_time * formData.sick_hours +
-      employerData.regular_time * formData.regular_time +
-      employerData.overtime * formData.overtime +
-      employerData.mealtime * formData.meal_time;
+      employerData.regular_time *
+        convertTimeToHoursWithDecimals(formData.vacations_hours) +
+      employerData.regular_time *
+        convertTimeToHoursWithDecimals(formData.sick_hours) +
+      formData.tips +
+      employerData.regular_time *
+        convertTimeToHoursWithDecimals(formData.regular_time) +
+      employerData.overtime *
+        convertTimeToHoursWithDecimals(formData.overtime) +
+      employerData.mealtime *
+        convertTimeToHoursWithDecimals(formData.meal_time);
     total = regular_pay;
 
     return total;
@@ -94,6 +149,15 @@ const Cargar = () => {
         e.currentTarget.type === "number"
           ? parseInt(e.currentTarget.value)
           : e.currentTarget.value,
+    });
+  };
+  const handleInputTimeChange = (
+    e: React.FormEvent<HTMLInputElement>,
+    time: string
+  ) => {
+    setFormData({
+      ...formData,
+      [e.currentTarget.name]: time,
     });
   };
 
@@ -237,6 +301,7 @@ const Cargar = () => {
               placeholder=""
               type="text"
             />
+
             <CustomInputs
               class="w-1/2 mx-auto ps-1  inline-block "
               label=""
@@ -245,66 +310,83 @@ const Cargar = () => {
               placeholder=""
               type="text"
             />
+            <div className="w-1/6 mx-auto  inline-block  ">
+              <TimeInput
+                class="time-input mx-auto   inline-block "
+                label=" Horas Regulares"
+                name="regular_time"
+                onBlur={handleInputTimeChange}
+                onChange={handleInputChange}
+                value={formData.regular_time}
+                type="number"
+              />
+            </div>
+            <div className="w-1/6 mx-auto ps-1 inline-block  ">
+              <TimeInput
+                class="time-input mx-auto   inline-block "
+                label="Horas de Overtime"
+                name="overtime"
+                onBlur={handleInputTimeChange}
+                onChange={handleInputChange}
+                value={formData.overtime}
+                type="number"
+              />
+            </div>
+            <div className="w-1/6 mx-auto ps-1 inline-block  ">
+              <TimeInput
+                class="time-input mx-auto   inline-block "
+                label="Horas de Almuerzo"
+                name="meal_time"
+                onBlur={handleInputTimeChange}
+                onChange={handleInputChange}
+                value={formData.meal_time}
+                type="number"
+              />
+            </div>
+            <div className="w-1/6 mx-auto ps-1 inline-block  ">
+              <TimeInput
+                class="time-input mx-auto   inline-block "
+                label="Horas de Vacaciones"
+                name="vacations_hours"
+                onBlur={handleInputTimeChange}
+                onChange={handleInputChange}
+                value={formData.vacations_hours}
+                type="number"
+              />
+            </div>
+            <div className="w-1/6 mx-auto ps-1 inline-block  ">
+              <TimeInput
+                class="time-input mx-auto   inline-block "
+                label="Horas de enfermedad"
+                name="sick_hours"
+                onBlur={handleInputTimeChange}
+                onChange={handleInputChange}
+                value={formData.sick_hours}
+                type="number"
+              />
+            </div>
 
-            <CustomInputs
-              class="w-1/3 mx-auto pe-1  inline-block "
-              label="Horas regulares"
-              disabled={formData.period < 0}
-              onChange={handleInputChange}
-              name="regular_time"
-              value={formData.regular_time}
-              placeholder=""
-              type="number"
-            />
-            <CustomInputs
-              class="w-1/3 mx-auto pe-1 ps-1  inline-block "
-              label="Horas de sobre tiempo (overtime)"
-              placeholder=""
-              disabled={formData.period < 0}
-              name="overtime"
-              onChange={handleInputChange}
-              value={formData.overtime}
-              type="number"
-            />
-            <CustomInputs
-              class="w-1/3 mx-auto ps-1  inline-block "
-              label="Horas de almuerzo (meal time)"
-              placeholder=""
-              onChange={handleInputChange}
-              name="meal_time"
-              disabled={formData.period < 0}
-              value={formData.meal_time}
-              type="number"
-            />
-            <CustomInputs
-              class="w-1/3 mx-auto ps-1  inline-block "
-              label="Horas de vacaciones"
-              disabled={formData.period < 0}
-              name="vacations_hours"
-              onChange={handleInputChange}
-              value={formData.vacations_hours}
-              placeholder=""
-              type="number"
-            />
-            <CustomInputs
-              class="w-1/3 mx-auto pe-1  inline-block "
-              label="Horas de enfermedad"
-              name="sick_hours"
-              onChange={handleInputChange}
-              disabled={formData.period < 0}
-              value={formData.sick_hours}
-              placeholder=""
-              type="number"
-            />
+            <div className="w-1/6 mx-auto ps-1 inline-block  ">
+              <CustomInputs
+                class="time-input mx-auto   inline-block "
+                label="Propinas"
+                name="tips"
+                value={formData.tips}
+                onChange={handleInputChange}
+                type="number"
+              />
+            </div>
           </div>
 
           <div className="xl:w-full w-full ">
+            <h2 className=" text-center text-2xl">Montos</h2>
+            <hr className="mt-2 mb-6" />
             <CustomInputs
               class="w-1/3 mx-auto pe-1  inline-block "
               label="REG. PAY"
               disabled={true}
               name="regular_pay"
-              value={formData.regular_pay}
+              value={formData.regular_pay.toFixed(2)}
               placeholder=""
               type="number"
             />
@@ -313,7 +395,7 @@ const Cargar = () => {
               label="OVER TIME PAY"
               disabled={true}
               name="overtime_pay"
-              value={formData.overtime_pay}
+              value={formData.overtime_pay.toFixed(2)}
               placeholder=""
               type="number"
             />
@@ -322,7 +404,7 @@ const Cargar = () => {
               label="MEAL TIME PAY"
               disabled={true}
               name="meal_time_pay"
-              value={formData.meal_time_pay}
+              value={formData.meal_time_pay.toFixed(2)}
               placeholder=""
               type="number"
             />
@@ -331,7 +413,7 @@ const Cargar = () => {
               label="VACATION PAY"
               disabled={true}
               name="vacation_pay"
-              value={formData.vacation_pay}
+              value={formData.vacation_pay.toFixed(2)}
               placeholder=""
               type="number"
             />
@@ -339,7 +421,7 @@ const Cargar = () => {
               class="w-1/3 mx-auto mb-4 pe-1  inline-block "
               label="SICK PAY"
               disabled={true}
-              value={formData.sick_pay}
+              value={formData.sick_pay.toFixed(2)}
               placeholder=""
               type="number"
             />
@@ -348,7 +430,7 @@ const Cargar = () => {
               label="Total"
               name="sick_hours"
               disabled={true}
-              value={getPreTotal()}
+              value={getPreTotal().toFixed(2)}
               placeholder=""
               type="number"
             />
@@ -395,7 +477,7 @@ const Cargar = () => {
               class="w-1/3 mx-auto pe-1  inline-block "
               label="Total"
               disabled={true}
-              value={getTotal()}
+              value={getTotal().toFixed(2)}
               placeholder=""
               type="number"
             />
@@ -403,7 +485,7 @@ const Cargar = () => {
         </div>
         <div className="w-full text-center">
           <button
-            onClick={handleCreate}
+            onClick={handleModal}
             className="w-auto mt-4 mx-auto bg-[#333160] py-4 text-[#EED102] bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-8 text-center "
           >
             Cargar tiempo de empleado
@@ -434,6 +516,15 @@ const Cargar = () => {
           )}
         </div>
       </div>
+      <ModalAlert
+        isOpen={isOpen}
+        action={handleCreate}
+        setIsOpen={handleModal}
+        title={`Editar Usuario`}
+        description={`¿Esta seguro que desea cargar esta data por un monto de ${getTotal().toFixed(
+          2
+        )}?`}
+      />
     </>
   );
 };

@@ -8,10 +8,12 @@ import { setEmployers } from "../../utils/requestOptions";
 import { EMPLOYER_DATA } from "../../models/employeer";
 import EmployeerForm from "../../components/forms/EmployeerForm";
 import { TYPE_EMPLOYER } from "../../utils/consts";
+import ModalAlert from "../../components/dashboard/ModalAlert";
 
 const AddEmployee = () => {
   const navigate = useNavigate();
   const params = useParams();
+  const [isOpen, setIsOpen] = useState(false);
 
   const [formData, setFormData] = useState(EMPLOYER_DATA);
 
@@ -36,6 +38,9 @@ const AddEmployee = () => {
       ...formData,
       [e.currentTarget.name]: value,
     });
+  };
+  const handleModal = () => {
+    setIsOpen(!isOpen);
   };
 
   const handleCreate = () => {
@@ -80,13 +85,20 @@ const AddEmployee = () => {
         </div>
         <div className="w-full text-center">
           <button
-            onClick={handleCreate}
+            onClick={handleModal}
             className="w-auto mt-4 mx-auto bg-[#333160] py-4 text-[#EED102] bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-8 text-center "
           >
             Guardar datos
           </button>
         </div>
       </div>
+      <ModalAlert
+        isOpen={isOpen}
+        action={handleCreate}
+        setIsOpen={handleModal}
+        title={`Crear Usuario`}
+        description={`¿Esta seguro que desea crear este usuario ${formData.name} ${formData.last_name}?`}
+      />
     </>
   );
 };
