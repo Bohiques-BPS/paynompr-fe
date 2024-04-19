@@ -15,8 +15,6 @@ import {
 import { TAXES, TAXES_DATA } from "../../models/taxes";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import Talonario from "../../components/files/Talonario";
-import HoursMinutesInput from "./MinutesInput";
-import MinutesInput from "./MinutesInput";
 import TimeInput from "../../components/input/FormTIme";
 import ModalAlert from "../../components/dashboard/ModalAlert";
 
@@ -32,17 +30,7 @@ const Cargar = () => {
   const handleModal = () => {
     setIsOpen(!isOpen);
   };
-  const handleChange = (event: any) => {
-    const value = parseInt(event.target.value);
 
-    // Ensure value is within valid range (0 to 59)
-    const clampedValue = Math.max(0, Math.min(value, 59));
-    setFormData({
-      ...formData,
-      [event.currentTarget.name]:
-        event.currentTarget.type === "number" ? clampedValue : clampedValue,
-    });
-  };
   useEffect(() => {
     const regular_pay =
       employerData.regular_time *
