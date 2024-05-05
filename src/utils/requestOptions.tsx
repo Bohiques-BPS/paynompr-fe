@@ -90,6 +90,9 @@ export function editEmployers(data: object, id_employer: number) {
 export function changeStatusEmployer(id: number) {
   return Axios.request(setOptions("employers/" + id, "DELETE"));
 }
+export function deleteEmployer(id: number) {
+  return Axios.request(setOptions("employers/delete/" + id, "DELETE"));
+}
 
 export function getEmployer(id_company: number, id_employer: number) {
   return Axios.request(
@@ -125,6 +128,10 @@ export function setCompanies(data: object) {
 
 export function changeStatusCompanie(id: number) {
   return Axios.request(setOptions("companies/" + id, "DELETE"));
+}
+
+export function deleteCompanie(id: number) {
+  return Axios.request(setOptions("companies/delete/" + id, "DELETE"));
 }
 
 export function editCompanies(data: object, id: number) {

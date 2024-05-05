@@ -9,13 +9,13 @@ import { TIME_DATA } from "../../models/time";
 import {
   convertTimeToHoursWithDecimals,
   filterById,
+  getNumber,
   showError,
   showSuccess,
 } from "../../utils/functions";
 import { TAXES, TAXES_DATA } from "../../models/taxes";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import Talonario from "../../components/files/Talonario";
-import TimeInput from "../../components/input/FormTIme";
 import ModalAlert from "../../components/dashboard/ModalAlert";
 
 const Cargar = () => {
@@ -32,56 +32,80 @@ const Cargar = () => {
   };
 
   useEffect(() => {
+    console.log("data", formData.regular_hours);
     const regular_pay =
       employerData.regular_time *
-        convertTimeToHoursWithDecimals(formData.vacations_hours) +
+        convertTimeToHoursWithDecimals(
+          formData.vacations_hours + ":" + formData.vacations_min
+        ) +
       employerData.regular_time *
-        convertTimeToHoursWithDecimals(formData.sick_hours) +
+        convertTimeToHoursWithDecimals(
+          formData.sick_hours + ":" + formData.sick_min
+        ) +
       formData.tips +
       employerData.regular_time *
-        convertTimeToHoursWithDecimals(formData.regular_time) +
+        convertTimeToHoursWithDecimals(
+          formData.regular_hours + ":" + formData.regular_min
+        ) +
       employerData.overtime *
-        convertTimeToHoursWithDecimals(formData.overtime) +
+        convertTimeToHoursWithDecimals(
+          formData.over_hours + ":" + formData.over_min
+        ) +
       employerData.mealtime *
-        convertTimeToHoursWithDecimals(formData.meal_time);
+        convertTimeToHoursWithDecimals(
+          formData.meal_hours + ":" + formData.meal_min
+        );
     let aux = [TAXES_DATA];
     taxesData.map((item) => {
       item.value = setAmountTaxe(item, regular_pay);
 
       aux.push(item);
     });
-    console.log(
-      employerData.regular_time *
-        convertTimeToHoursWithDecimals(formData.regular_time)
-    );
+
     setFormData({
       ...formData,
 
       ["vacation_pay"]: Number(
         employerData.regular_time *
-          convertTimeToHoursWithDecimals(formData.vacations_hours)
+          convertTimeToHoursWithDecimals(
+            formData.vacations_hours + ":" + formData.vacations_min
+          )
       ),
       ["sick_pay"]: Number(
         employerData.regular_time *
-          convertTimeToHoursWithDecimals(formData.sick_hours)
+          convertTimeToHoursWithDecimals(
+            formData.sick_hours + ":" + formData.sick_min
+          )
       ),
       ["overtime_pay"]: Number(
         employerData.overtime *
-          convertTimeToHoursWithDecimals(formData.overtime)
+          convertTimeToHoursWithDecimals(
+            formData.over_hours + ":" + formData.over_min
+          )
       ),
       ["meal_time_pay"]: Number(
         employerData.mealtime *
-          convertTimeToHoursWithDecimals(formData.meal_time)
+          convertTimeToHoursWithDecimals(
+            formData.meal_hours + ":" + formData.meal_min
+          )
       ),
       ["regular_pay"]: Number(
         employerData.regular_time *
-          convertTimeToHoursWithDecimals(formData.regular_time)
+          convertTimeToHoursWithDecimals(
+            formData.regular_hours + ":" + formData.regular_min
+          )
       ),
     });
   }, [
-    formData.regular_time,
-    formData.overtime,
-    formData.meal_time,
+    formData.vacations_min,
+    formData.over_min,
+    formData.meal_min,
+    formData.sick_min,
+
+    formData.regular_min,
+    formData.regular_hours,
+    formData.over_hours,
+    formData.meal_hours,
     formData.vacations_hours,
     formData.sick_hours,
   ]);
@@ -90,16 +114,26 @@ const Cargar = () => {
     var total = 0;
     const regular_pay =
       employerData.regular_time *
-        convertTimeToHoursWithDecimals(formData.vacations_hours) +
+        convertTimeToHoursWithDecimals(
+          formData.vacations_hours + ":" + formData.vacations_min
+        ) +
       employerData.regular_time *
-        convertTimeToHoursWithDecimals(formData.sick_hours) +
+        convertTimeToHoursWithDecimals(
+          formData.sick_hours + ":" + formData.sick_hours
+        ) +
       formData.tips +
       employerData.regular_time *
-        convertTimeToHoursWithDecimals(formData.regular_time) +
+        convertTimeToHoursWithDecimals(
+          formData.regular_hours + ":" + formData.regular_min
+        ) +
       employerData.overtime *
-        convertTimeToHoursWithDecimals(formData.overtime) +
+        convertTimeToHoursWithDecimals(
+          formData.over_hours + ":" + formData.over_min
+        ) +
       employerData.mealtime *
-        convertTimeToHoursWithDecimals(formData.meal_time);
+        convertTimeToHoursWithDecimals(
+          formData.meal_hours + ":" + formData.meal_min
+        );
     total = regular_pay;
     taxesData.map((item) => {
       if (item.is_active || item.requiered == 2) {
@@ -115,16 +149,26 @@ const Cargar = () => {
     var total = 0;
     const regular_pay =
       employerData.regular_time *
-        convertTimeToHoursWithDecimals(formData.vacations_hours) +
+        convertTimeToHoursWithDecimals(
+          formData.vacations_hours + ":" + formData.vacations_min
+        ) +
       employerData.regular_time *
-        convertTimeToHoursWithDecimals(formData.sick_hours) +
+        convertTimeToHoursWithDecimals(
+          formData.sick_hours + ":" + formData.sick_min
+        ) +
       formData.tips +
       employerData.regular_time *
-        convertTimeToHoursWithDecimals(formData.regular_time) +
+        convertTimeToHoursWithDecimals(
+          formData.regular_hours + ":" + formData.regular_min
+        ) +
       employerData.overtime *
-        convertTimeToHoursWithDecimals(formData.overtime) +
+        convertTimeToHoursWithDecimals(
+          formData.over_hours + ":" + formData.over_min
+        ) +
       employerData.mealtime *
-        convertTimeToHoursWithDecimals(formData.meal_time);
+        convertTimeToHoursWithDecimals(
+          formData.meal_hours + ":" + formData.meal_min
+        );
     total = regular_pay;
 
     return total;
@@ -139,13 +183,13 @@ const Cargar = () => {
           : e.currentTarget.value,
     });
   };
-  const handleInputTimeChange = (
-    e: React.FormEvent<HTMLInputElement>,
-    time: string
-  ) => {
+  const handleInputTimeChange = (e: React.FormEvent<HTMLInputElement>) => {
+    let value = 0;
+    value = parseInt(e.currentTarget.value);
+    if (parseInt(e.currentTarget.value) >= 60) value = 59;
     setFormData({
       ...formData,
-      [e.currentTarget.name]: time,
+      [e.currentTarget.name]: value + "",
     });
   };
 
@@ -211,8 +255,9 @@ const Cargar = () => {
     const value = e.currentTarget.value;
     setPeriod(value);
 
-    if (timesData.length > 0 && value >= 0)
+    if (timesData.length > 0 && value >= 0) {
       setFormData(filterById(timesData, value));
+    }
   };
 
   const handleCreate = () => {
@@ -221,7 +266,7 @@ const Cargar = () => {
         // Data retrieval and processing
         setFormData(TIME_DATA);
         getData();
-
+        handleModal();
         showSuccess("Creado exitosamente.");
       })
       .catch((error) => {
@@ -279,82 +324,171 @@ const Cargar = () => {
         </label>
       </div>
       <div className="w-full  mt-4 bg-white rounded-lg shadow p-4 ">
-        <div className="flex xl:flex-col flex-col gap-4">
-          <div className="xl:w-full w-full ">
-            <CustomInputs
-              class="w-1/2 mx-auto pe-1  inline-block "
-              label=""
-              disabled={true}
-              value={companyData.name}
-              placeholder=""
-              type="text"
-            />
+        <div className="xl:w-full w-full ">
+          <CustomInputs
+            class="w-1/2 mx-auto pe-1  inline-block "
+            label=""
+            disabled={true}
+            value={companyData.name}
+            placeholder=""
+            type="text"
+          />
 
-            <CustomInputs
-              class="w-1/2 mx-auto ps-1  inline-block "
-              label=""
-              value={employerData.first_name + " " + employerData.last_name}
-              disabled={true}
-              placeholder=""
-              type="text"
-            />
-            <div className="w-1/6 mx-auto  inline-block  ">
-              <TimeInput
-                class="time-input mx-auto   inline-block "
-                label=" Horas Regulares"
-                name="regular_time"
-                onBlur={handleInputTimeChange}
+          <CustomInputs
+            class="w-1/2 mx-auto ps-1  inline-block "
+            label=""
+            value={employerData.first_name + " " + employerData.last_name}
+            disabled={true}
+            placeholder=""
+            type="text"
+          />
+        </div>
+        <div className="flex  gap-4">
+          <div className="xl:w-1/2 w-full ">
+            <h2 className=" text-center text-2xl">Horas</h2>
+            <hr className="mt-2 mb-6" />
+            <div className="w-1/2 mx-auto  inline-block  ">
+              <label className="block" htmlFor="">
+                Horas Regulares
+              </label>
+              <CustomInputs
+                class="w-5/12 mx-auto text-center inline-block time-input "
+                label=""
+                inputCss="text-center"
+                name="regular_hours"
                 onChange={handleInputChange}
-                value={formData.regular_time}
-                type="number"
+                value={formData.regular_hours}
+                placeholder=""
+                type="text"
+              />
+              <div className="w-1/6 inline-block text-center time-separator">
+                :
+              </div>
+              <CustomInputs
+                class="w-5/12 mx-auto   inline-block time-input "
+                label=""
+                onChange={handleInputTimeChange}
+                inputCss="text-center"
+                name="regular_min"
+                value={formData.regular_min}
+                placeholder=""
+                type="text"
               />
             </div>
-            <div className="w-1/6 mx-auto ps-1 inline-block  ">
-              <TimeInput
-                class="time-input mx-auto   inline-block "
-                label="Horas de Overtime"
-                name="overtime"
-                onBlur={handleInputTimeChange}
+            <div className="w-1/2 mx-auto ps-1 inline-block  ">
+              <label className="block" htmlFor="">
+                Horas de Overtime
+              </label>
+              <CustomInputs
+                class="w-5/12 mx-auto pe-1 text-center  inline-block time-input "
+                label=""
+                inputCss="text-center"
+                name="over_hours"
                 onChange={handleInputChange}
-                value={formData.overtime}
-                type="number"
+                value={formData.over_hours}
+                placeholder=""
+                type="text"
+              />
+              <div className="w-1/6 inline-block text-center time-separator">
+                :
+              </div>
+              <CustomInputs
+                class="w-5/12 mx-auto ps-1  inline-block time-input"
+                label=""
+                inputCss="text-center"
+                name="over_min"
+                onChange={handleInputTimeChange}
+                value={formData.over_min}
+                placeholder=""
+                type="text"
               />
             </div>
-            <div className="w-1/6 mx-auto ps-1 inline-block  ">
-              <TimeInput
-                class="time-input mx-auto   inline-block "
-                label="Horas de Almuerzo"
-                name="meal_time"
-                onBlur={handleInputTimeChange}
+            <div className="w-1/2 mx-auto ps-1 inline-block  ">
+              <label className="block" htmlFor="">
+                Horas de Almuerzo
+              </label>
+              <CustomInputs
+                class="w-5/12 mx-auto pe-1 text-center  inline-block time-input"
+                label=""
+                inputCss="text-center"
+                name="meal_hours"
                 onChange={handleInputChange}
-                value={formData.meal_time}
-                type="number"
+                value={formData.meal_hours}
+                placeholder=""
+                type="text"
+              />
+              <div className="w-1/6 inline-block text-center time-separator">
+                :
+              </div>
+              <CustomInputs
+                class="w-5/12 mx-auto ps-1  inline-block time-input"
+                label=""
+                onChange={handleInputTimeChange}
+                inputCss="text-center"
+                name="meal_min"
+                value={formData.meal_min}
+                placeholder=""
+                type="text"
               />
             </div>
-            <div className="w-1/6 mx-auto ps-1 inline-block  ">
-              <TimeInput
-                class="time-input mx-auto   inline-block "
-                label="Horas de Vacaciones"
+            <div className="w-1/2 mx-auto ps-1 inline-block  ">
+              <label className="block" htmlFor="">
+                Horas de Vacaciones
+              </label>
+              <CustomInputs
+                class="w-5/12 mx-auto pe-1 text-center  inline-block time-input"
+                label=""
+                inputCss="text-center"
                 name="vacations_hours"
-                onBlur={handleInputTimeChange}
                 onChange={handleInputChange}
                 value={formData.vacations_hours}
-                type="number"
+                placeholder=""
+                type="text"
+              />
+              <div className="w-1/6 inline-block text-center time-separator">
+                :
+              </div>
+              <CustomInputs
+                class="w-5/12 mx-auto ps-1  inline-block time-input"
+                label=""
+                onChange={handleInputTimeChange}
+                inputCss="text-center"
+                name="vacations_min"
+                value={formData.vacations_min}
+                placeholder=""
+                type="text"
               />
             </div>
-            <div className="w-1/6 mx-auto ps-1 inline-block  ">
-              <TimeInput
-                class="time-input mx-auto   inline-block "
-                label="Horas de enfermedad"
+            <div className="w-1/2 mx-auto ps-1 inline-block  ">
+              <label className="block" htmlFor="">
+                Horas de Enfermedad
+              </label>
+              <CustomInputs
+                class="w-5/12 mx-auto pe-1 text-center   inline-block time-input"
+                label=""
                 name="sick_hours"
-                onBlur={handleInputTimeChange}
+                inputCss="text-center"
                 onChange={handleInputChange}
                 value={formData.sick_hours}
-                type="number"
+                placeholder=""
+                type="text"
+              />
+              <div className="w-1/6 inline-block text-center time-separator">
+                :
+              </div>
+              <CustomInputs
+                class="w-5/12 mx-auto ps-1  inline-block time-input"
+                label=""
+                onChange={handleInputTimeChange}
+                inputCss="text-center"
+                name="sick_min"
+                value={formData.sick_min}
+                placeholder=""
+                type="text"
               />
             </div>
 
-            <div className="w-1/6 mx-auto ps-1 inline-block  ">
+            <div className="w-1/2 mx-auto ps-1 inline-block  ">
               <CustomInputs
                 class="time-input mx-auto   inline-block "
                 label="Propinas"
@@ -366,7 +500,7 @@ const Cargar = () => {
             </div>
           </div>
 
-          <div className="xl:w-full w-full ">
+          <div className="xl:w-1/2 w-full ">
             <h2 className=" text-center text-2xl">Montos</h2>
             <hr className="mt-2 mb-6" />
             <CustomInputs
@@ -374,7 +508,7 @@ const Cargar = () => {
               label="REG. PAY"
               disabled={true}
               name="regular_pay"
-              value={formData.regular_pay.toFixed(2)}
+              value={getNumber(formData.regular_pay)}
               placeholder=""
               type="number"
             />
@@ -383,7 +517,7 @@ const Cargar = () => {
               label="OVER TIME PAY"
               disabled={true}
               name="overtime_pay"
-              value={formData.overtime_pay.toFixed(2)}
+              value={getNumber(formData.overtime_pay)}
               placeholder=""
               type="number"
             />
@@ -392,7 +526,7 @@ const Cargar = () => {
               label="MEAL TIME PAY"
               disabled={true}
               name="meal_time_pay"
-              value={formData.meal_time_pay.toFixed(2)}
+              value={getNumber(formData.meal_time_pay)}
               placeholder=""
               type="number"
             />
@@ -401,7 +535,7 @@ const Cargar = () => {
               label="VACATION PAY"
               disabled={true}
               name="vacation_pay"
-              value={formData.vacation_pay.toFixed(2)}
+              value={getNumber(formData.vacation_pay)}
               placeholder=""
               type="number"
             />
@@ -409,7 +543,7 @@ const Cargar = () => {
               class="w-1/3 mx-auto mb-4 pe-1  inline-block "
               label="SICK PAY"
               disabled={true}
-              value={formData.sick_pay.toFixed(2)}
+              value={getNumber(formData.sick_pay)}
               placeholder=""
               type="number"
             />
@@ -418,58 +552,67 @@ const Cargar = () => {
               label="Total"
               name="sick_hours"
               disabled={true}
-              value={getPreTotal().toFixed(2)}
-              placeholder=""
-              type="number"
-            />
-            <h2 className="mt-2 text-center text-2xl">Taxes</h2>
-            <hr className="mt-2 mb-6" />
-
-            {taxesData.map((item) => (
-              <>
-                <label
-                  className={` block mb-2   font-medium text-gray-700 w-1/3 mx-auto pe-1  inline-block `}
-                >
-                  {item.requiered === 1 && (
-                    <>
-                      <input
-                        key={item.id}
-                        type="checkbox"
-                        checked={item.is_active}
-                        onChange={(e) => handleCheck(e, item)}
-                      />
-                    </>
-                  )}
-                  <span>
-                    {" "}
-                    {item.name}{" "}
-                    {item.type_taxe != 1 ? (
-                      <span>( + )</span>
-                    ) : (
-                      <span>( - )</span>
-                    )}
-                  </span>
-
-                  <input
-                    className={` bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5`}
-                    tabIndex={0}
-                    type="number"
-                    onChange={(e) => handleitem(e, item)}
-                    name={item.name}
-                    value={item.value}
-                  />
-                </label>
-              </>
-            ))}
-            <CustomInputs
-              class="w-1/3 mx-auto pe-1  inline-block "
-              label="Total"
-              disabled={true}
-              value={getTotal().toFixed(2)}
+              value={getNumber(getPreTotal())}
               placeholder=""
               type="number"
             />
           </div>
+        </div>
+        <div className="xl:w-full w-full ">
+          {taxesData.length > 0 && (
+            <>
+              <h2 className="mt-2 text-center text-2xl">Taxes</h2>
+              <hr className="mt-2 mb-6" />
+            </>
+          )}
+
+          {taxesData.map((item) => (
+            <div
+              key={item.id}
+              className={` block mb-2   font-medium text-gray-700 w-1/3 mx-auto pe-1  inline-block `}
+            >
+              <label>
+                {item.requiered === 1 && (
+                  <>
+                    <input
+                      key={item.id}
+                      type="checkbox"
+                      checked={item.is_active}
+                      onChange={(e) => handleCheck(e, item)}
+                    />
+                  </>
+                )}
+                <span>
+                  {" "}
+                  {item.name}{" "}
+                  {item.type_taxe != 1 ? (
+                    <span>( + )</span>
+                  ) : (
+                    <span>( - )</span>
+                  )}
+                </span>
+
+                <input
+                  className={` bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5`}
+                  tabIndex={0}
+                  type="number"
+                  onChange={(e) => handleitem(e, item)}
+                  name={item.name}
+                  value={getNumber(item.value)}
+                />
+              </label>
+            </div>
+          ))}
+        </div>
+        <div className="xl:w-full w-full text-end ">
+          <CustomInputs
+            class="w-1/3 mx-auto pe-1  inline-block text-start "
+            label="Total"
+            disabled={true}
+            value={getNumber(getTotal())}
+            placeholder=""
+            type="number"
+          />
         </div>
         <div className="w-full text-center">
           <button

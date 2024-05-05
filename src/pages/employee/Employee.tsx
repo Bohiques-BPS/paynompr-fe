@@ -13,13 +13,19 @@ import ModalAlert from "../../components/dashboard/ModalAlert";
 import FloatButton from "../../components/dashboard/FloatButton";
 
 import CustomInputs from "../../components/forms/CustomInputs";
-import { changeStatusEmployer, getEmployers } from "../../utils/requestOptions";
+import {
+  changeStatusEmployer,
+  deleteEmployer,
+  getEmployers,
+} from "../../utils/requestOptions";
 
 import { Link, useParams } from "react-router-dom";
 import { showError, showSuccess } from "../../utils/functions";
 
 const Empleados = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpen2, setIsOpen2] = useState(false);
+
   const [search, setSearch] = useState("");
   const [row, setRow] = useState({ first_name: "", id: 0, is_deleted: false });
 
@@ -97,6 +103,18 @@ const Empleados = () => {
       ),
       selector: (row: { year: any }) => row.year,
     },
+    {
+      name: "Eliminar",
+      button: true,
+      cell: (row: { first_name: string; id: number; is_deleted: boolean }) => (
+        <>
+          <a onClick={() => handleModalClick2(row)} rel="noopener noreferrer">
+            <FontAwesomeIcon icon={faBan} className="text-2xl text-red-800" />
+          </a>
+        </>
+      ),
+      selector: (row: { year: any }) => row.year,
+    },
   ];
 
   const changeStatus = () => {
@@ -112,7 +130,26 @@ const Empleados = () => {
         showError(error.response.data.detail);
       });
   };
+  const deleteEmployerModal = () => {
+    deleteEmployer(row.id)
+      .then((data: any) => {
+        data = data.data;
 
+        // Data retrieval and processing
+        if (data.ok) {
+          showSuccess("Cambiando exitosamente");
+          getData();
+          handleModal2();
+        } else {
+          showError(data.msg);
+          handleModal2();
+        }
+      })
+      .catch((error) => {
+        // If the query fails, an error will be displayed on the terminal.
+        showError(error.response.data.detail);
+      });
+  };
   const handleModalClick = (data: {
     first_name: string;
     id: number;
@@ -120,6 +157,14 @@ const Empleados = () => {
   }) => {
     setRow(data);
     setIsOpen(!isOpen);
+  };
+  const handleModalClick2 = (data: {
+    first_name: string;
+    id: number;
+    is_deleted: boolean;
+  }) => {
+    setRow(data);
+    setIsOpen2(!isOpen2);
   };
 
   useEffect(() => {
@@ -137,6 +182,9 @@ const Empleados = () => {
 
   const handleModal = () => {
     setIsOpen(!isOpen);
+  };
+  const handleModal2 = () => {
+    setIsOpen2(!isOpen2);
   };
 
   const handleSearch = (e: React.FormEvent<HTMLInputElement>) => {
@@ -177,6 +225,13 @@ const Empleados = () => {
           description={`¿Esta seguro que desea ${
             row.is_deleted ? "activar" : "desactivar"
           } el empleado: ${row.first_name}?`}
+        />
+        <ModalAlert
+          isOpen={isOpen2}
+          action={deleteEmployerModal}
+          setIsOpen={handleModal2}
+          title={`Eliminar`}
+          description={`¿Esta seguro que desea Eliminar el empleado: ${row.first_name}?`}
         />
         <FloatButton to="agregar" />
       </div>

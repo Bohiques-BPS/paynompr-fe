@@ -15,7 +15,7 @@ type Props = {
 const TaxesForm = (props: Props) => {
   return (
     <>
-      <div className="xl:w-1/3 m-auto w-full">
+      <div className="xl:w-2/5 m-auto w-full">
         <CustomInputs
           class="w-full mx-auto  inline-block "
           label="Titulo"

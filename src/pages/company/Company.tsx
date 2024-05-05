@@ -5,6 +5,7 @@ import {
   faMoneyBill,
   faCircleCheck,
   faEdit,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,7 +14,11 @@ import ModalAlert from "../../components/dashboard/ModalAlert";
 import FloatButton from "../../components/dashboard/FloatButton";
 
 import CustomInputs from "../../components/forms/CustomInputs";
-import { changeStatusCompanie, getCompanies } from "../../utils/requestOptions";
+import {
+  changeStatusCompanie,
+  deleteCompanie,
+  getCompanies,
+} from "../../utils/requestOptions";
 import { showError, showSuccess } from "../../utils/functions";
 
 const getRoute = (id: string) => {
@@ -26,6 +31,8 @@ const getRouteTaxes = (id: string) => {
 
 const Empresas = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpen2, setIsOpen2] = useState(false);
+
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
   const [row, setRow] = useState({ name: "", id: 0, is_deleted: false });
@@ -52,6 +59,26 @@ const Empresas = () => {
         showSuccess("Cambiando exitosamente");
         getData();
         handleModal();
+      })
+      .catch((error) => {
+        // If the query fails, an error will be displayed on the terminal.
+        showError(error.response.data.detail);
+      });
+  };
+  const deleteCompanieModal = () => {
+    deleteCompanie(row.id)
+      .then((data: any) => {
+        data = data.data;
+
+        // Data retrieval and processing
+        if (data.ok) {
+          showSuccess("Cambiando exitosamente");
+          getData();
+          handleModal2();
+        } else {
+          showError(data.msg);
+          handleModal2();
+        }
       })
       .catch((error) => {
         // If the query fails, an error will be displayed on the terminal.
@@ -106,7 +133,19 @@ const Empresas = () => {
           )}
         </>
       ),
-      selector: (row: { year: any }) => row.year,
+      selector: (row: { is_deleted: any }) => row.is_deleted,
+    },
+    {
+      name: "Eliminar",
+      button: true,
+      cell: (row: { name: string; id: number; is_deleted: boolean }) => (
+        <>
+          <a onClick={() => handleModalClick2(row)} rel="noopener noreferrer">
+            <FontAwesomeIcon icon={faTrash} className="text-2xl text-red-800" />
+          </a>
+        </>
+      ),
+      selector: (row: { is_deleted: any }) => row.is_deleted,
     },
 
     {
@@ -144,8 +183,19 @@ const Empresas = () => {
     setRow(data);
     setIsOpen(!isOpen);
   };
+  const handleModalClick2 = (data: {
+    name: string;
+    id: number;
+    is_deleted: boolean;
+  }) => {
+    setRow(data);
+    setIsOpen2(!isOpen);
+  };
   const handleModal = () => {
     setIsOpen(!isOpen);
+  };
+  const handleModal2 = () => {
+    setIsOpen2(!isOpen2);
   };
 
   const handleSearch = (e: React.FormEvent<HTMLInputElement>) => {
@@ -184,7 +234,15 @@ const Empresas = () => {
         title={`${row.is_deleted ? "Activar" : "Desactivar"}`}
         description={`¿Esta seguro que desea ${
           row.is_deleted ? "activar" : "desactivar"
-        } el codigo de: ${row.name}?`}
+        } la compañia: ${row.name}?`}
+      />
+      <ModalAlert
+        isOpen={isOpen2}
+        action={deleteCompanieModal}
+        setIsOpen={handleModal2}
+        title={`Eliminar`}
+        description={`¿Esta seguro que desea Eliminar
+         la compañia: ${row.name}?`}
       />
       <FloatButton to="agregar" />
     </>

@@ -81,7 +81,7 @@ const AddCompany = () => {
         action={handleCreate}
         setIsOpen={handleModal}
         title={`Editar Usuario`}
-        description={`¿Esta seguro que desea editar este usuario ${formData.name}?`}
+        description={`¿Esta seguro que desea crear esta empresa ${formData.name}?`}
       />
     </>
   );

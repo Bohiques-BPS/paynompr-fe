@@ -17,6 +17,11 @@ export function filterById(jsonObject: any, id: number) {
   })[0];
 }
 
+export function getNumber(number: number) {
+  if (number) return number.toFixed(2);
+  else return 0;
+}
+
 export function showSuccess(text: string) {
   const notify = () => toast.success(text);
   notify();

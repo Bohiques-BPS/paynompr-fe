@@ -75,21 +75,31 @@ const Talonario = ({ id_period, id_company, id_employer }: Props) => {
     var total = 0;
     const regular_pay =
       employerData.regular_time *
-        convertTimeToHoursWithDecimals(timeData.vacations_hours) +
+        convertTimeToHoursWithDecimals(
+          timeData.vacations_hours + ":" + timeData.vacations_min
+        ) +
       employerData.regular_time *
-        convertTimeToHoursWithDecimals(timeData.sick_hours) +
+        convertTimeToHoursWithDecimals(
+          timeData.sick_hours + ":" + timeData.sick_hours
+        ) +
+      timeData.tips +
       employerData.regular_time *
-        convertTimeToHoursWithDecimals(timeData.regular_time) +
+        convertTimeToHoursWithDecimals(
+          timeData.regular_hours + ":" + timeData.regular_min
+        ) +
       employerData.overtime *
-        convertTimeToHoursWithDecimals(timeData.overtime) +
+        convertTimeToHoursWithDecimals(
+          timeData.over_hours + ":" + timeData.over_min
+        ) +
       employerData.mealtime *
-        convertTimeToHoursWithDecimals(timeData.meal_time);
+        convertTimeToHoursWithDecimals(
+          timeData.meal_hours + ":" + timeData.meal_min
+        );
     total = regular_pay;
     taxesData.map((item) => {
       item.amount = setAmountTaxe(item);
-      console.log(item.amount);
+
       total = total + item.amount;
-      console.log(total);
     });
     return total;
   };
