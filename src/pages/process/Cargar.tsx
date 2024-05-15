@@ -343,11 +343,11 @@ const Cargar = () => {
             type="text"
           />
         </div>
-        <div className="flex  gap-4">
-          <div className="xl:w-1/2 w-full ">
-            <h2 className=" text-center text-2xl">Horas</h2>
+        <div className="flex flex-col gap-4">
+          <div className="xl:w-full w-full ">
+            <h2 className="mt-2 text-center text-2xl">Horas</h2>
             <hr className="mt-2 mb-6" />
-            <div className="w-1/2 mx-auto  inline-block  ">
+            <div className="w-1/6 mx-auto  inline-block  ">
               <label className="block" htmlFor="">
                 Horas Regulares
               </label>
@@ -375,7 +375,7 @@ const Cargar = () => {
                 type="text"
               />
             </div>
-            <div className="w-1/2 mx-auto ps-1 inline-block  ">
+            <div className="w-1/6 mx-auto ps-1 inline-block  ">
               <label className="block" htmlFor="">
                 Horas de Overtime
               </label>
@@ -403,7 +403,7 @@ const Cargar = () => {
                 type="text"
               />
             </div>
-            <div className="w-1/2 mx-auto ps-1 inline-block  ">
+            <div className="w-1/6 mx-auto ps-1 inline-block  ">
               <label className="block" htmlFor="">
                 Horas de Almuerzo
               </label>
@@ -431,7 +431,7 @@ const Cargar = () => {
                 type="text"
               />
             </div>
-            <div className="w-1/2 mx-auto ps-1 inline-block  ">
+            <div className="w-1/6 mx-auto ps-1 inline-block  ">
               <label className="block" htmlFor="">
                 Horas de Vacaciones
               </label>
@@ -459,7 +459,7 @@ const Cargar = () => {
                 type="text"
               />
             </div>
-            <div className="w-1/2 mx-auto ps-1 inline-block  ">
+            <div className="w-1/6 mx-auto ps-1 inline-block  ">
               <label className="block" htmlFor="">
                 Horas de Enfermedad
               </label>
@@ -488,7 +488,7 @@ const Cargar = () => {
               />
             </div>
 
-            <div className="w-1/2 mx-auto ps-1 inline-block  ">
+            <div className="w-1/6 mx-auto ps-1 inline-block  ">
               <CustomInputs
                 class="time-input mx-auto   inline-block "
                 label="Propinas"
@@ -500,12 +500,13 @@ const Cargar = () => {
             </div>
           </div>
 
-          <div className="xl:w-1/2 w-full ">
-            <h2 className=" text-center text-2xl">Montos</h2>
+          <div className="xl:w-full      w-full ">
+            <h2 className="mt-2 text-center text-2xl">Montos</h2>
             <hr className="mt-2 mb-6" />
             <CustomInputs
-              class="w-1/3 mx-auto pe-1  inline-block "
+              class="w-1/6 mx-auto pe-1  inline-block "
               label="REG. PAY"
+              inputCss="text-center"
               disabled={true}
               name="regular_pay"
               value={getNumber(formData.regular_pay)}
@@ -513,101 +514,108 @@ const Cargar = () => {
               type="number"
             />
             <CustomInputs
-              class="w-1/3 mx-auto pe-1  inline-block "
+              class="w-1/6 mx-auto pe-1  inline-block "
               label="OVER TIME PAY"
               disabled={true}
+              inputCss="text-center"
               name="overtime_pay"
               value={getNumber(formData.overtime_pay)}
               placeholder=""
               type="number"
             />
             <CustomInputs
-              class="w-1/3 mx-auto pe-1  inline-block "
+              class="w-1/6 mx-auto pe-1  inline-block "
               label="MEAL TIME PAY"
               disabled={true}
+              inputCss="text-center"
               name="meal_time_pay"
               value={getNumber(formData.meal_time_pay)}
               placeholder=""
               type="number"
             />
             <CustomInputs
-              class="w-1/3 mx-auto pe-1  inline-block "
+              class="w-1/6 mx-auto pe-1  inline-block "
               label="VACATION PAY"
               disabled={true}
+              inputCss="text-center"
               name="vacation_pay"
               value={getNumber(formData.vacation_pay)}
               placeholder=""
               type="number"
             />
             <CustomInputs
-              class="w-1/3 mx-auto mb-4 pe-1  inline-block "
+              class="w-1/6 mx-auto mb-4 pe-1  inline-block "
               label="SICK PAY"
               disabled={true}
+              inputCss="text-center"
               value={getNumber(formData.sick_pay)}
               placeholder=""
               type="number"
             />
             <CustomInputs
-              class="w-1/3 mx-auto pe-1  inline-block "
+              class="w-1/6 mx-auto pe-1  inline-block "
               label="Total"
               name="sick_hours"
               disabled={true}
+              inputCss="text-center"
               value={getNumber(getPreTotal())}
               placeholder=""
               type="number"
             />
           </div>
-        </div>
-        <div className="xl:w-full w-full ">
-          {taxesData.length > 0 && (
-            <>
-              <h2 className="mt-2 text-center text-2xl">Taxes</h2>
-              <hr className="mt-2 mb-6" />
-            </>
-          )}
+          <div className="xl:w-full w-1/6 ">
+            {taxesData.length > 0 && (
+              <>
+                <h2 className="mt-2 text-center text-2xl">Taxes</h2>
+                <hr className="mt-2 mb-6" />
+              </>
+            )}
 
-          {taxesData.map((item) => (
-            <div
-              key={item.id}
-              className={` block mb-2   font-medium text-gray-700 w-1/3 mx-auto pe-1  inline-block `}
-            >
-              <label>
-                {item.requiered === 1 && (
-                  <>
-                    <input
-                      key={item.id}
-                      type="checkbox"
-                      checked={item.is_active}
-                      onChange={(e) => handleCheck(e, item)}
-                    />
-                  </>
-                )}
-                <span>
-                  {" "}
-                  {item.name}{" "}
-                  {item.type_taxe != 1 ? (
-                    <span>( + )</span>
-                  ) : (
-                    <span>( - )</span>
+            {taxesData.map((item) => (
+              <div
+                key={item.id}
+                className={` block mb-2   font-medium text-gray-700 w-1/4 mx-auto pe-1  inline-block `}
+              >
+                <label>
+                  {item.requiered === 1 && (
+                    <>
+                      <input
+                        key={item.id}
+                        type="checkbox"
+                        checked={item.is_active}
+                        onChange={(e) => handleCheck(e, item)}
+                      />
+                    </>
                   )}
-                </span>
+                  <span>
+                    {" "}
+                    {item.name}{" "}
+                    {item.type_taxe != 1 ? (
+                      <span>( + )</span>
+                    ) : (
+                      <span>( - )</span>
+                    )}
+                  </span>
 
-                <input
-                  className={` bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5`}
-                  tabIndex={0}
-                  type="number"
-                  onChange={(e) => handleitem(e, item)}
-                  name={item.name}
-                  value={getNumber(item.value)}
-                />
-              </label>
-            </div>
-          ))}
+                  <input
+                    className={` bg-gray-50 text-sm text-center invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5`}
+                    tabIndex={0}
+                    type="number"
+                    onChange={(e) => handleitem(e, item)}
+                    name={item.name}
+                    value={getNumber(item.value)}
+                  />
+                </label>
+              </div>
+            ))}
+          </div>
         </div>
+
         <div className="xl:w-full w-full text-end ">
           <CustomInputs
-            class="w-1/3 mx-auto pe-1  inline-block text-start "
+            class="w-1/6 mx-auto pe-1  inline-block text-center "
             label="Total"
+            inputCss="text-center border-0"
             disabled={true}
             value={getNumber(getTotal())}
             placeholder=""
