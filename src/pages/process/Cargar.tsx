@@ -42,7 +42,13 @@ const Cargar = () => {
         convertTimeToHoursWithDecimals(
           formData.sick_hours + ":" + formData.sick_min
         ) +
+      employerData.regular_time *
+        convertTimeToHoursWithDecimals(
+          formData.holiday_hours + ":" + formData.holiday_min
+        ) +
       formData.tips +
+      formData.commissions +
+      formData.concessions +
       employerData.regular_time *
         convertTimeToHoursWithDecimals(
           formData.regular_hours + ":" + formData.regular_min
@@ -64,7 +70,12 @@ const Cargar = () => {
 
     setFormData({
       ...formData,
-
+      ["holyday_pay"]: Number(
+        employerData.regular_time *
+          convertTimeToHoursWithDecimals(
+            formData.holiday_hours + ":" + formData.holiday_min
+          )
+      ),
       ["vacation_pay"]: Number(
         employerData.regular_time *
           convertTimeToHoursWithDecimals(
@@ -101,7 +112,11 @@ const Cargar = () => {
     formData.over_min,
     formData.meal_min,
     formData.sick_min,
-
+    formData.tips,
+    formData.commissions,
+    formData.concessions,
+    formData.holiday_hours,
+    formData.holiday_min,
     formData.regular_min,
     formData.regular_hours,
     formData.over_hours,
@@ -121,7 +136,13 @@ const Cargar = () => {
         convertTimeToHoursWithDecimals(
           formData.sick_hours + ":" + formData.sick_hours
         ) +
+      employerData.regular_time *
+        convertTimeToHoursWithDecimals(
+          formData.holiday_hours + ":" + formData.holiday_min
+        ) +
       formData.tips +
+      formData.commissions +
+      formData.concessions +
       employerData.regular_time *
         convertTimeToHoursWithDecimals(
           formData.regular_hours + ":" + formData.regular_min
@@ -156,7 +177,13 @@ const Cargar = () => {
         convertTimeToHoursWithDecimals(
           formData.sick_hours + ":" + formData.sick_min
         ) +
+      employerData.regular_time *
+        convertTimeToHoursWithDecimals(
+          formData.holiday_hours + ":" + formData.holiday_min
+        ) +
       formData.tips +
+      formData.commissions +
+      formData.concessions +
       employerData.regular_time *
         convertTimeToHoursWithDecimals(
           formData.regular_hours + ":" + formData.regular_min
@@ -487,13 +514,63 @@ const Cargar = () => {
                 type="text"
               />
             </div>
+            <div className="w-1/6 mx-auto ps-1 inline-block  ">
+              <label className="block" htmlFor="">
+                Horas de Feriados
+              </label>
+              <CustomInputs
+                class="w-5/12 mx-auto pe-1 text-center   inline-block time-input"
+                label=""
+                name="holiday_hours"
+                inputCss="text-center"
+                onChange={handleInputChange}
+                value={formData.holiday_hours}
+                placeholder=""
+                type="text"
+              />
+              <div className="w-1/6 inline-block text-center time-separator">
+                :
+              </div>
+              <CustomInputs
+                class="w-5/12 mx-auto ps-1  inline-block time-input"
+                label=""
+                onChange={handleInputTimeChange}
+                inputCss="text-center"
+                name="holiday_min"
+                value={formData.holiday_min}
+                placeholder=""
+                type="text"
+              />
+            </div>
+
+            <div className="w-1/6 mx-auto ps-1 inline-block  ">
+              <CustomInputs
+                class="time-input mx-auto pe-1  inline-block "
+                label="Propinas"
+                inputCss="text-center"
+                name="tips"
+                value={formData.tips}
+                onChange={handleInputChange}
+                type="number"
+              />
+              <CustomInputs
+                class="time-input mx-auto ps-1   inline-block "
+                label="Comisiones"
+                name="commissions"
+                inputCss="text-center"
+                value={formData.commissions}
+                onChange={handleInputChange}
+                type="number"
+              />
+            </div>
 
             <div className="w-1/6 mx-auto ps-1 inline-block  ">
               <CustomInputs
                 class="time-input mx-auto   inline-block "
-                label="Propinas"
-                name="tips"
-                value={formData.tips}
+                label="Concesiones"
+                name="concessions"
+                inputCss="text-center"
+                value={formData.concessions}
                 onChange={handleInputChange}
                 type="number"
               />
@@ -549,6 +626,15 @@ const Cargar = () => {
               disabled={true}
               inputCss="text-center"
               value={getNumber(formData.sick_pay)}
+              placeholder=""
+              type="number"
+            />
+            <CustomInputs
+              class="w-1/6 mx-auto mb-4 pe-1  inline-block "
+              label="HOLYDAY PAY"
+              disabled={true}
+              inputCss="text-center"
+              value={getNumber(formData.holyday_pay)}
               placeholder=""
               type="number"
             />

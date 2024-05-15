@@ -16,11 +16,15 @@ export const TIME_DATA = {
   payments: [PAYMENT_DATA],
   vacations_hours: "00",
   vacations_min: "00",
+  holiday_hours: "00",
+  holiday_min: "00",
 
+  commissions: 0,
+  concessions: 0,
   sick_hours: "00",
 
   sick_min: "00",
-
+  holyday_pay: 0,
   vacation_pay: 0,
   sick_pay: 0,
   meal_time_pay: 0,
@@ -34,14 +38,18 @@ export interface TIME {
   regular_pay: number;
   vacation_pay: number;
   meal_time_pay: number;
+  holyday_pay: number;
   overtime_pay: number;
+  commissions: number;
+  concessions: number;
   sick_pay: number;
   created_at: Date;
   payments: [PAYMENT];
   regular_hours: string;
   regular_min: string;
   over_min: string;
-
+  holiday_hours: string;
+  holiday_min: string;
   over_hours: string;
   meal_hours: string;
   meal_min: string;
