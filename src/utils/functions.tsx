@@ -17,8 +17,8 @@ export function filterById(jsonObject: any, id: number) {
   })[0];
 }
 
-export function getNumber(number: number) {
-  if (number) return number.toFixed(2);
+export function getNumber(number: number): number {
+  if (number) return parseFloat(number.toFixed(2));
   else return 0;
 }
 

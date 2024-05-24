@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import CustomInputs from "../../components/forms/CustomInputs";
 
-import { getCompanyWithEmployer, setTime } from "../../utils/requestOptions";
+import {
+  editTime,
+  getCompanyWithEmployer,
+  setTime,
+} from "../../utils/requestOptions";
 import { useParams } from "react-router-dom";
 import { COMPANY_DATA } from "../../models/company";
 import { EMPLOYER_DATA } from "../../models/employeer";
@@ -46,9 +50,9 @@ const Cargar = () => {
         convertTimeToHoursWithDecimals(
           formData.holiday_hours + ":" + formData.holiday_min
         ) +
-      formData.tips +
-      formData.commissions +
-      formData.concessions +
+      getNumber(formData.tips) +
+      getNumber(formData.commissions) +
+      getNumber(formData.concessions) +
       employerData.regular_time *
         convertTimeToHoursWithDecimals(
           formData.regular_hours + ":" + formData.regular_min
@@ -70,6 +74,7 @@ const Cargar = () => {
 
     setFormData({
       ...formData,
+      ["payment"]: taxesData,
       ["holyday_pay"]: Number(
         employerData.regular_time *
           convertTimeToHoursWithDecimals(
@@ -123,6 +128,7 @@ const Cargar = () => {
     formData.meal_hours,
     formData.vacations_hours,
     formData.sick_hours,
+    period,
   ]);
 
   const getTotal = () => {
@@ -140,9 +146,9 @@ const Cargar = () => {
         convertTimeToHoursWithDecimals(
           formData.holiday_hours + ":" + formData.holiday_min
         ) +
-      formData.tips +
-      formData.commissions +
-      formData.concessions +
+      getNumber(formData.tips) +
+      getNumber(formData.commissions) +
+      getNumber(formData.concessions) +
       employerData.regular_time *
         convertTimeToHoursWithDecimals(
           formData.regular_hours + ":" + formData.regular_min
@@ -181,9 +187,9 @@ const Cargar = () => {
         convertTimeToHoursWithDecimals(
           formData.holiday_hours + ":" + formData.holiday_min
         ) +
-      formData.tips +
-      formData.commissions +
-      formData.concessions +
+      getNumber(formData.tips) +
+      getNumber(formData.commissions) +
+      getNumber(formData.concessions) +
       employerData.regular_time *
         convertTimeToHoursWithDecimals(
           formData.regular_hours + ":" + formData.regular_min
@@ -206,7 +212,7 @@ const Cargar = () => {
       ...formData,
       [e.currentTarget.name]:
         e.currentTarget.type === "number"
-          ? parseInt(e.currentTarget.value)
+          ? parseFloat(e.currentTarget.value)
           : e.currentTarget.value,
     });
   };
@@ -239,7 +245,7 @@ const Cargar = () => {
 
     setFormData({
       ...formData,
-      ["payments"]: taxesData,
+      ["payment"]: taxesData,
     });
   };
 
@@ -261,7 +267,7 @@ const Cargar = () => {
 
     setFormData({
       ...formData,
-      ["payments"]: taxesData,
+      ["payment"]: taxesData,
     });
   };
 
@@ -288,18 +294,35 @@ const Cargar = () => {
   };
 
   const handleCreate = () => {
-    setTime(formData, Number(params.id_employer))
-      .then(() => {
-        // Data retrieval and processing
-        setFormData(TIME_DATA);
-        getData();
-        handleModal();
-        showSuccess("Creado exitosamente.");
-      })
-      .catch((error) => {
-        // If the query fails, an error will be displayed on the terminal.
-        showError(error.response.data.detail);
-      });
+    formData.payment = taxesData;
+
+    if (formData.id == 0) {
+      setTime(formData, Number(params.id_employer))
+        .then(() => {
+          // Data retrieval and processing
+          setFormData(TIME_DATA);
+          getData();
+          handleModal();
+          showSuccess("Creado exitosamente.");
+        })
+        .catch((error) => {
+          // If the query fails, an error will be displayed on the terminal.
+          showError(error.response.data.detail);
+        });
+    } else {
+      editTime(formData, Number(formData.id))
+        .then(() => {
+          // Data retrieval and processing
+          setFormData(TIME_DATA);
+          getData();
+          handleModal();
+          showSuccess("Editado exitosamente.");
+        })
+        .catch((error) => {
+          // If the query fails, an error will be displayed on the terminal.
+          showError(error.response.data.detail);
+        });
+    }
   };
   const getData = () => {
     getCompanyWithEmployer(
@@ -638,18 +661,20 @@ const Cargar = () => {
               placeholder=""
               type="number"
             />
+          </div>
+          <div className="xl:w-full w-full text-end ">
             <CustomInputs
-              class="w-1/6 mx-auto pe-1  inline-block "
+              class="w-1/6 mx-auto pe-1  inline-block text-center "
               label="Total"
               name="sick_hours"
               disabled={true}
-              inputCss="text-center"
+              inputCss="text-center border-0"
               value={getNumber(getPreTotal())}
               placeholder=""
               type="number"
             />
           </div>
-          <div className="xl:w-full w-1/6 ">
+          <div className="xl:w-full w-full ">
             {taxesData.length > 0 && (
               <>
                 <h2 className="mt-2 text-center text-2xl">Taxes</h2>
@@ -660,7 +685,7 @@ const Cargar = () => {
             {taxesData.map((item) => (
               <div
                 key={item.id}
-                className={` block mb-2   font-medium text-gray-700 w-1/4 mx-auto pe-1  inline-block `}
+                className={` block mb-2   font-medium text-gray-700 w-1/6 mx-auto pe-1  inline-block `}
               >
                 <label>
                   {item.requiered === 1 && (
@@ -745,7 +770,7 @@ const Cargar = () => {
         isOpen={isOpen}
         action={handleCreate}
         setIsOpen={handleModal}
-        title={`Editar Usuario`}
+        title={`Cargar Hora`}
         description={`¿Esta seguro que desea cargar esta data por un monto de ${getTotal().toFixed(
           2
         )}?`}

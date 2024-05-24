@@ -6,7 +6,10 @@ import { COMPANY_DATA } from "../../models/company";
 import { TIME_DATA } from "../../models/time";
 import { PAYMENT, PAYMENT_DATA } from "../../models/payment";
 import Moment from "moment";
-import { convertTimeToHoursWithDecimals } from "../../utils/functions";
+import {
+  convertTimeToHoursWithDecimals,
+  getNumber,
+} from "../../utils/functions";
 
 // Create styles
 const styles = StyleSheet.create({
@@ -82,7 +85,9 @@ const Talonario = ({ id_period, id_company, id_employer }: Props) => {
         convertTimeToHoursWithDecimals(
           timeData.sick_hours + ":" + timeData.sick_hours
         ) +
-      timeData.tips +
+      getNumber(timeData.tips) +
+      getNumber(timeData.commissions) +
+      getNumber(timeData.concessions) +
       employerData.regular_time *
         convertTimeToHoursWithDecimals(
           timeData.regular_hours + ":" + timeData.regular_min
@@ -146,27 +151,39 @@ const Talonario = ({ id_period, id_company, id_employer }: Props) => {
             </View>
             <View style={styles.row}>
               <Text style={styles.section}>REG. PAY</Text>
-              <Text style={styles.section}>${timeData.regular_pay}</Text>
-              <Text style={styles.section}>${timeData.regular_pay * 12}</Text>
+              <Text style={styles.section}>
+                ${getNumber(timeData.regular_pay)}
+              </Text>
+              <Text style={styles.section}>
+                ${getNumber(timeData.regular_pay * 12)}
+              </Text>
             </View>
             <View style={styles.row}>
               <Text style={styles.section}>OVER TIME</Text>
-              <Text style={styles.section}>${timeData.overtime_pay}</Text>
+              <Text style={styles.section}>
+                ${getNumber(timeData.overtime_pay)}
+              </Text>
               <Text style={styles.section}></Text>
             </View>
             <View style={styles.row}>
               <Text style={styles.section}>MEAL TIME</Text>
-              <Text style={styles.section}>${timeData.meal_time_pay}</Text>
+              <Text style={styles.section}>
+                ${getNumber(timeData.meal_time_pay)}
+              </Text>
               <Text style={styles.section}></Text>
             </View>
             <View style={styles.row}>
               <Text style={styles.section}>SICK TIME</Text>
-              <Text style={styles.section}>${timeData.sick_pay}</Text>
+              <Text style={styles.section}>
+                ${getNumber(timeData.sick_pay)}
+              </Text>
               <Text style={styles.section}></Text>
             </View>
             <View style={styles.row}>
               <Text style={styles.section}>VACATION TIME</Text>
-              <Text style={styles.section}>${timeData.vacation_pay}</Text>
+              <Text style={styles.section}>
+                ${getNumber(timeData.vacation_pay)}
+              </Text>
               <Text style={styles.section}></Text>
             </View>
           </View>
@@ -179,9 +196,9 @@ const Talonario = ({ id_period, id_company, id_employer }: Props) => {
             {taxesData.map((item, i) => (
               <View key={i} style={styles.row}>
                 <Text style={styles.section}>{item.name}</Text>
-                <Text style={styles.section}>${item.amount}</Text>
+                <Text style={styles.section}>${getNumber(item.amount)}</Text>
                 <Text style={styles.section}>
-                  ${(item.amount * 12).toFixed(2)}{" "}
+                  ${getNumber(item.amount * 12)}{" "}
                 </Text>
               </View>
             ))}
@@ -192,7 +209,7 @@ const Talonario = ({ id_period, id_company, id_employer }: Props) => {
             <Text>VAC ACUM. ENF ACUM.</Text>
           </View>
           <View style={styles.section}>
-            <Text style={styles.right}>Total ${getTotal()}</Text>
+            <Text style={styles.right}>Total ${getNumber(getTotal())}</Text>
           </View>
         </View>
         <View style={styles.footer}>

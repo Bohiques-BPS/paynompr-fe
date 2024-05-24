@@ -153,3 +153,7 @@ export function getTime(id_employer: number) {
 export function setTime(data: object, id_employer: number) {
   return Axios.request(setOptions("time/" + id_employer, "POST", data)); // Using a post request, specifying the user
 }
+
+export function editTime(data: object, id_time: number) {
+  return Axios.request(setOptions("time/" + id_time, "PUT", data)); // Using a post request, specifying the user
+}
