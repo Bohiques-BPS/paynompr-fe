@@ -9,15 +9,15 @@ import FloatButton from "../../components/dashboard/FloatButton";
 
 import CustomInputs from "../../components/forms/CustomInputs";
 import {
-  changeStatusEmployer,
-  deleteEmployer,
-  getEmployers,
+  changeStatusOutEmployer,
+  deleteOutEmployer,
+  getOutEmployers,
 } from "../../utils/requestOptions";
 
 import { Link, useParams } from "react-router-dom";
 import { showError, showSuccess } from "../../utils/functions";
 
-const Empleados = () => {
+const OutEmployers = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
 
@@ -60,18 +60,10 @@ const Empleados = () => {
       name: "Nombre",
       selector: (row: { first_name: string }) => row.first_name,
     },
-    {
-      name: "Numero Social",
-      selector: (row: { social_security_number: string }) =>
-        row.social_security_number,
-    },
+
     {
       name: "Telefono",
       selector: (row: { smartphone_number: string }) => row.smartphone_number,
-    },
-    {
-      name: "Tipo",
-      selector: (row: { employee_type: string }) => row.employee_type,
     },
 
     {
@@ -134,7 +126,7 @@ const Empleados = () => {
   ];
 
   const changeStatus = () => {
-    changeStatusEmployer(row.id)
+    changeStatusOutEmployer(row.id)
       .then(() => {
         // Data retrieval and processing
         showSuccess("Cambiando exitosamente");
@@ -147,7 +139,7 @@ const Empleados = () => {
       });
   };
   const deleteEmployerModal = () => {
-    deleteEmployer(row.id)
+    deleteOutEmployer(row.id)
       .then((data: any) => {
         data = data.data;
 
@@ -188,7 +180,7 @@ const Empleados = () => {
   }, []);
 
   const getData = () => {
-    getEmployers(Number(params.id))
+    getOutEmployers(Number(params.id))
       .then((response) => {
         // Data retrieval and processing
         if (response.data.result) setData(response.data.result);
@@ -211,7 +203,7 @@ const Empleados = () => {
     <>
       <div className="text-[#EED102] bg-[#333160] p-6 rounded-lg text-center flex">
         <button className="flex-1">
-          <h3 className="text-2xl">Empleados</h3>
+          <h3 className="text-2xl">Servicio Profesionales</h3>
         </button>
       </div>
       <div className="flex md:flex-row flex-col    gap-4  ">
@@ -255,4 +247,4 @@ const Empleados = () => {
   );
 };
 
-export default Empleados;
+export default OutEmployers;

@@ -1,11 +1,15 @@
-import { COMPANY } from "../../models/company";
-import companie from "../../assets/imgs/Out/icon.png";
-
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
 type Props = {
-  items: COMPANY[];
+  items: any[];
 };
 
 const CardText = (props: Props) => {
+  const getRoute = (id: string) => {
+    return "../../escritorio/empresas/" + id + "/empleados";
+  };
+
   return (
     <div className="bg-white rounded-lg shadow  p-4 ">
       <p className="text-xl text-[#333160] font-medium">
@@ -14,14 +18,20 @@ const CardText = (props: Props) => {
       {props.items.slice(0, 3).map((item, i) => (
         <div
           key={i}
-          className="mt-4 flex  flex-row content-center items-center"
+          className="mt-4 flex justify-between flex-row content-center items-center"
         >
-          <img
-            className="rounded-lg w-24 h-24 border border-gray-300 p-4"
-            src={companie}
-            alt=""
-          />
           <p className="ms-4">{item.name}</p>
+          <Link
+            to={`../../escritorio/empresas/editar/${item.id}`}
+            rel="noopener noreferrer"
+          >
+            <FontAwesomeIcon icon={faEdit} className="text-2xl" />
+          </Link>
+          <Link className="px-1" to={getRoute(item.id)}>
+            <button className="  rounded-lg px-4 py-3 font-bold bg-[#FED102]  content-center items-center">
+              Empleados
+            </button>
+          </Link>
         </div>
       ))}
     </div>

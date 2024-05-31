@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import {
-  faBan,
   faMoneyBill,
-  faCircleCheck,
   faEdit,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
@@ -21,8 +19,8 @@ import {
 } from "../../utils/requestOptions";
 import { showError, showSuccess } from "../../utils/functions";
 
-const getRoute = (id: string) => {
-  return id + "/empleados";
+const getRoute = (id: string, to: string) => {
+  return id + "/" + to;
 };
 
 const getRouteTaxes = (id: string) => {
@@ -86,6 +84,34 @@ const Empresas = () => {
       });
   };
 
+  // Componente Switch personalizado en TypeScript
+  interface SwitchProps {
+    isOn: boolean;
+    handleToggle: () => void;
+  }
+  interface RowData {
+    name: string;
+    id: number;
+    is_deleted: boolean;
+  }
+
+  const Switch: React.FC<SwitchProps> = ({ isOn, handleToggle }) => {
+    return (
+      <span
+        onClick={handleToggle}
+        className={`${
+          isOn ? "bg-red-500" : "bg-green-500"
+        } relative inline-block w-12 h-6 transition duration-200 ease-linear rounded-full border-2 border-transparent outline-none cursor-pointer`}
+      >
+        <span
+          className={`${
+            isOn ? "translate-x-6" : "translate-x-0"
+          } inline-block w-6 h-6 transition duration-100 ease-linear transform bg-white rounded-full shadow`}
+        />
+      </span>
+    );
+  };
+
   const columns: any = [
     {
       name: "Empresa",
@@ -95,10 +121,7 @@ const Empresas = () => {
       name: "Persona de Contacto",
       selector: (row: { contact: any }) => row.contact,
     },
-    {
-      name: "Registro Comercial",
-      selector: (row: { commercial_register: any }) => row.commercial_register,
-    },
+
     {
       name: "Teléfono",
       selector: (row: { phone_number: any }) => row.phone_number,
@@ -117,23 +140,16 @@ const Empresas = () => {
     {
       name: "Deshabilitar",
       button: true,
-      cell: (row: { name: string; id: number; is_deleted: boolean }) => (
-        <>
-          {!row.is_deleted ? (
-            <a onClick={() => handleModalClick(row)} rel="noopener noreferrer">
-              <FontAwesomeIcon
-                icon={faCircleCheck}
-                className="text-2xl text-green-800"
-              />
-            </a>
-          ) : (
-            <a onClick={() => handleModalClick(row)} rel="noopener noreferrer">
-              <FontAwesomeIcon icon={faBan} className="text-2xl text-red-800" />
-            </a>
-          )}
-        </>
+      cell: (row: RowData) => (
+        <Switch
+          isOn={row.is_deleted}
+          handleToggle={() => handleModalClick(row)}
+        />
       ),
-      selector: (row: { is_deleted: any }) => row.is_deleted,
+      ignoreRowClick: true,
+      allowOverflow: true,
+
+      selector: (row: RowData) => row.is_deleted,
     },
     {
       name: "Eliminar",
@@ -150,6 +166,7 @@ const Empresas = () => {
 
     {
       name: "Taxes",
+
       button: true,
       cell: (row: { id: string }) => (
         <Link to={getRouteTaxes(row.id)}>
@@ -164,10 +181,26 @@ const Empresas = () => {
     {
       name: "Empleados",
       button: true,
+      width: "150px", // Ajusta el ancho como sea necesario
+
       cell: (row: { id: string }) => (
-        <Link to={getRoute(row.id)}>
+        <Link className="px-1" to={getRoute(row.id, "empleados")}>
           <button className="  rounded-lg px-4 py-3 font-bold bg-[#FED102]  content-center items-center">
             Empleados
+          </button>
+        </Link>
+      ),
+      selector: (row: { year: any }) => row.year,
+    },
+    {
+      name: "Servicios Profesionales",
+      width: "200px", // Ajusta el ancho como sea necesario
+
+      button: true,
+      cell: (row: { id: string }) => (
+        <Link className="px-1" to={getRoute(row.id, "terceros")}>
+          <button className="   rounded-lg px-4 py-3 font-bold bg-[#FED102]  content-center items-center">
+            Servicios Profesionales
           </button>
         </Link>
       ),
@@ -233,16 +266,16 @@ const Empresas = () => {
         setIsOpen={handleModal}
         title={`${row.is_deleted ? "Activar" : "Desactivar"}`}
         description={`¿Esta seguro que desea ${
-          row.is_deleted ? "activar" : "desactivar"
-        } la compañia: ${row.name}?`}
+          row.is_deleted ? "ACTIVAR" : "DESACTIVAR"
+        } la compañía: ${row.name}?`}
       />
       <ModalAlert
         isOpen={isOpen2}
         action={deleteCompanieModal}
         setIsOpen={handleModal2}
         title={`Eliminar`}
-        description={`¿Esta seguro que desea Eliminar
-         la compañia: ${row.name}?`}
+        description={`¿Esta seguro que desea ELIMINAR
+         la compañía: ${row.name}?`}
       />
       <FloatButton to="agregar" />
     </>

@@ -4,7 +4,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import Footer from "../components/nav/Footer";
 import { useLocalStorage } from "../utils/UseLocalStorage";
 import { useEffect } from "react";
-import { getAccountants, getCurrentUser } from "../utils/requestOptions";
+import { getCurrentUser } from "../utils/requestOptions";
 import { removeToken } from "../services/auth.services";
 import { faCaretLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -36,16 +36,13 @@ const InLayout = () => {
         navigate("../");
         // If the query fails, an error will be displayed on the terminal.
       });
-    getAccountants()
+    /*getAccountants()
       .then(() => {
-        // TODO Declarar un modelo para user
-        /*   if (blockPage(response.data.result.length == 0)) {
-          navigate("/escritorio/contadores/agregar");
-        } */
+     
       })
       .catch(() => {
-        // If the query fails, an error will be displayed on the terminal.
-      });
+     
+      });*/
   }, []);
 
   const toggleSidebarOption = () => {

@@ -20,6 +20,9 @@ import EditEmployee from "./pages/employee/EditEmployee";
 import Taxes from "./pages/taxes/taxes";
 import AddTaxes from "./pages/taxes/AddTaxes";
 import EditTaxes from "./pages/taxes/EditTaxes";
+import OutEmployers from "./pages/outemployers/OutEmployers";
+import AddOutEmployee from "./pages/outemployers/AddOutEmployers";
+import EditOutEmployee from "./pages/outemployers/EditOutEmployers";
 
 const App = () => {
   return (
@@ -66,6 +69,15 @@ const App = () => {
               element={<EditEmployee />}
             />
 
+            <Route path="empresas/:id/terceros" element={<OutEmployers />} />
+            <Route
+              path="empresas/:id/terceros/agregar"
+              element={<AddOutEmployee />}
+            />
+            <Route
+              path="empresas/:id/terceros/:id_employer/editar"
+              element={<EditOutEmployee />}
+            />
             {/*   <Route path="codigos" element={<Codes />} />
             <Route path="codigos/agregar" element={<AddCode />} />
             <Route path="codigos/editar/:id" element={<EditCodes />} /> */}

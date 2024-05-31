@@ -1,20 +1,19 @@
 import { useNavigate, useParams } from "react-router-dom";
 
-import CustomSelect from "../../components/forms/CustomSelect";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { showError, showSuccess } from "../../utils/functions";
-import { editEmployers, getEmployer } from "../../utils/requestOptions";
-import { EMPLOYER_DATA } from "../../models/employeer";
-import EmployeerForm from "../../components/forms/EmployeerForm";
-import { TYPE_EMPLOYER } from "../../utils/consts";
-import ModalAlert from "../../components/dashboard/ModalAlert";
+import { setOutEmployers } from "../../utils/requestOptions";
 
-const EditEmployee = () => {
+import ModalAlert from "../../components/dashboard/ModalAlert";
+import OutEmployeerForm from "../../components/forms/OutmployeerForm";
+import { OUT_EMPLOYER_DATA } from "../../models/outEmployers";
+
+const AddOutEmployee = () => {
   const navigate = useNavigate();
   const params = useParams();
-
-  const [formData, setFormData] = useState(EMPLOYER_DATA);
   const [isOpen, setIsOpen] = useState(false);
+
+  const [formData, setFormData] = useState(OUT_EMPLOYER_DATA);
 
   const handleInputChange = (e: React.FormEvent<any>) => {
     setFormData({
@@ -22,9 +21,7 @@ const EditEmployee = () => {
       [e.currentTarget.name]: getValue(e),
     });
   };
-  const handleModal = () => {
-    setIsOpen(!isOpen);
-  };
+
   const getValue = (e: React.FormEvent<any>) => {
     if (e.currentTarget.type === "number")
       return parseInt(e.currentTarget.value);
@@ -32,32 +29,17 @@ const EditEmployee = () => {
 
     return e.currentTarget.value;
   };
-  const handleSelectChange = (e: React.FormEvent<HTMLSelectElement>) => {
-    const value = e.currentTarget.value;
 
-    setFormData({
-      ...formData,
-      [e.currentTarget.name]: value,
-    });
+  const handleModal = () => {
+    setIsOpen(!isOpen);
   };
 
-  useEffect(() => {
-    getEmployer(Number(params.id), Number(params.id_employer))
-      .then((response) => {
-        setFormData(response.data.result);
-
-        // Data retrieval and processing
-      })
-      .catch((error) => {
-        // If the query fails, an error will be displayed on the terminal.
-        showError(error.response.data.detail);
-      });
-  }, []);
-
   const handleCreate = () => {
-    editEmployers(formData, Number(params.id_employer))
+    setOutEmployers(formData, Number(params.id))
       .then(() => {
-        showSuccess("Editado exitosamente.");
+        // Data retrieval and processing
+
+        showSuccess("Creado exitosamente.");
         navigate(-1);
       })
       .catch((error) => {
@@ -69,24 +51,11 @@ const EditEmployee = () => {
   return (
     <>
       <div className="text-[#EED102] bg-[#333160] p-6 rounded-lg text-center">
-        <h3 className="text-2xl">Editar Empleado</h3>
-
-        <p className="text-white mt-4">Tipo de empleado</p>
-        <CustomSelect
-          class="w-2/6 mx-auto mt-4 inline-block "
-          label=""
-          options={TYPE_EMPLOYER}
-          name="employee_type"
-          onChange={handleSelectChange}
-          value={formData.employee_type}
-          disabled={false}
-          placeholder="Nombre de la compañía"
-          type="text"
-        />
+        <h3 className="text-2xl">Crear Tercero</h3>
       </div>
       <div className="w-full  mt-4 bg-white rounded-lg shadow p-4 ">
         <div className="flex xl:flex-row flex-col gap-4">
-          <EmployeerForm
+          <OutEmployeerForm
             setFormData={setFormData}
             formData={formData}
             onChange={handleInputChange}
@@ -105,11 +74,11 @@ const EditEmployee = () => {
         isOpen={isOpen}
         action={handleCreate}
         setIsOpen={handleModal}
-        title={`Editar Usuario`}
-        description={`¿Esta seguro que desea editar este usuario ${formData.first_name} ${formData.last_name}?`}
+        title={`Crear Usuario`}
+        description={`¿Esta seguro que desea crear este usuario ${formData.first_name} ${formData.last_name}?`}
       />
     </>
   );
 };
 
-export default EditEmployee;
+export default AddOutEmployee;

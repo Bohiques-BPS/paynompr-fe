@@ -36,6 +36,10 @@ export function getEmployers(id_company: number) {
   return Axios.request(setOptions("employers/" + id_company, "GET")); // Using a post request, specifying the user
 }
 
+export function getOutEmployers(id_company: number) {
+  return Axios.request(setOptions("outemployers/" + id_company, "GET")); // Using a post request, specifying the user
+}
+
 export function getTaxes(id_company: number) {
   return Axios.request(setOptions("taxes/" + id_company, "GET")); // Using a post request, specifying the user
 }
@@ -51,6 +55,10 @@ export function setTaxe(data: object, id_company: number) {
 
 export function editTaxe(data: object, id_taxes: number) {
   return Axios.request(setOptions("taxes/" + id_taxes, "PUT", data)); // Using a post request, specifying the user
+}
+
+export function disableTaxe(id_taxes: number) {
+  return Axios.request(setOptions("taxes/" + id_taxes, "DELETE")); // Using a post request, specifying the user
 }
 
 export function getCompanyWithEmployer(
@@ -83,13 +91,29 @@ export function setEmployers(data: object, id_company: number) {
   return Axios.request(setOptions("employers/" + id_company, "POST", data)); // Using a post request, specifying the user
 }
 
+export function setOutEmployers(data: object, id_company: number) {
+  return Axios.request(setOptions("outemployers/" + id_company, "POST", data)); // Using a post request, specifying the user
+}
+
 export function editEmployers(data: object, id_employer: number) {
   return Axios.request(setOptions("employers/" + id_employer, "PUT", data)); // Using a post request, specifying the user
+}
+
+export function editOutEmployers(data: object, id_employer: number) {
+  return Axios.request(setOptions("outemployers/" + id_employer, "PUT", data)); // Using a post request, specifying the user
 }
 
 export function changeStatusEmployer(id: number) {
   return Axios.request(setOptions("employers/" + id, "DELETE"));
 }
+
+export function changeStatusOutEmployer(id: number) {
+  return Axios.request(setOptions("outemployers/" + id, "DELETE"));
+}
+export function deleteOutEmployer(id: number) {
+  return Axios.request(setOptions("outemployers/delete/" + id, "DELETE"));
+}
+
 export function deleteEmployer(id: number) {
   return Axios.request(setOptions("employers/delete/" + id, "DELETE"));
 }
@@ -97,6 +121,12 @@ export function deleteEmployer(id: number) {
 export function getEmployer(id_company: number, id_employer: number) {
   return Axios.request(
     setOptions("employers/" + id_company + "/" + id_employer, "GET")
+  ); // Using a post request, specifying the user
+}
+
+export function getOutEmployer(id_company: number, id_employer: number) {
+  return Axios.request(
+    setOptions("outemployers/" + id_company + "/" + id_employer, "GET")
   ); // Using a post request, specifying the user
 }
 
@@ -148,6 +178,10 @@ export function editAccountants(data: object, id: number) {
 
 export function getTime(id_employer: number) {
   return Axios.request(setOptions("time/" + id_employer, "GET")); // Using a post request, specifying the user
+}
+
+export function deleteTime(id_time: number) {
+  return Axios.request(setOptions("time/" + id_time, "DELETE")); // Using a post request, specifying the user
 }
 
 export function setTime(data: object, id_employer: number) {

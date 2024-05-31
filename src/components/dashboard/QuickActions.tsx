@@ -1,4 +1,4 @@
-import { faUser, faPlus, faGear } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 
@@ -18,7 +18,7 @@ const QuickActions = () => {
         />
         <p className="ms-4">Agregar una compañía</p>
       </Link>
-      <div className="mt-4 flex  flex-row content-center items-center">
+      {/*  <div className="mt-4 flex  flex-row content-center items-center">
         <FontAwesomeIcon
           className="text-4xl  p-4  bg-[#333160] text-white rounded-lg"
           icon={faUser}
@@ -31,7 +31,7 @@ const QuickActions = () => {
           icon={faGear}
         />
         <p className="ms-4">Configuración y Ajuste</p>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -5,7 +5,7 @@ export const PAYMENT_DATA = {
   requiered: 0,
   type_taxe: 0,
   is_active: false,
-
+  value: 0,
   type_amount: 0,
 };
 
@@ -13,6 +13,7 @@ export interface PAYMENT {
   id: number;
   name: string;
   amount: number;
+  value: number;
   requiered: number;
   is_active: boolean;
 

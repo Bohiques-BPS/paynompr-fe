@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import CustomInputs from "../../components/forms/CustomInputs";
 
 import {
+  deleteTime,
   editTime,
   getCompanyWithEmployer,
   setTime,
@@ -31,12 +32,15 @@ const Cargar = () => {
   const [taxesData, setTaxesData] = useState([TAXES_DATA]);
   const [period, setPeriod] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpen2, setIsOpen2] = useState(false);
   const handleModal = () => {
     setIsOpen(!isOpen);
   };
+  const handleModal2 = () => {
+    setIsOpen2(!isOpen2);
+  };
 
-  useEffect(() => {
-    console.log("data", formData.regular_hours);
+  const recalculate = () => {
     const regular_pay =
       employerData.regular_time *
         convertTimeToHoursWithDecimals(
@@ -65,7 +69,8 @@ const Cargar = () => {
         convertTimeToHoursWithDecimals(
           formData.meal_hours + ":" + formData.meal_min
         );
-    let aux = [TAXES_DATA];
+    let aux: any = [];
+
     taxesData.map((item) => {
       item.value = setAmountTaxe(item, regular_pay);
 
@@ -74,7 +79,7 @@ const Cargar = () => {
 
     setFormData({
       ...formData,
-      ["payment"]: taxesData,
+      ["payment"]: aux,
       ["holyday_pay"]: Number(
         employerData.regular_time *
           convertTimeToHoursWithDecimals(
@@ -112,10 +117,17 @@ const Cargar = () => {
           )
       ),
     });
+  };
+
+  useEffect(() => {
+    if (formData.id == 0) {
+      recalculate();
+    }
   }, [
     formData.vacations_min,
     formData.over_min,
     formData.meal_min,
+    period,
     formData.sick_min,
     formData.tips,
     formData.commissions,
@@ -128,80 +140,53 @@ const Cargar = () => {
     formData.meal_hours,
     formData.vacations_hours,
     formData.sick_hours,
-    period,
   ]);
 
   const getTotal = () => {
     var total = 0;
     const regular_pay =
-      employerData.regular_time *
-        convertTimeToHoursWithDecimals(
-          formData.vacations_hours + ":" + formData.vacations_min
-        ) +
-      employerData.regular_time *
-        convertTimeToHoursWithDecimals(
-          formData.sick_hours + ":" + formData.sick_hours
-        ) +
-      employerData.regular_time *
-        convertTimeToHoursWithDecimals(
-          formData.holiday_hours + ":" + formData.holiday_min
-        ) +
+      formData.vacation_pay +
+      formData.sick_pay +
+      formData.holyday_pay +
       getNumber(formData.tips) +
       getNumber(formData.commissions) +
       getNumber(formData.concessions) +
-      employerData.regular_time *
-        convertTimeToHoursWithDecimals(
-          formData.regular_hours + ":" + formData.regular_min
-        ) +
-      employerData.overtime *
-        convertTimeToHoursWithDecimals(
-          formData.over_hours + ":" + formData.over_min
-        ) +
-      employerData.mealtime *
-        convertTimeToHoursWithDecimals(
-          formData.meal_hours + ":" + formData.meal_min
-        );
+      formData.regular_pay +
+      formData.overtime_pay +
+      formData.meal_time_pay;
     total = regular_pay;
-    taxesData.map((item) => {
-      if (item.is_active || item.requiered == 2) {
-        item.value = setAmountTaxe(item, regular_pay);
+    if (formData.id == 0) {
+      taxesData.map((item) => {
+        if (item.is_active || item.requiered == 2) {
+          item.value = setAmountTaxe(item, regular_pay);
 
-        total = total + item.value;
-      }
-    });
+          total = total + item.value;
+        }
+      });
+    } else {
+      formData.payment.map((item) => {
+        if (item.is_active || item.requiered == 2) {
+          console.log(item);
+          total = total + item.amount;
+        }
+      });
+    }
+
     return total;
   };
 
   const getPreTotal = () => {
     var total = 0;
     const regular_pay =
-      employerData.regular_time *
-        convertTimeToHoursWithDecimals(
-          formData.vacations_hours + ":" + formData.vacations_min
-        ) +
-      employerData.regular_time *
-        convertTimeToHoursWithDecimals(
-          formData.sick_hours + ":" + formData.sick_min
-        ) +
-      employerData.regular_time *
-        convertTimeToHoursWithDecimals(
-          formData.holiday_hours + ":" + formData.holiday_min
-        ) +
+      formData.vacation_pay +
+      formData.sick_pay +
+      formData.holyday_pay +
       getNumber(formData.tips) +
       getNumber(formData.commissions) +
       getNumber(formData.concessions) +
-      employerData.regular_time *
-        convertTimeToHoursWithDecimals(
-          formData.regular_hours + ":" + formData.regular_min
-        ) +
-      employerData.overtime *
-        convertTimeToHoursWithDecimals(
-          formData.over_hours + ":" + formData.over_min
-        ) +
-      employerData.mealtime *
-        convertTimeToHoursWithDecimals(
-          formData.meal_hours + ":" + formData.meal_min
-        );
+      formData.regular_pay +
+      formData.overtime_pay +
+      formData.meal_time_pay;
     total = regular_pay;
 
     return total;
@@ -290,12 +275,11 @@ const Cargar = () => {
 
     if (timesData.length > 0 && value >= 0) {
       setFormData(filterById(timesData, value));
+      console.log(formData);
     }
   };
 
   const handleCreate = () => {
-    formData.payment = taxesData;
-
     if (formData.id == 0) {
       setTime(formData, Number(params.id_employer))
         .then(() => {
@@ -323,6 +307,21 @@ const Cargar = () => {
           showError(error.response.data.detail);
         });
     }
+  };
+
+  const handleDelete = () => {
+    deleteTime(formData.id)
+      .then(() => {
+        // Data retrieval and processing
+        setFormData(TIME_DATA);
+        getData();
+        handleModal();
+        showSuccess("Creado exitosamente.");
+      })
+      .catch((error) => {
+        // If the query fails, an error will be displayed on the terminal.
+        showError(error.response.data.detail);
+      });
   };
   const getData = () => {
     getCompanyWithEmployer(
@@ -681,44 +680,86 @@ const Cargar = () => {
                 <hr className="mt-2 mb-6" />
               </>
             )}
+            {formData.id == 0 && (
+              <>
+                {taxesData.map((item) => (
+                  <div
+                    key={item.id}
+                    className={` block mb-2   font-medium text-gray-700 w-1/6 mx-auto pe-1  inline-block `}
+                  >
+                    <label>
+                      {item.requiered === 1 && (
+                        <>
+                          <input
+                            key={item.id}
+                            type="checkbox"
+                            checked={item.is_active}
+                            onChange={(e) => handleCheck(e, item)}
+                          />
+                        </>
+                      )}
+                      <span>
+                        {" "}
+                        {item.name}{" "}
+                        {item.type_taxe != 1 ? (
+                          <span>( + )</span>
+                        ) : (
+                          <span>( - )</span>
+                        )}
+                      </span>
 
-            {taxesData.map((item) => (
-              <div
-                key={item.id}
-                className={` block mb-2   font-medium text-gray-700 w-1/6 mx-auto pe-1  inline-block `}
-              >
-                <label>
-                  {item.requiered === 1 && (
-                    <>
                       <input
-                        key={item.id}
-                        type="checkbox"
-                        checked={item.is_active}
-                        onChange={(e) => handleCheck(e, item)}
+                        className={` bg-gray-50 text-sm text-center invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5`}
+                        tabIndex={0}
+                        type="number"
+                        onChange={(e) => handleitem(e, item)}
+                        name={item.name}
+                        value={getNumber(item.value)}
                       />
-                    </>
-                  )}
-                  <span>
-                    {" "}
-                    {item.name}{" "}
-                    {item.type_taxe != 1 ? (
-                      <span>( + )</span>
-                    ) : (
-                      <span>( - )</span>
-                    )}
-                  </span>
+                    </label>
+                  </div>
+                ))}
+              </>
+            )}
+            {formData.id != 0 && (
+              <>
+                {formData.payment.map((item) => (
+                  <div
+                    key={item.id}
+                    className={` block mb-2   font-medium text-gray-700 w-1/6 mx-auto pe-1  inline-block `}
+                  >
+                    <label>
+                      {item.requiered === 1 && (
+                        <>
+                          <input
+                            key={item.id}
+                            type="checkbox"
+                            checked={item.is_active}
+                          />
+                        </>
+                      )}
+                      <span>
+                        {" "}
+                        {item.name}{" "}
+                        {item.type_taxe != 1 ? (
+                          <span>( + )</span>
+                        ) : (
+                          <span>( - )</span>
+                        )}
+                      </span>
 
-                  <input
-                    className={` bg-gray-50 text-sm text-center invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5`}
-                    tabIndex={0}
-                    type="number"
-                    onChange={(e) => handleitem(e, item)}
-                    name={item.name}
-                    value={getNumber(item.value)}
-                  />
-                </label>
-              </div>
-            ))}
+                      <input
+                        className={` bg-gray-50 text-sm text-center invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5`}
+                        tabIndex={0}
+                        type="number"
+                        name={item.name}
+                        value={getNumber(item.value)}
+                      />
+                    </label>
+                  </div>
+                ))}
+              </>
+            )}
           </div>
         </div>
 
@@ -733,13 +774,24 @@ const Cargar = () => {
             type="number"
           />
         </div>
-        <div className="w-full text-center">
-          <button
-            onClick={handleModal}
-            className="w-auto mt-4 mx-auto bg-[#333160] py-4 text-[#EED102] bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-8 text-center "
-          >
-            Cargar tiempo de empleado
-          </button>
+        <div className="w-full text-end">
+          {formData.id != 0 && period == timesData.length && (
+            <button
+              onClick={handleModal2}
+              className="w-auto mt-4  me-4 mx-auto bg-[#333160] py-4 text-black bg-red-500 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-8 text-center "
+            >
+              Eliminar
+            </button>
+          )}
+          {formData.id != 0 && (
+            <button
+              onClick={recalculate}
+              className="w-auto mt-4  mx-auto bg-[#333160] py-4 text-[#EED102] bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-8 text-center "
+            >
+              Recalcular
+            </button>
+          )}
+
           {formData.id != 0 && (
             <PDFDownloadLink
               document={
@@ -764,8 +816,22 @@ const Cargar = () => {
               }
             </PDFDownloadLink>
           )}
+          <button
+            onClick={handleModal}
+            className="w-auto mt-4 ms-4 mx-auto bg-[#333160] py-4 text-[#EED102] bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-8 text-center "
+          >
+            Cargar tiempo de empleado
+          </button>
         </div>
       </div>
+      <ModalAlert
+        isOpen={isOpen2}
+        action={handleDelete}
+        setIsOpen={handleModal2}
+        title={`Eliminar`}
+        description={`¿Esta seguro que desea ELIMINAR
+         el periodo: ${period}?`}
+      />
       <ModalAlert
         isOpen={isOpen}
         action={handleCreate}

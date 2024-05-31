@@ -399,6 +399,37 @@ export const GENDER = [
   },
 ];
 
+export const ENTITY = [
+  {
+    id: 1,
+    name: "Individual",
+  },
+  {
+    id: 2,
+    name: "Corporation",
+  },
+
+  {
+    id: 3,
+    name: "N Corporation",
+  },
+
+  {
+    id: 4,
+    name: "Partnership",
+  },
+
+  {
+    id: 5,
+    name: "Special Partnership",
+  },
+
+  {
+    id: 6,
+    name: "Trust",
+  },
+];
+
 export const TYPE_EMPLOYER = [
   {
     id: 1,

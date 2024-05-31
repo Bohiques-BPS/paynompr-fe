@@ -44,17 +44,21 @@ const AddEmployee = () => {
   };
 
   const handleCreate = () => {
-    setEmployers(formData, Number(params.id))
-      .then(() => {
-        // Data retrieval and processing
+    if (formData.regular_time > 0) {
+      setEmployers(formData, Number(params.id))
+        .then(() => {
+          // Data retrieval and processing
 
-        showSuccess("Creado exitosamente.");
-        navigate(-1);
-      })
-      .catch((error) => {
-        // If the query fails, an error will be displayed on the terminal.
-        showError(error.response.data.detail);
-      });
+          showSuccess("Creado exitosamente.");
+          navigate(-1);
+        })
+        .catch((error) => {
+          // If the query fails, an error will be displayed on the terminal.
+          showError(error.response.data.detail);
+        });
+    } else {
+      showError("Debe ingresar un monto de Hora regular.");
+    }
   };
 
   return (
@@ -97,7 +101,7 @@ const AddEmployee = () => {
         action={handleCreate}
         setIsOpen={handleModal}
         title={`Crear Usuario`}
-        description={`¿Esta seguro que desea crear este usuario ${formData.name} ${formData.last_name}?`}
+        description={`¿Esta seguro que desea crear este usuario ${formData.first_name} ${formData.last_name}?`}
       />
     </>
   );
