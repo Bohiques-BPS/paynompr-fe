@@ -775,7 +775,7 @@ const Cargar = () => {
           />
         </div>
         <div className="w-full text-end">
-          {formData.id != 0 && period == timesData.length && (
+          {formData.id != 0 && period == timesData[timesData.length - 2].id && (
             <button
               onClick={handleModal2}
               className="w-auto mt-4  me-4 mx-auto bg-[#333160] py-4 text-black bg-red-500 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-8 text-center "
