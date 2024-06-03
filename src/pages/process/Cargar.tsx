@@ -167,7 +167,7 @@ const Cargar = () => {
       formData.payment.map((item) => {
         if (item.is_active || item.requiered == 2) {
           console.log(item);
-          total = total + item.amount;
+          total = total + item.value;
         }
       });
     }
