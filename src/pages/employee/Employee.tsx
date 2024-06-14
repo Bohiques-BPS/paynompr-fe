@@ -20,7 +20,7 @@ import { showError, showSuccess } from "../../utils/functions";
 const Empleados = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
-
+  const [loanding, setLoanding] = useState(false);
   const [search, setSearch] = useState("");
   const [row, setRow] = useState({ first_name: "", id: 0, is_deleted: false });
 
@@ -134,19 +134,23 @@ const Empleados = () => {
   ];
 
   const changeStatus = () => {
+    setLoanding(true);
     changeStatusEmployer(row.id)
       .then(() => {
         // Data retrieval and processing
+        setLoanding(false);
         showSuccess("Cambiando exitosamente");
         getData();
         handleModal();
       })
       .catch((error: any) => {
+        setLoanding(false);
         // If the query fails, an error will be displayed on the terminal.
         showError(error.response.data.detail);
       });
   };
   const deleteEmployerModal = () => {
+    setLoanding(true);
     deleteEmployer(row.id)
       .then((data: any) => {
         data = data.data;
@@ -160,6 +164,7 @@ const Empleados = () => {
           showError(data.msg);
           handleModal2();
         }
+        setLoanding(false);
       })
       .catch((error) => {
         // If the query fails, an error will be displayed on the terminal.
@@ -188,10 +193,12 @@ const Empleados = () => {
   }, []);
 
   const getData = () => {
+    setLoanding(true);
     getEmployers(Number(params.id))
       .then((response) => {
         // Data retrieval and processing
         if (response.data.result) setData(response.data.result);
+        setLoanding(false);
       })
       .catch(() => {});
   };
@@ -235,6 +242,7 @@ const Empleados = () => {
         </div>
         <ModalAlert
           isOpen={isOpen}
+          show={loanding}
           action={changeStatus}
           setIsOpen={handleModal}
           title={`${row.is_deleted ? "Activar" : "Desactivar"}`}
@@ -243,6 +251,7 @@ const Empleados = () => {
           } el empleado: ${row.first_name}?`}
         />
         <ModalAlert
+          show={loanding}
           isOpen={isOpen2}
           action={deleteEmployerModal}
           setIsOpen={handleModal2}

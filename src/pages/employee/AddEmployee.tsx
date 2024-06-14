@@ -14,7 +14,7 @@ const AddEmployee = () => {
   const navigate = useNavigate();
   const params = useParams();
   const [isOpen, setIsOpen] = useState(false);
-
+  const [loanding, setLoanding] = useState(false);
   const [formData, setFormData] = useState(EMPLOYER_DATA);
 
   const handleInputChange = (e: React.FormEvent<any>) => {
@@ -45,10 +45,11 @@ const AddEmployee = () => {
 
   const handleCreate = () => {
     if (formData.regular_time > 0) {
+      setLoanding(true);
       setEmployers(formData, Number(params.id))
         .then(() => {
           // Data retrieval and processing
-
+          setLoanding(false);
           showSuccess("Creado exitosamente.");
           navigate(-1);
         })
@@ -98,6 +99,7 @@ const AddEmployee = () => {
       </div>
       <ModalAlert
         isOpen={isOpen}
+        show={loanding}
         action={handleCreate}
         setIsOpen={handleModal}
         title={`Crear Usuario`}

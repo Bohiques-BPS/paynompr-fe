@@ -145,6 +145,15 @@ const OutEmployeerForm = (props: Props) => {
           placeholder=""
           type="text"
         />
+        <CustomInputs
+          class="w-1/3 mx-auto pe-1  inline-block "
+          label="Regular Pay"
+          name="regular_pay"
+          onChange={props.onChange}
+          value={props.formData.regular_pay}
+          placeholder=""
+          type="text"
+        />
 
         <label className="block mb-2  font-medium text-gray-700 w-1/3 mx-auto ps-1  inline-block">
           <span>Registro Comerciante</span>

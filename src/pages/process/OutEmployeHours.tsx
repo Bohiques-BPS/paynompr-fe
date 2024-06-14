@@ -1,0 +1,220 @@
+import { useEffect, useState } from "react";
+import CustomInputs from "../../components/forms/CustomInputs";
+
+import {
+  deleteTime,
+  editTime,
+  getCompanyWithOutEmployer,
+  setTime,
+} from "../../utils/requestOptions";
+import { useParams } from "react-router-dom";
+import { COMPANY_DATA } from "../../models/company";
+
+import { TIME_DATA } from "../../models/time";
+import { showError, showSuccess } from "../../utils/functions";
+
+import ModalAlert from "../../components/dashboard/ModalAlert";
+import { OUT_EMPLOYER_DATA } from "../../models/outEmployers";
+
+const OutEmployeHours = () => {
+  const params = useParams();
+  const [employerData, setEmployerData] = useState(OUT_EMPLOYER_DATA);
+  const [companyData, setCompanyData] = useState(COMPANY_DATA);
+  const [timesData, setTimesData] = useState([TIME_DATA]);
+  const [formData, setFormData] = useState(TIME_DATA);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen2, setIsOpen2] = useState(false);
+  const handleModal = () => {
+    setIsOpen(!isOpen);
+  };
+  const handleModal2 = () => {
+    setIsOpen2(!isOpen2);
+  };
+
+  const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.currentTarget.name]:
+        e.currentTarget.type === "number"
+          ? parseFloat(e.currentTarget.value)
+          : e.currentTarget.value,
+    });
+  };
+  const handleInputTimeChange = (e: React.FormEvent<HTMLInputElement>) => {
+    let value = 0;
+    value = parseInt(e.currentTarget.value);
+    if (parseInt(e.currentTarget.value) >= 60) value = 59;
+    setFormData({
+      ...formData,
+      [e.currentTarget.name]: value + "",
+    });
+  };
+
+  const handleCreate = () => {
+    if (formData.id == 0) {
+      setTime(formData, Number(params.id_employer))
+        .then(() => {
+          // Data retrieval and processing
+          setFormData(TIME_DATA);
+          getData();
+          handleModal();
+          showSuccess("Creado exitosamente.");
+        })
+        .catch((error) => {
+          // If the query fails, an error will be displayed on the terminal.
+          showError(error.response.data.detail);
+        });
+    } else {
+      editTime(formData, Number(formData.id))
+        .then(() => {
+          // Data retrieval and processing
+          setFormData(TIME_DATA);
+          getData();
+          handleModal();
+          showSuccess("Editado exitosamente.");
+        })
+        .catch((error) => {
+          // If the query fails, an error will be displayed on the terminal.
+          showError(error.response.data.detail);
+        });
+    }
+  };
+
+  const handleDelete = () => {
+    deleteTime(formData.id)
+      .then(() => {
+        // Data retrieval and processing
+        setFormData(TIME_DATA);
+        getData();
+        handleModal();
+        showSuccess("Creado exitosamente.");
+      })
+      .catch((error) => {
+        // If the query fails, an error will be displayed on the terminal.
+        showError(error.response.data.detail);
+      });
+  };
+  const getData = () => {
+    getCompanyWithOutEmployer(
+      Number(params.id_company),
+      Number(params.id_employer)
+    )
+      .then((response) => {
+        // Data retrieval and processing
+        setEmployerData(response.data.result.employer);
+        setCompanyData(response.data.result.company);
+        setTimesData([]);
+
+        if (response.data.result.time.length == 0) setTimesData([TIME_DATA]);
+        else {
+          setTimesData([...response.data.result.time, TIME_DATA]);
+        }
+      })
+      .catch(() => {
+        // If the query fails, an error will be displayed on the terminal.
+      });
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  return (
+    <>
+      <div className="text-[#EED102] bg-[#333160] p-6 rounded-lg text-center">
+        <h3 className="text-2xl">Cargar Tiempo</h3>
+
+        <p className="text-white mt-4">Seleccionar período de trabajo</p>
+        <label
+          className={` block mb-2 text-sm font-medium text-gray-700 w-2/6 mx-auto mt-4 inline-block`}
+        >
+          <select
+            name="period"
+            value={formData.period}
+            className={` bg-gray-50 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-3`}
+          >
+            <option value={-1}>Seleccione una opción</option>
+            {timesData.map((item: any, i: number) => (
+              <option key={i} value={item.id}>
+                Periodo {i + 1}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+      <div className="w-full  mt-4 bg-white rounded-lg shadow p-4 ">
+        <div className="xl:w-full w-full ">
+          <CustomInputs
+            class="w-1/2 mx-auto pe-1  inline-block "
+            label=""
+            disabled={true}
+            value={companyData.name}
+            placeholder=""
+            type="text"
+          />
+
+          <CustomInputs
+            class="w-1/2 mx-auto ps-1  inline-block "
+            label=""
+            value={employerData.first_name + " " + employerData.last_name}
+            disabled={true}
+            placeholder=""
+            type="text"
+          />
+        </div>
+        <div className="flex flex-col gap-4">
+          <div className="xl:w-full w-full ">
+            <h2 className="mt-2 text-center text-2xl">Horas</h2>
+            <hr className="mt-2 mb-6" />
+            <div className="w-1/6 mx-auto  inline-block  ">
+              <label className="block" htmlFor="">
+                Horas Regulares
+              </label>
+              <CustomInputs
+                class="w-5/12 mx-auto text-center inline-block time-input "
+                label=""
+                inputCss="text-center"
+                name="regular_hours"
+                onChange={handleInputChange}
+                value={formData.regular_hours}
+                placeholder=""
+                type="text"
+              />
+              <div className="w-1/6 inline-block text-center time-separator">
+                :
+              </div>
+              <CustomInputs
+                class="w-5/12 mx-auto   inline-block time-input "
+                label=""
+                onChange={handleInputTimeChange}
+                inputCss="text-center"
+                name="regular_min"
+                value={formData.regular_min}
+                placeholder=""
+                type="text"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <ModalAlert
+        isOpen={isOpen2}
+        action={handleDelete}
+        setIsOpen={handleModal2}
+        title={`Eliminar`}
+        description={`¿Esta seguro que desea ELIMINAR
+         el periodo:?`}
+      />
+      <ModalAlert
+        isOpen={isOpen}
+        action={handleCreate}
+        setIsOpen={handleModal}
+        title={`Cargar Hora`}
+        description={`¿Esta seguro que desea cargar esta data por un monto de ?`}
+      />
+    </>
+  );
+};
+
+export default OutEmployeHours;

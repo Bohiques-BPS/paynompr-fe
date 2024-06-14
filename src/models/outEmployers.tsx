@@ -10,7 +10,8 @@ export const OUT_EMPLOYER_DATA = {
   birthday: null,
   fax: "",
   website: "Prueba.com",
-  withholding: 0,
+  withholding: "0",
+  regular_pay: 0,
   merchant_register: "",
   employer_id: "",
   bank_account: "",
@@ -29,13 +30,13 @@ export interface OUT_EMPLOYEER {
   middle_name: string;
   email: string;
   account_number: string;
-
+  regular_pay: number;
   type_entity: number;
   gender: number;
   birthday: any;
   fax: string;
   website: string;
-  withholding: number;
+  withholding: string;
   merchant_register: string;
   employer_id: string;
   bank_account: string;

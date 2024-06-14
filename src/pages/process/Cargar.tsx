@@ -25,6 +25,8 @@ import ModalAlert from "../../components/dashboard/ModalAlert";
 
 const Cargar = () => {
   const params = useParams();
+  const [loanding, setLoanding] = useState(false);
+
   const [employerData, setEmployerData] = useState(EMPLOYER_DATA);
   const [companyData, setCompanyData] = useState(COMPANY_DATA);
   const [timesData, setTimesData] = useState([TIME_DATA]);
@@ -71,6 +73,12 @@ const Cargar = () => {
         );
     let aux: any = [];
 
+    let inability = regular_pay * (0.3 / 100);
+    let medicare = regular_pay * (1.45 / 100);
+    let secure_social = regular_pay * (6.2 / 100);
+    let tax_pr = regular_pay * (10 / 100);
+    let social_tips = formData.tips * (6.2 / 100);
+
     taxesData.map((item) => {
       item.value = setAmountTaxe(item, regular_pay);
 
@@ -80,6 +88,11 @@ const Cargar = () => {
     setFormData({
       ...formData,
       ["payment"]: aux,
+      ["inability"]: inability,
+      ["medicare"]: medicare,
+      ["secure_social"]: secure_social,
+      ["tax_pr"]: tax_pr,
+      ["social_tips"]: social_tips,
       ["holyday_pay"]: Number(
         employerData.regular_time *
           convertTimeToHoursWithDecimals(
@@ -154,7 +167,15 @@ const Cargar = () => {
       formData.regular_pay +
       formData.overtime_pay +
       formData.meal_time_pay;
+
+    let inability = regular_pay * (0.3 / 100);
+    let medicare = regular_pay * (1.45 / 100);
+    let secure_social = regular_pay * (6.2 / 100);
+    let tax_pr = regular_pay * (10 / 100);
+    let social_tips = formData.tips * (6.2 / 100);
+
     total = regular_pay;
+    total = total - inability - medicare - secure_social - tax_pr - social_tips;
     if (formData.id == 0) {
       taxesData.map((item) => {
         if (item.is_active || item.requiered == 2) {
@@ -280,10 +301,12 @@ const Cargar = () => {
   };
 
   const handleCreate = () => {
+    setLoanding(true);
     if (formData.id == 0) {
       setTime(formData, Number(params.id_employer))
         .then(() => {
           // Data retrieval and processing
+          setLoanding(false);
           setFormData(TIME_DATA);
           getData();
           handleModal();
@@ -298,6 +321,7 @@ const Cargar = () => {
         .then(() => {
           // Data retrieval and processing
           setFormData(TIME_DATA);
+          setLoanding(false);
           getData();
           handleModal();
           showSuccess("Editado exitosamente.");
@@ -310,9 +334,11 @@ const Cargar = () => {
   };
 
   const handleDelete = () => {
+    setLoanding(true);
     deleteTime(formData.id)
       .then(() => {
         // Data retrieval and processing
+        setLoanding(false);
         setFormData(TIME_DATA);
         getData();
         handleModal();
@@ -324,12 +350,14 @@ const Cargar = () => {
       });
   };
   const getData = () => {
+    setLoanding(true);
     getCompanyWithEmployer(
       Number(params.id_company),
       Number(params.id_employer)
     )
       .then((response) => {
         // Data retrieval and processing
+        setLoanding(false);
         setEmployerData(response.data.result.employer);
         setCompanyData(response.data.result.company);
         setTimesData([]);
@@ -673,13 +701,108 @@ const Cargar = () => {
               type="number"
             />
           </div>
+
           <div className="xl:w-full w-full ">
-            {taxesData.length > 0 && (
-              <>
-                <h2 className="mt-2 text-center text-2xl">Taxes</h2>
-                <hr className="mt-2 mb-6" />
-              </>
-            )}
+            <>
+              <h2 className="mt-2 text-center text-2xl">Taxes</h2>
+              <hr className="mt-2 mb-6" />
+            </>
+            <div
+              className={` block mb-2   font-medium text-gray-700 w-1/6 mx-auto pe-1  inline-block `}
+            >
+              <label>
+                <span>
+                  {" "}
+                  Incapacidad
+                  <span>( - )</span>
+                </span>
+
+                <input
+                  className={` bg-gray-50 text-sm text-center invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5`}
+                  tabIndex={0}
+                  type="number"
+                  name="inability"
+                  value={getNumber(formData.inability)}
+                />
+              </label>
+            </div>
+            <div
+              className={` block mb-2   font-medium text-gray-700 w-1/6 mx-auto pe-1  inline-block `}
+            >
+              <label>
+                <span>
+                  {" "}
+                  MEDICARE
+                  <span>( - )</span>
+                </span>
+
+                <input
+                  className={` bg-gray-50 text-sm text-center invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5`}
+                  tabIndex={0}
+                  type="number"
+                  name="medicare"
+                  value={getNumber(formData.medicare)}
+                />
+              </label>
+            </div>
+            <div
+              className={` block mb-2   font-medium text-gray-700 w-1/6 mx-auto pe-1  inline-block `}
+            >
+              <label>
+                <span>
+                  {" "}
+                  Seguro Social
+                  <span>( - )</span>
+                </span>
+
+                <input
+                  className={` bg-gray-50 text-sm text-center invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5`}
+                  tabIndex={0}
+                  type="number"
+                  name="secure_social"
+                  value={getNumber(formData.secure_social)}
+                />
+              </label>
+            </div>
+            <div
+              className={` block mb-2   font-medium text-gray-700 w-1/6 mx-auto pe-1  inline-block `}
+            >
+              <label>
+                <span>
+                  {" "}
+                  Seg Social Propinas
+                  <span>( - )</span>
+                </span>
+
+                <input
+                  className={` bg-gray-50 text-sm text-center invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5`}
+                  tabIndex={0}
+                  type="number"
+                  name="social_tips"
+                  value={getNumber(formData.social_tips)}
+                />
+              </label>
+            </div>
+            <div
+              className={` block mb-2   font-medium text-gray-700 w-1/6 mx-auto pe-1  inline-block `}
+            >
+              <label>
+                <span>
+                  {" "}
+                  Tax Retenido PR
+                  <span>( - )</span>
+                </span>
+
+                <input
+                  className={` bg-gray-50 text-sm text-center invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5`}
+                  tabIndex={0}
+                  type="number"
+                  name="tax_pr"
+                  value={getNumber(formData.tax_pr)}
+                />
+              </label>
+            </div>
+
             {formData.id == 0 && (
               <>
                 {taxesData.map((item) => (
@@ -827,6 +950,7 @@ const Cargar = () => {
       <ModalAlert
         isOpen={isOpen2}
         action={handleDelete}
+        show={loanding}
         setIsOpen={handleModal2}
         title={`Eliminar`}
         description={`¿Esta seguro que desea ELIMINAR
@@ -834,6 +958,7 @@ const Cargar = () => {
       />
       <ModalAlert
         isOpen={isOpen}
+        show={loanding}
         action={handleCreate}
         setIsOpen={handleModal}
         title={`Cargar Hora`}

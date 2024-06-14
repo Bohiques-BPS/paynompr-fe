@@ -12,7 +12,7 @@ const AddOutEmployee = () => {
   const navigate = useNavigate();
   const params = useParams();
   const [isOpen, setIsOpen] = useState(false);
-
+  const [loanding, setLoanding] = useState(false);
   const [formData, setFormData] = useState(OUT_EMPLOYER_DATA);
 
   const handleInputChange = (e: React.FormEvent<any>) => {
@@ -35,17 +35,22 @@ const AddOutEmployee = () => {
   };
 
   const handleCreate = () => {
-    setOutEmployers(formData, Number(params.id))
-      .then(() => {
-        // Data retrieval and processing
-
-        showSuccess("Creado exitosamente.");
-        navigate(-1);
-      })
-      .catch((error) => {
-        // If the query fails, an error will be displayed on the terminal.
-        showError(error.response.data.detail);
-      });
+    if (formData.regular_pay > 0) {
+      setLoanding;
+      setOutEmployers(formData, Number(params.id))
+        .then(() => {
+          // Data retrieval and processing
+          setLoanding(false);
+          showSuccess("Creado exitosamente.");
+          navigate(-1);
+        })
+        .catch((error) => {
+          // If the query fails, an error will be displayed on the terminal.
+          showError(error.response.data.detail);
+        });
+    } else {
+      showError("Debe ingresar un monto de Hora a pagar.");
+    }
   };
 
   return (
@@ -72,6 +77,7 @@ const AddOutEmployee = () => {
       </div>
       <ModalAlert
         isOpen={isOpen}
+        show={loanding}
         action={handleCreate}
         setIsOpen={handleModal}
         title={`Crear Usuario`}

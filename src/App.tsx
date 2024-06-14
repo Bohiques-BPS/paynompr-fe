@@ -23,6 +23,7 @@ import EditTaxes from "./pages/taxes/EditTaxes";
 import OutEmployers from "./pages/outemployers/OutEmployers";
 import AddOutEmployee from "./pages/outemployers/AddOutEmployers";
 import EditOutEmployee from "./pages/outemployers/EditOutEmployers";
+import OutEmployeHours from "./pages/process/OutEmployeHours";
 
 const App = () => {
   return (
@@ -70,6 +71,10 @@ const App = () => {
             />
 
             <Route path="empresas/:id/terceros" element={<OutEmployers />} />
+            <Route
+              path="empresas/:id/terceros/horas/:id_employer"
+              element={<OutEmployeHours />}
+            />
             <Route
               path="empresas/:id/terceros/agregar"
               element={<AddOutEmployee />}

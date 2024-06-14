@@ -12,6 +12,7 @@ import ModalAlert from "../../components/dashboard/ModalAlert";
 const AddCompany = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const [loanding, setLoanding] = useState(false);
 
   const [formData, setFormData] = useState(COMPANY_DATA);
 
@@ -27,10 +28,10 @@ const AddCompany = () => {
     setIsOpen(!isOpen);
   };
   const handleCreate = () => {
+    setLoanding(true);
     setCompanies(formData)
-      .then((response) => {
-        // Data retrieval and processing
-        console.log(response);
+      .then(() => {
+        setLoanding(false);
         showSuccess("Creado exitosamente.");
         navigate("../empresas");
       })
@@ -78,6 +79,7 @@ const AddCompany = () => {
       </div>
       <ModalAlert
         isOpen={isOpen}
+        show={loanding}
         action={handleCreate}
         setIsOpen={handleModal}
         title={`Editar Usuario`}

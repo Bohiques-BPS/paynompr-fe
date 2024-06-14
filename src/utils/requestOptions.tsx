@@ -61,6 +61,14 @@ export function disableTaxe(id_taxes: number) {
   return Axios.request(setOptions("taxes/" + id_taxes, "DELETE")); // Using a post request, specifying the user
 }
 
+export function getCompanyWithOutEmployer(
+  id_company: number,
+  id_employer: number
+) {
+  return Axios.request(
+    setOptions("outemployers/" + id_company + "/" + id_employer, "GET")
+  ); // Using a post request, specifying the user
+}
 export function getCompanyWithEmployer(
   id_company: number,
   id_employer: number
@@ -69,7 +77,6 @@ export function getCompanyWithEmployer(
     setOptions("companies/" + id_company + "/" + id_employer, "GET")
   ); // Using a post request, specifying the user
 }
-
 export function getTalonario(
   id_company: number,
   id_employer: number,

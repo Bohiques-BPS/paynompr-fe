@@ -10,6 +10,7 @@ import { OUT_EMPLOYER_DATA } from "../../models/outEmployers";
 const EditOutEmployee = () => {
   const navigate = useNavigate();
   const params = useParams();
+  const [loanding, setLoanding] = useState(false);
 
   const [formData, setFormData] = useState(OUT_EMPLOYER_DATA);
   const [isOpen, setIsOpen] = useState(false);
@@ -45,8 +46,10 @@ const EditOutEmployee = () => {
   }, []);
 
   const handleCreate = () => {
+    setLoanding(true);
     editOutEmployers(formData, Number(params.id_employer))
       .then(() => {
+        setLoanding(false);
         showSuccess("Editado exitosamente.");
         navigate(-1);
       })
@@ -79,6 +82,7 @@ const EditOutEmployee = () => {
         </div>
       </div>
       <ModalAlert
+        show={loanding}
         isOpen={isOpen}
         action={handleCreate}
         setIsOpen={handleModal}

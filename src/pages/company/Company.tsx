@@ -30,6 +30,7 @@ const getRouteTaxes = (id: string) => {
 const Empresas = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
+  const [loanding, setLoanding] = useState(false);
 
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
@@ -40,9 +41,13 @@ const Empresas = () => {
   }, []);
 
   const getData = () => {
+    setLoanding(true);
+
     getCompanies()
       .then((response) => {
         // Data retrieval and processing
+        setLoanding(false);
+
         setData(response.data);
       })
       .catch(() => {
@@ -51,9 +56,13 @@ const Empresas = () => {
   };
 
   const changeStatus = () => {
+    setLoanding(true);
+
     changeStatusCompanie(row.id)
       .then(() => {
         // Data retrieval and processing
+        setLoanding(false);
+
         showSuccess("Cambiando exitosamente");
         getData();
         handleModal();
@@ -64,9 +73,11 @@ const Empresas = () => {
       });
   };
   const deleteCompanieModal = () => {
+    setLoanding(true);
     deleteCompanie(row.id)
       .then((data: any) => {
         data = data.data;
+        setLoanding(false);
 
         // Data retrieval and processing
         if (data.ok) {
@@ -262,6 +273,7 @@ const Empresas = () => {
       </div>
       <ModalAlert
         isOpen={isOpen}
+        show={loanding}
         action={changeStatus}
         setIsOpen={handleModal}
         title={`${row.is_deleted ? "Activar" : "Desactivar"}`}
@@ -271,6 +283,7 @@ const Empresas = () => {
       />
       <ModalAlert
         isOpen={isOpen2}
+        show={loanding}
         action={deleteCompanieModal}
         setIsOpen={handleModal2}
         title={`Eliminar`}

@@ -12,7 +12,7 @@ import ModalAlert from "../../components/dashboard/ModalAlert";
 const EditEmployee = () => {
   const navigate = useNavigate();
   const params = useParams();
-
+  const [loanding, setLoanding] = useState(false);
   const [formData, setFormData] = useState(EMPLOYER_DATA);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -55,8 +55,10 @@ const EditEmployee = () => {
   }, []);
 
   const handleCreate = () => {
+    setLoanding(true);
     editEmployers(formData, Number(params.id_employer))
       .then(() => {
+        setLoanding(false);
         showSuccess("Editado exitosamente.");
         navigate(-1);
       })
@@ -103,6 +105,7 @@ const EditEmployee = () => {
       </div>
       <ModalAlert
         isOpen={isOpen}
+        show={loanding}
         action={handleCreate}
         setIsOpen={handleModal}
         title={`Editar Usuario`}

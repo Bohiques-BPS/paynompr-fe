@@ -11,6 +11,7 @@ const EditCompany = () => {
   const navigate = useNavigate();
   const params = useParams();
   const [isOpen, setIsOpen] = useState(false);
+  const [loanding, setLoanding] = useState(false);
 
   const [formData, setFormData] = useState(COMPANY_DATA);
 
@@ -39,10 +40,12 @@ const EditCompany = () => {
   };
 
   const handleEdit = () => {
+    setLoanding(true);
     editCompanies(formData, Number(params.id))
-      .then((response) => {
+      .then(() => {
         // Data retrieval and processing
-        console.log(response);
+        setLoanding(false);
+
         showSuccess("Editado exitosamente.");
         navigate("../empresas");
       })
@@ -91,6 +94,7 @@ const EditCompany = () => {
       </div>
       <ModalAlert
         isOpen={isOpen}
+        show={loanding}
         action={handleEdit}
         setIsOpen={handleModal}
         title={`Editar Usuario`}

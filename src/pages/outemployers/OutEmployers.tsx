@@ -20,6 +20,7 @@ import { showError, showSuccess } from "../../utils/functions";
 const OutEmployers = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
+  const [loanding, setLoanding] = useState(false);
 
   const [search, setSearch] = useState("");
   const [row, setRow] = useState({ first_name: "", id: 0, is_deleted: false });
@@ -70,10 +71,7 @@ const OutEmployers = () => {
       name: "Horas",
       button: true,
       cell: (row: { id: string }) => (
-        <Link
-          to={`../procesos/${Number(params.id)}/${row.id}/cargar`}
-          rel="noopener noreferrer"
-        >
+        <Link to={`./horas/${row.id}`} rel="noopener noreferrer">
           <FontAwesomeIcon
             data-id={row.id}
             icon={faClock}
@@ -126,8 +124,11 @@ const OutEmployers = () => {
   ];
 
   const changeStatus = () => {
+    setLoanding(true);
     changeStatusOutEmployer(row.id)
       .then(() => {
+        setLoanding(false);
+
         // Data retrieval and processing
         showSuccess("Cambiando exitosamente");
         getData();
@@ -139,9 +140,11 @@ const OutEmployers = () => {
       });
   };
   const deleteEmployerModal = () => {
+    setLoanding(true);
     deleteOutEmployer(row.id)
       .then((data: any) => {
         data = data.data;
+        setLoanding(false);
 
         // Data retrieval and processing
         if (data.ok) {
@@ -180,9 +183,11 @@ const OutEmployers = () => {
   }, []);
 
   const getData = () => {
+    setLoanding(true);
     getOutEmployers(Number(params.id))
       .then((response) => {
         // Data retrieval and processing
+        setLoanding(false);
         if (response.data.result) setData(response.data.result);
       })
       .catch(() => {});
@@ -227,6 +232,7 @@ const OutEmployers = () => {
         </div>
         <ModalAlert
           isOpen={isOpen}
+          show={loanding}
           action={changeStatus}
           setIsOpen={handleModal}
           title={`${row.is_deleted ? "Activar" : "Desactivar"}`}
@@ -235,6 +241,7 @@ const OutEmployers = () => {
           } el empleado: ${row.first_name}?`}
         />
         <ModalAlert
+          show={loanding}
           isOpen={isOpen2}
           action={deleteEmployerModal}
           setIsOpen={handleModal2}

@@ -2,8 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #FFF;
+    border-bottom-color: #FF3D00;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    }
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Asegúrate de que sea mayor que el resto de los elementos */
+    }
+    
+    .loading-spinner {
+    /* Estilos para tu spinner o animación de carga */
+    }
 
 #default-modal{
     background: #00000099;
