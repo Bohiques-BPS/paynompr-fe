@@ -10,18 +10,22 @@ import {
 import { useParams } from "react-router-dom";
 import { COMPANY_DATA } from "../../models/company";
 
-import { TIME_DATA } from "../../models/time";
-import { showError, showSuccess } from "../../utils/functions";
+import {
+  convertTimeToHoursWithDecimals,
+  showError,
+  showSuccess,
+} from "../../utils/functions";
 
 import ModalAlert from "../../components/dashboard/ModalAlert";
 import { OUT_EMPLOYER_DATA } from "../../models/outEmployers";
+import { FOREIGN_DATA } from "../../models/foreignHours";
 
 const OutEmployeHours = () => {
   const params = useParams();
   const [employerData, setEmployerData] = useState(OUT_EMPLOYER_DATA);
   const [companyData, setCompanyData] = useState(COMPANY_DATA);
-  const [timesData, setTimesData] = useState([TIME_DATA]);
-  const [formData, setFormData] = useState(TIME_DATA);
+  const [timesData, setTimesData] = useState([FOREIGN_DATA]);
+  const [formData, setFormData] = useState(FOREIGN_DATA);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
@@ -31,6 +35,34 @@ const OutEmployeHours = () => {
   const handleModal2 = () => {
     setIsOpen2(!isOpen2);
   };
+
+  const recalculate = () => {
+    let total = Number(
+      employerData.regular_pay *
+        convertTimeToHoursWithDecimals(
+          formData.regular_hours + ":" + formData.regular_min
+        )
+    );
+
+    let detained = 0;
+    if (total != 0) {
+      const withholdingValue = employerData.withholding.replace("%", "");
+      detained = total * (Number(withholdingValue) / 100);
+    }
+    console.log(employerData.withholding);
+    setFormData({
+      ...formData,
+
+      detained: Number(detained),
+      regular_pay: Number(total),
+    });
+  };
+
+  useEffect(() => {
+    if (formData.id == 0) {
+      recalculate();
+    }
+  }, [formData.regular_min, formData.regular_hours]);
 
   const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
     setFormData({
@@ -56,7 +88,7 @@ const OutEmployeHours = () => {
       setTime(formData, Number(params.id_employer))
         .then(() => {
           // Data retrieval and processing
-          setFormData(TIME_DATA);
+          setFormData(FOREIGN_DATA);
           getData();
           handleModal();
           showSuccess("Creado exitosamente.");
@@ -69,7 +101,7 @@ const OutEmployeHours = () => {
       editTime(formData, Number(formData.id))
         .then(() => {
           // Data retrieval and processing
-          setFormData(TIME_DATA);
+          setFormData(FOREIGN_DATA);
           getData();
           handleModal();
           showSuccess("Editado exitosamente.");
@@ -85,7 +117,7 @@ const OutEmployeHours = () => {
     deleteTime(formData.id)
       .then(() => {
         // Data retrieval and processing
-        setFormData(TIME_DATA);
+        setFormData(FOREIGN_DATA);
         getData();
         handleModal();
         showSuccess("Creado exitosamente.");
@@ -96,19 +128,16 @@ const OutEmployeHours = () => {
       });
   };
   const getData = () => {
-    getCompanyWithOutEmployer(
-      Number(params.id_company),
-      Number(params.id_employer)
-    )
+    getCompanyWithOutEmployer(Number(params.id), Number(params.id_employer))
       .then((response) => {
         // Data retrieval and processing
         setEmployerData(response.data.result.employer);
         setCompanyData(response.data.result.company);
         setTimesData([]);
 
-        if (response.data.result.time.length == 0) setTimesData([TIME_DATA]);
+        if (response.data.result.time.length == 0) setTimesData([FOREIGN_DATA]);
         else {
-          setTimesData([...response.data.result.time, TIME_DATA]);
+          setTimesData([...response.data.result.time, FOREIGN_DATA]);
         }
       })
       .catch(() => {
@@ -125,19 +154,19 @@ const OutEmployeHours = () => {
       <div className="text-[#EED102] bg-[#333160] p-6 rounded-lg text-center">
         <h3 className="text-2xl">Cargar Tiempo</h3>
 
-        <p className="text-white mt-4">Seleccionar período de trabajo</p>
+        <p className="text-white mt-4">Pago Numero</p>
         <label
           className={` block mb-2 text-sm font-medium text-gray-700 w-2/6 mx-auto mt-4 inline-block`}
         >
           <select
             name="period"
-            value={formData.period}
+            value={formData.paid}
             className={` bg-gray-50 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-3`}
           >
             <option value={-1}>Seleccione una opción</option>
             {timesData.map((item: any, i: number) => (
               <option key={i} value={item.id}>
-                Periodo {i + 1}
+                Pago {i + 1}
               </option>
             ))}
           </select>
@@ -191,6 +220,51 @@ const OutEmployeHours = () => {
                 inputCss="text-center"
                 name="regular_min"
                 value={formData.regular_min}
+                placeholder=""
+                type="text"
+              />
+            </div>
+            <div className="w-1/6 ms-2 mx-auto  inline-block  ">
+              <label className="block" htmlFor="">
+                Pago
+              </label>
+              <CustomInputs
+                class="w-full mx-auto   inline-block  "
+                label=""
+                inputCss="text-center"
+                name="regular_pay"
+                disabled={true}
+                value={formData.regular_pay}
+                placeholder=""
+                type="text"
+              />
+            </div>
+            <div className="w-1/6 ms-2  mx-auto  inline-block  ">
+              <label className="block" htmlFor="">
+                Retenido
+              </label>
+              <CustomInputs
+                class="w-full mx-auto   inline-block  "
+                label=""
+                inputCss="text-center"
+                name="detained"
+                disabled={true}
+                value={formData.detained}
+                placeholder=""
+                type="text"
+              />
+            </div>
+            <div className="w-1/6 ms-2 mx-auto  inline-block  ">
+              <label className="block" htmlFor="">
+                Total
+              </label>
+              <CustomInputs
+                class="w-full mx-auto   inline-block  "
+                label=""
+                disabled={true}
+                inputCss="text-center"
+                name="regular_min"
+                value={formData.regular_pay - formData.detained}
                 placeholder=""
                 type="text"
               />
