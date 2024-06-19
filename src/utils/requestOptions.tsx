@@ -198,3 +198,23 @@ export function setTime(data: object, id_employer: number) {
 export function editTime(data: object, id_time: number) {
   return Axios.request(setOptions("time/" + id_time, "PUT", data)); // Using a post request, specifying the user
 }
+export function setOutTime(data: object, id_employer: number) {
+  return Axios.request(setOptions("outtime/" + id_employer, "POST", data)); // Using a post request, specifying the user
+}
+
+export function editOutTime(data: object, id_time: number) {
+  return Axios.request(setOptions("outtime/" + id_time, "PUT", data)); // Using a post request, specifying the user
+}
+
+export function getCounterFoil(
+  id_company: number,
+  id_time: number,
+  employer_id: number
+) {
+  return Axios.request(
+    setOptions(
+      "reports/counterfoil/" + id_company + "/" + id_time + "/" + employer_id,
+      "GET"
+    )
+  ); // Using a post request, specifying the user
+}

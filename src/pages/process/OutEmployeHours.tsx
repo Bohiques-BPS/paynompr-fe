@@ -3,8 +3,10 @@ import CustomInputs from "../../components/forms/CustomInputs";
 
 import {
   deleteTime,
+  editOutTime,
   editTime,
   getCompanyWithOutEmployer,
+  setOutTime,
   setTime,
 } from "../../utils/requestOptions";
 import { useParams } from "react-router-dom";
@@ -12,6 +14,7 @@ import { COMPANY_DATA } from "../../models/company";
 
 import {
   convertTimeToHoursWithDecimals,
+  filterById,
   showError,
   showSuccess,
 } from "../../utils/functions";
@@ -26,6 +29,7 @@ const OutEmployeHours = () => {
   const [companyData, setCompanyData] = useState(COMPANY_DATA);
   const [timesData, setTimesData] = useState([FOREIGN_DATA]);
   const [formData, setFormData] = useState(FOREIGN_DATA);
+  const [period, setPeriod] = useState(0);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
@@ -85,7 +89,7 @@ const OutEmployeHours = () => {
 
   const handleCreate = () => {
     if (formData.id == 0) {
-      setTime(formData, Number(params.id_employer))
+      setOutTime(formData, Number(params.id_employer))
         .then(() => {
           // Data retrieval and processing
           setFormData(FOREIGN_DATA);
@@ -98,7 +102,7 @@ const OutEmployeHours = () => {
           showError(error.response.data.detail);
         });
     } else {
-      editTime(formData, Number(formData.id))
+      editOutTime(formData, Number(formData.id))
         .then(() => {
           // Data retrieval and processing
           setFormData(FOREIGN_DATA);
@@ -145,6 +149,16 @@ const OutEmployeHours = () => {
       });
   };
 
+  const handlePeriodChange = (e: React.FormEvent<any>) => {
+    const value = e.currentTarget.value;
+    setPeriod(value);
+
+    if (timesData.length > 0 && value >= 0) {
+      setFormData(filterById(timesData, value));
+      console.log(formData);
+    }
+  };
+
   useEffect(() => {
     getData();
   }, []);
@@ -159,6 +173,7 @@ const OutEmployeHours = () => {
           className={` block mb-2 text-sm font-medium text-gray-700 w-2/6 mx-auto mt-4 inline-block`}
         >
           <select
+            onChange={handlePeriodChange}
             name="period"
             value={formData.paid}
             className={` bg-gray-50 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-3`}
@@ -224,54 +239,186 @@ const OutEmployeHours = () => {
                 type="text"
               />
             </div>
-            <div className="w-1/6 ms-2 mx-auto  inline-block  ">
-              <label className="block" htmlFor="">
-                Pago
-              </label>
-              <CustomInputs
-                class="w-full mx-auto   inline-block  "
-                label=""
-                inputCss="text-center"
-                name="regular_pay"
-                disabled={true}
-                value={formData.regular_pay}
-                placeholder=""
-                type="text"
-              />
+            <div className="w-10/12 mx-auto  inline-block  "></div>
+            <div className="w-full md:w-2/3  mx-auto  inline-block  ">
+              <p className="uppercase">
+                1. Pagos servicios prestados individuos no sujetos a retención
+              </p>
             </div>
-            <div className="w-1/6 ms-2  mx-auto  inline-block  ">
-              <label className="block" htmlFor="">
-                Retenido
-              </label>
-              <CustomInputs
-                class="w-full mx-auto   inline-block  "
-                label=""
-                inputCss="text-center"
-                name="detained"
-                disabled={true}
-                value={formData.detained}
-                placeholder=""
-                type="text"
-              />
+            <div className="w-1/3  mx-auto  inline-block  ">
+              <div className="w-1/2  mx-auto  inline-block  ">
+                <label className="block" htmlFor="">
+                  Pago
+                </label>
+                <CustomInputs
+                  class="w-full mx-auto pe-1  inline-block  "
+                  label=""
+                  inputCss="text-center"
+                  name="regular_pay"
+                  disabled={true}
+                  value={
+                    employerData.type_entity == 1 &&
+                    employerData.withholding == "0%"
+                      ? formData.regular_pay
+                      : 0
+                  }
+                  placeholder=""
+                  type="text"
+                />
+              </div>
             </div>
-            <div className="w-1/6 ms-2 mx-auto  inline-block  ">
-              <label className="block" htmlFor="">
-                Total
-              </label>
-              <CustomInputs
-                class="w-full mx-auto   inline-block  "
-                label=""
-                disabled={true}
-                inputCss="text-center"
-                name="regular_min"
-                value={formData.regular_pay - formData.detained}
-                placeholder=""
-                type="text"
-              />
+            <div className="w-full md:w-2/3  mx-auto  inline-block  ">
+              <p className="uppercase">
+                2. Pagos servicios prestados CORP y sociedades no sujetos a
+                retención
+              </p>
+            </div>
+            <div className="w-1/3  mx-auto  inline-block  ">
+              <div className="w-1/2  mx-auto  inline-block  ">
+                <label className="block" htmlFor="">
+                  Pago
+                </label>
+                <CustomInputs
+                  class="w-full mx-auto pe-1  inline-block  "
+                  label=""
+                  inputCss="text-center"
+                  name="regular_pay"
+                  disabled={true}
+                  value={
+                    employerData.type_entity != 1 &&
+                    employerData.withholding == "0%"
+                      ? formData.regular_pay
+                      : 0
+                  }
+                  placeholder=""
+                  type="text"
+                />
+              </div>
+            </div>
+            <div className="w-full md:w-2/3  mx-auto  inline-block  ">
+              <p className="uppercase">
+                3. Pagos servicios prestados individuos sujetos a retención
+              </p>
+            </div>
+            <div className="w-1/3  mx-auto  inline-block  ">
+              <div className="w-1/2  mx-auto  inline-block  ">
+                <label className="block" htmlFor="">
+                  Pago
+                </label>
+                <CustomInputs
+                  class="w-full mx-auto pe-1  inline-block  "
+                  label=""
+                  inputCss="text-center"
+                  name="regular_pay"
+                  disabled={true}
+                  value={
+                    employerData.type_entity == 1 &&
+                    employerData.withholding != "0%"
+                      ? formData.regular_pay
+                      : 0
+                  }
+                  placeholder=""
+                  type="text"
+                />
+              </div>
+              <div className="w-1/2 ps-1  mx-auto  inline-block  ">
+                <label className="block" htmlFor="">
+                  Retenido
+                </label>
+                <CustomInputs
+                  class="w-full mx-auto   inline-block  "
+                  label=""
+                  inputCss="text-center"
+                  name="detained"
+                  disabled={true}
+                  value={
+                    employerData.type_entity == 1 &&
+                    employerData.withholding != "0%"
+                      ? formData.regular_pay
+                      : 0
+                  }
+                  placeholder=""
+                  type="text"
+                />
+              </div>
+            </div>
+            <div className="w-full md:w-2/3  mx-auto  inline-block  ">
+              <p className="uppercase">
+                4. Pagos servicios prestados CORP y sociedades sujetos a
+                retención
+              </p>
+            </div>
+            <div className="w-1/3  mx-auto  inline-block  ">
+              <div className="w-1/2  mx-auto  inline-block  ">
+                <label className="block" htmlFor="">
+                  Pago
+                </label>
+                <CustomInputs
+                  class="w-full mx-auto pe-1  inline-block  "
+                  label=""
+                  inputCss="text-center"
+                  name="regular_pay"
+                  disabled={true}
+                  value={
+                    employerData.type_entity != 1 &&
+                    employerData.withholding != "0%"
+                      ? formData.regular_pay
+                      : 0
+                  }
+                  placeholder=""
+                  type="text"
+                />
+              </div>
+              <div className="w-1/2 ps-1  mx-auto  inline-block  ">
+                <label className="block" htmlFor="">
+                  Retenido
+                </label>
+                <CustomInputs
+                  class="w-full mx-auto   inline-block  "
+                  label=""
+                  inputCss="text-center"
+                  name="detained"
+                  disabled={true}
+                  value={
+                    employerData.type_entity != 1 &&
+                    employerData.withholding != "0%"
+                      ? formData.detained
+                      : 0
+                  }
+                  placeholder=""
+                  type="text"
+                />
+              </div>
+            </div>
+            <div className="w-full  text-end mx-auto  inline-block  ">
+              <div className="w-1/6 ms-2 mx-auto text-center  inline-block  ">
+                <label className="block" htmlFor="">
+                  Total
+                </label>
+                <CustomInputs
+                  class="w-full mx-auto   inline-block  "
+                  label=""
+                  disabled={true}
+                  inputCss="text-center"
+                  name="regular_min"
+                  value={formData.regular_pay - formData.detained}
+                  placeholder=""
+                  type="text"
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
+      <div className="w-full  mt-4 text-center  p-4 ">
+        <button
+          onClick={handleModal}
+          className="w-auto   mx-auto bg-[#333160] py-4 text-[#EED102] bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-8 text-center "
+        >
+          Cargar tiempo de empleado
+        </button>
+      </div>
+
       <ModalAlert
         isOpen={isOpen2}
         action={handleDelete}
@@ -285,7 +432,9 @@ const OutEmployeHours = () => {
         action={handleCreate}
         setIsOpen={handleModal}
         title={`Cargar Hora`}
-        description={`¿Esta seguro que desea cargar esta data por un monto de ?`}
+        description={`¿Esta seguro que desea cargar esta data por un monto de ${
+          formData.regular_pay - formData.detained
+        }?`}
       />
     </>
   );

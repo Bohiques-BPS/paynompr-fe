@@ -1,8 +1,8 @@
 export const OUT_EMPLOYER_DATA = {
-  last_name: "Prueba",
-  mother_last_name: "Prueba",
-  first_name: "Prueba",
-  middle_name: "Prueba",
+  last_name: "Fernandez",
+  mother_last_name: "Ortiz",
+  first_name: "Andres",
+  middle_name: "Eleazar",
   email: "Prueba@Prueba.com",
   account_number: "",
   type_entity: 0,

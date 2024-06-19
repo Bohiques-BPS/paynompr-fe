@@ -5,6 +5,7 @@ import {
   deleteTime,
   editTime,
   getCompanyWithEmployer,
+  getCounterFoil,
   setTime,
 } from "../../utils/requestOptions";
 import { useParams } from "react-router-dom";
@@ -34,6 +35,7 @@ const Cargar = () => {
   const [taxesData, setTaxesData] = useState([TAXES_DATA]);
   const [period, setPeriod] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
+
   const [isOpen2, setIsOpen2] = useState(false);
   const handleModal = () => {
     setIsOpen(!isOpen);
@@ -75,7 +77,7 @@ const Cargar = () => {
 
     let inability = regular_pay * (0.3 / 100);
     let medicare = regular_pay * (1.45 / 100);
-    let secure_social = regular_pay * (6.2 / 100);
+    let secure_social = (regular_pay - formData.tips) * (6.2 / 100);
     let tax_pr = regular_pay * (10 / 100);
     let social_tips = formData.tips * (6.2 / 100);
 
@@ -186,8 +188,8 @@ const Cargar = () => {
       });
     } else {
       formData.payment.map((item) => {
+        console.log(item);
         if (item.is_active || item.requiered == 2) {
-          console.log(item);
           total = total + item.value;
         }
       });
@@ -211,6 +213,27 @@ const Cargar = () => {
     total = regular_pay;
 
     return total;
+  };
+
+  const generateFile = () => {
+    setLoanding(true);
+
+    getCounterFoil(
+      Number(params.id_company),
+      Number(params.id_employer),
+      formData.id
+    )
+      .then(() => {
+        // Data retrieval and processing
+        setLoanding(false);
+
+        showSuccess("Creado exitosamente.");
+      })
+      .catch((error) => {
+        setLoanding(false);
+        // If the query fails, an error will be displayed on the terminal.
+        showError(error.response.data.detail);
+      });
   };
 
   const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
@@ -846,7 +869,7 @@ const Cargar = () => {
             )}
             {formData.id != 0 && (
               <>
-                {formData.payment.map((item) => (
+                {formData.payment.map((item: any) => (
                   <div
                     key={item.id}
                     className={` block mb-2   font-medium text-gray-700 w-1/6 mx-auto pe-1  inline-block `}
@@ -857,6 +880,7 @@ const Cargar = () => {
                           <input
                             key={item.id}
                             type="checkbox"
+                            onChange={(e) => handleCheck(e, item)}
                             checked={item.is_active}
                           />
                         </>
@@ -916,28 +940,13 @@ const Cargar = () => {
           )}
 
           {formData.id != 0 && (
-            <PDFDownloadLink
-              document={
-                <Talonario
-                  id_employer={Number(params.id_employer)}
-                  id_company={Number(params.id_company)}
-                  id_period={period}
-                />
-              }
-              fileName={employerData.first_name + " " + employerData.last_name}
+            <button
+              type="button"
+              onClick={generateFile}
+              className="w-auto mt-4 mx-auto mr-4 bg-[#333160] py-4 text-[#EED102] bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-8 text-center "
             >
-              {({ loading }) =>
-                loading ? (
-                  <button className="w-auto mt-4 mx-auto mr-4 bg-[#333160] py-4 text-[#EED102] bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-8 text-center ">
-                    Descargando Talonario
-                  </button>
-                ) : (
-                  <button className="w-auto mt-4 mx-auto ms-4 bg-[#EED102] py-4 text-[#333160] bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-8 text-center ">
-                    Descargar Talonario
-                  </button>
-                )
-              }
-            </PDFDownloadLink>
+              Descargando Talonario
+            </button>
           )}
           <button
             onClick={handleModal}
