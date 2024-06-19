@@ -4,10 +4,8 @@ import CustomInputs from "../../components/forms/CustomInputs";
 import {
   deleteTime,
   editOutTime,
-  editTime,
   getCompanyWithOutEmployer,
   setOutTime,
-  setTime,
 } from "../../utils/requestOptions";
 import { useParams } from "react-router-dom";
 import { COMPANY_DATA } from "../../models/company";
@@ -29,7 +27,6 @@ const OutEmployeHours = () => {
   const [companyData, setCompanyData] = useState(COMPANY_DATA);
   const [timesData, setTimesData] = useState([FOREIGN_DATA]);
   const [formData, setFormData] = useState(FOREIGN_DATA);
-  const [period, setPeriod] = useState(0);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
@@ -151,7 +148,6 @@ const OutEmployeHours = () => {
 
   const handlePeriodChange = (e: React.FormEvent<any>) => {
     const value = e.currentTarget.value;
-    setPeriod(value);
 
     if (timesData.length > 0 && value >= 0) {
       setFormData(filterById(timesData, value));
@@ -258,7 +254,7 @@ const OutEmployeHours = () => {
                   disabled={true}
                   value={
                     employerData.type_entity == 1 &&
-                    employerData.withholding == "0%"
+                    employerData.withholding == "0"
                       ? formData.regular_pay
                       : 0
                   }
@@ -286,7 +282,7 @@ const OutEmployeHours = () => {
                   disabled={true}
                   value={
                     employerData.type_entity != 1 &&
-                    employerData.withholding == "0%"
+                    employerData.withholding == "0"
                       ? formData.regular_pay
                       : 0
                   }
@@ -313,7 +309,7 @@ const OutEmployeHours = () => {
                   disabled={true}
                   value={
                     employerData.type_entity == 1 &&
-                    employerData.withholding != "0%"
+                    employerData.withholding != "0"
                       ? formData.regular_pay
                       : 0
                   }
@@ -333,7 +329,7 @@ const OutEmployeHours = () => {
                   disabled={true}
                   value={
                     employerData.type_entity == 1 &&
-                    employerData.withholding != "0%"
+                    employerData.withholding != "0"
                       ? formData.regular_pay
                       : 0
                   }
@@ -361,7 +357,7 @@ const OutEmployeHours = () => {
                   disabled={true}
                   value={
                     employerData.type_entity != 1 &&
-                    employerData.withholding != "0%"
+                    employerData.withholding != "0"
                       ? formData.regular_pay
                       : 0
                   }
@@ -381,7 +377,7 @@ const OutEmployeHours = () => {
                   disabled={true}
                   value={
                     employerData.type_entity != 1 &&
-                    employerData.withholding != "0%"
+                    employerData.withholding != "0"
                       ? formData.detained
                       : 0
                   }

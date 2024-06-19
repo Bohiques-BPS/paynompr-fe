@@ -20,8 +20,7 @@ import {
   showSuccess,
 } from "../../utils/functions";
 import { TAXES, TAXES_DATA } from "../../models/taxes";
-import { PDFDownloadLink } from "@react-pdf/renderer";
-import Talonario from "../../components/files/Talonario";
+
 import ModalAlert from "../../components/dashboard/ModalAlert";
 
 const Cargar = () => {
