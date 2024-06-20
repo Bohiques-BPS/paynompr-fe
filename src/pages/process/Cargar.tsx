@@ -34,6 +34,8 @@ const Cargar = () => {
   const [taxesData, setTaxesData] = useState([TAXES_DATA]);
   const [period, setPeriod] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
+  const [idEmployer, setIdEmployer] = useState(0);
+  const [employers, setEmployers] = useState([]);
 
   const [isOpen2, setIsOpen2] = useState(false);
   const handleModal = () => {
@@ -322,6 +324,12 @@ const Cargar = () => {
     }
   };
 
+  const handleChangeEmployer = (e: React.FormEvent<any>) => {
+    const value = e.currentTarget.value;
+    setIdEmployer(Number(value));
+    getData(Number(value));
+  };
+
   const handleCreate = () => {
     setLoanding(true);
     if (formData.id == 0) {
@@ -330,7 +338,7 @@ const Cargar = () => {
           // Data retrieval and processing
           setLoanding(false);
           setFormData(TIME_DATA);
-          getData();
+          getData(idEmployer);
           handleModal();
           showSuccess("Creado exitosamente.");
         })
@@ -344,7 +352,7 @@ const Cargar = () => {
           // Data retrieval and processing
           setFormData(TIME_DATA);
           setLoanding(false);
-          getData();
+          getData(idEmployer);
           handleModal();
           showSuccess("Editado exitosamente.");
         })
@@ -362,7 +370,7 @@ const Cargar = () => {
         // Data retrieval and processing
         setLoanding(false);
         setFormData(TIME_DATA);
-        getData();
+        getData(idEmployer);
         handleModal();
         showSuccess("Creado exitosamente.");
       })
@@ -371,17 +379,15 @@ const Cargar = () => {
         showError(error.response.data.detail);
       });
   };
-  const getData = () => {
+  const getData = (id_employer: any) => {
     setLoanding(true);
-    getCompanyWithEmployer(
-      Number(params.id_company),
-      Number(params.id_employer)
-    )
+    getCompanyWithEmployer(Number(params.id_company), id_employer)
       .then((response) => {
         // Data retrieval and processing
         setLoanding(false);
         setEmployerData(response.data.result.employer);
         setCompanyData(response.data.result.company);
+        setEmployers(response.data.result.employers);
         setTimesData([]);
         setTaxesData(response.data.result.taxes);
         if (response.data.result.time.length == 0) setTimesData([TIME_DATA]);
@@ -395,7 +401,8 @@ const Cargar = () => {
   };
 
   useEffect(() => {
-    getData();
+    setIdEmployer(Number(params.id_employer));
+    getData(Number(params.id_employer));
   }, []);
 
   return (
@@ -433,14 +440,19 @@ const Cargar = () => {
             type="text"
           />
 
-          <CustomInputs
-            class="w-1/2 mx-auto ps-1  inline-block "
-            label=""
-            value={employerData.first_name + " " + employerData.last_name}
-            disabled={true}
-            placeholder=""
-            type="text"
-          />
+          <select
+            name="employers"
+            onChange={handleChangeEmployer}
+            value={idEmployer}
+            className={`w-1/2 bg-gray-50 border inline-block  border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-3`}
+          >
+            <option value={-1}>Seleccione una opción</option>
+            {employers.map((item: any, i: number) => (
+              <option key={i} value={item.id}>
+                {item.first_name + " " + item.last_name}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="flex flex-col gap-4">
           <div className="xl:w-full w-full ">
@@ -942,7 +954,7 @@ const Cargar = () => {
             <button
               type="button"
               onClick={generateFile}
-              className="w-auto mt-4 mx-auto mr-4 bg-[#333160] py-4 text-[#EED102] bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-8 text-center "
+              className="w-auto mt-4 mx-auto ml-4 bg-[#333160] py-4 text-[#EED102] bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-8 text-center "
             >
               Descargando Talonario
             </button>
