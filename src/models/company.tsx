@@ -23,6 +23,10 @@ export const COMPANY_DATA = {
   payer: "Empresa S.A.",
   desem: "0.5",
   disabled_percent: "0",
+  vacation_hours: 0,
+  vacation_date: 0,
+  sicks_hours: 0,
+  sicks_date: 0,
   unemployment_percentage: "",
   employed_contribution: "0",
   polize_number: "12345678",
@@ -36,6 +40,10 @@ export interface COMPANY {
   jurisdiction: string;
   accountant_id: number;
   email: string;
+  vacation_hours: number;
+  vacation_date: number;
+  sicks_hours: number;
+  sicks_date: number;
   number_patronal: string;
   coml: any;
   contact: string;

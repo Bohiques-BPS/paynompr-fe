@@ -20,6 +20,7 @@ export const TIME_DATA = {
   holiday_min: "00",
   inability: 0,
   medicare: 0,
+  choferil: 0,
   secure_social: 0,
   social_tips: 0,
   tax_pr: 0,
@@ -41,6 +42,7 @@ export interface TIME {
   period: number;
   tips: number;
   inability: number;
+  choferil: number;
   medicare: number;
   secure_social: number;
   social_tips: number;

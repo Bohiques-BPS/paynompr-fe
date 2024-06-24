@@ -254,7 +254,7 @@ const OutEmployeHours = () => {
                   disabled={true}
                   value={
                     employerData.type_entity == 1 &&
-                    employerData.withholding == "0"
+                    Number(employerData.withholding.replace("%", "")) == 0
                       ? formData.regular_pay
                       : 0
                   }
@@ -282,7 +282,7 @@ const OutEmployeHours = () => {
                   disabled={true}
                   value={
                     employerData.type_entity != 1 &&
-                    employerData.withholding == "0"
+                    Number(employerData.withholding.replace("%", "")) == 0
                       ? formData.regular_pay
                       : 0
                   }
@@ -309,7 +309,7 @@ const OutEmployeHours = () => {
                   disabled={true}
                   value={
                     employerData.type_entity == 1 &&
-                    employerData.withholding != "0"
+                    Number(employerData.withholding.replace("%", "")) != 0
                       ? formData.regular_pay
                       : 0
                   }
@@ -329,8 +329,8 @@ const OutEmployeHours = () => {
                   disabled={true}
                   value={
                     employerData.type_entity == 1 &&
-                    employerData.withholding != "0"
-                      ? formData.regular_pay
+                    Number(employerData.withholding.replace("%", "")) != 0
+                      ? formData.detained
                       : 0
                   }
                   placeholder=""
@@ -357,7 +357,7 @@ const OutEmployeHours = () => {
                   disabled={true}
                   value={
                     employerData.type_entity != 1 &&
-                    employerData.withholding != "0"
+                    Number(employerData.withholding.replace("%", "")) != 0
                       ? formData.regular_pay
                       : 0
                   }
@@ -377,7 +377,7 @@ const OutEmployeHours = () => {
                   disabled={true}
                   value={
                     employerData.type_entity != 1 &&
-                    employerData.withholding != "0"
+                    Number(employerData.withholding.replace("%", "")) != 0
                       ? formData.detained
                       : 0
                   }

@@ -8,6 +8,7 @@ import {
   STATUS_CIVIL,
   EXENCIÓN_PERSONAL,
   PERIOD_PAYROLL,
+  SELECT_SIMPLE,
 } from "../../utils/consts";
 import { NumericFormat, PatternFormat } from "react-number-format";
 import CustomCheckBox from "./CustomCheckBox";
@@ -262,14 +263,16 @@ const EmployeerForm = (props: Props) => {
           placeholder=""
           type="date"
         />
-        <CustomInputs
-          class="xl:w-1/5 w-1/3 mx-auto pe-1  inline-block "
+
+        <CustomSelect
+          options={SELECT_SIMPLE}
+          class="w-1/5 mx-auto pe-1  inline-block "
           label="Choferil"
           name="choferil"
           onChange={props.onChange}
           value={props.formData.choferil}
           placeholder=""
-          type="text"
+          type="number"
         />
         <CustomInputs
           class="xl:w-1/5 w-1/3 mx-auto pe-1  inline-block "
@@ -299,7 +302,7 @@ const EmployeerForm = (props: Props) => {
           type="number"
         />
         <label className=" mb-2  font-medium text-gray-700 w-1/2 xl:w-1/5 mx-auto ps-1  inline-block">
-          <span>% de pago</span>
+          <span>% de Retención</span>
 
           <NumericFormat
             name="payment_percentage"

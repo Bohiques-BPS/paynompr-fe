@@ -79,8 +79,15 @@ const Cargar = () => {
     let inability = regular_pay * (0.3 / 100);
     let medicare = regular_pay * (1.45 / 100);
     let secure_social = (regular_pay - formData.tips) * (6.2 / 100);
-    let tax_pr = regular_pay * (10 / 100);
+
+    const withholdingValue = employerData.payment_percentage.replace("%", "");
+    let tax_pr = regular_pay * (Number(withholdingValue) / 100);
     let social_tips = formData.tips * (6.2 / 100);
+
+    let choferil = 0;
+    if (employerData.choferil === "SI")
+      choferil = Number(companyData.driver_rate);
+    console.log(choferil);
 
     taxesData.map((item) => {
       item.value = setAmountTaxe(item, regular_pay);
@@ -92,6 +99,7 @@ const Cargar = () => {
       ...formData,
       ["payment"]: aux,
       ["inability"]: inability,
+      ["choferil"]: choferil,
       ["medicare"]: medicare,
       ["secure_social"]: secure_social,
       ["tax_pr"]: tax_pr,
@@ -174,11 +182,21 @@ const Cargar = () => {
     let inability = regular_pay * (0.3 / 100);
     let medicare = regular_pay * (1.45 / 100);
     let secure_social = regular_pay * (6.2 / 100);
-    let tax_pr = regular_pay * (10 / 100);
+    const withholdingValue = employerData.payment_percentage.replace("%", "");
+    let tax_pr = regular_pay * (Number(withholdingValue) / 100);
     let social_tips = formData.tips * (6.2 / 100);
+    let choferil = 0;
+    if (employerData.choferil == "SI") Number(companyData.driver_rate);
 
     total = regular_pay;
-    total = total - inability - medicare - secure_social - tax_pr - social_tips;
+    total =
+      total -
+      inability -
+      medicare -
+      secure_social -
+      tax_pr -
+      social_tips -
+      choferil;
     if (formData.id == 0) {
       taxesData.map((item) => {
         if (item.is_active || item.requiered == 2) {
@@ -833,6 +851,24 @@ const Cargar = () => {
                   type="number"
                   name="tax_pr"
                   value={getNumber(formData.tax_pr)}
+                />
+              </label>
+            </div>
+            <div
+              className={` block mb-2   font-medium text-gray-700 w-1/6 mx-auto pe-1  inline-block `}
+            >
+              <label>
+                <span>
+                  {" "}
+                  Choferil
+                  <span>( - )</span>
+                </span>
+
+                <input
+                  className={` bg-gray-50 text-sm text-center invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5`}
+                  type="number"
+                  name="choferil"
+                  value={getNumber(formData.choferil)}
                 />
               </label>
             </div>

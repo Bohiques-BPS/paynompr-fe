@@ -398,6 +398,16 @@ export const GENDER = [
     name: "Mujer",
   },
 ];
+export const SELECT_SIMPLE = [
+  {
+    id: "SI",
+    name: "Si",
+  },
+  {
+    id: "NO",
+    name: "No",
+  },
+];
 
 export const ENTITY = [
   {
