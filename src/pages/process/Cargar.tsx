@@ -85,9 +85,7 @@ const Cargar = () => {
     let social_tips = formData.tips * (6.2 / 100);
 
     let choferil = 0;
-    if (employerData.choferil === "SI")
-      choferil = Number(companyData.driver_rate);
-    console.log(choferil);
+    if (employerData.choferil === "SI") choferil = 0.5;
 
     taxesData.map((item) => {
       item.value = setAmountTaxe(item, regular_pay);
@@ -98,12 +96,12 @@ const Cargar = () => {
     setFormData({
       ...formData,
       ["payment"]: aux,
-      ["inability"]: inability,
-      ["choferil"]: choferil,
-      ["medicare"]: medicare,
-      ["secure_social"]: secure_social,
-      ["tax_pr"]: tax_pr,
-      ["social_tips"]: social_tips,
+      ["inability"]: getNumber(inability),
+      ["choferil"]: getNumber(choferil),
+      ["medicare"]: getNumber(medicare),
+      ["secure_social"]: getNumber(secure_social),
+      ["tax_pr"]: getNumber(tax_pr),
+      ["social_tips"]: getNumber(social_tips),
       ["holyday_pay"]: Number(
         employerData.regular_time *
           convertTimeToHoursWithDecimals(
@@ -178,25 +176,41 @@ const Cargar = () => {
       formData.regular_pay +
       formData.overtime_pay +
       formData.meal_time_pay;
+    let inability = 0;
+    let medicare = 0;
+    let secure_social = 0;
 
-    let inability = regular_pay * (0.3 / 100);
-    let medicare = regular_pay * (1.45 / 100);
-    let secure_social = regular_pay * (6.2 / 100);
-    const withholdingValue = employerData.payment_percentage.replace("%", "");
-    let tax_pr = regular_pay * (Number(withholdingValue) / 100);
-    let social_tips = formData.tips * (6.2 / 100);
+    let tax_pr = 0;
+    let social_tips = 0;
     let choferil = 0;
-    if (employerData.choferil == "SI") Number(companyData.driver_rate);
+    if (formData.id == 0) {
+      inability = regular_pay * (0.3 / 100);
+      medicare = regular_pay * (1.45 / 100);
+      secure_social = regular_pay * (6.2 / 100);
+      const withholdingValue = employerData.payment_percentage.replace("%", "");
+      tax_pr = regular_pay * (Number(withholdingValue) / 100);
+      social_tips = formData.tips * (6.2 / 100);
+      choferil = 0;
+      if (employerData.choferil == "SI") choferil = 0.5;
+    } else {
+      inability = formData.inability;
+      medicare = formData.medicare;
+      secure_social = formData.secure_social;
 
+      tax_pr = formData.tax_pr;
+      social_tips = formData.social_tips;
+      choferil = formData.choferil;
+    }
     total = regular_pay;
     total =
       total -
-      inability -
-      medicare -
-      secure_social -
-      tax_pr -
-      social_tips -
-      choferil;
+      getNumber(inability) -
+      getNumber(medicare) -
+      getNumber(secure_social) -
+      getNumber(tax_pr) -
+      getNumber(social_tips) -
+      getNumber(choferil);
+    console.log(total);
     if (formData.id == 0) {
       taxesData.map((item) => {
         if (item.is_active || item.requiered == 2) {
@@ -740,12 +754,38 @@ const Cargar = () => {
               placeholder=""
               type="number"
             />
+            <CustomInputs
+              class="w-1/6 mx-auto mb-4 pe-1  inline-block "
+              label="Propinas"
+              disabled={true}
+              inputCss="text-center"
+              value={getNumber(formData.tips)}
+              placeholder=""
+              type="number"
+            />
+            <CustomInputs
+              class="w-1/6 mx-auto mb-4 pe-1  inline-block "
+              label="Comisiones"
+              disabled={true}
+              inputCss="text-center"
+              value={getNumber(formData.commissions)}
+              placeholder=""
+              type="number"
+            />
+            <CustomInputs
+              class="w-1/6 mx-auto mb-4 pe-1  inline-block "
+              label="Concesiones"
+              disabled={true}
+              inputCss="text-center"
+              value={getNumber(formData.concessions)}
+              placeholder=""
+              type="number"
+            />
           </div>
           <div className="xl:w-full w-full text-end ">
             <CustomInputs
               class="w-1/6 mx-auto pe-1  inline-block text-center "
               label="Total"
-              name="sick_hours"
               disabled={true}
               inputCss="text-center border-0"
               value={getNumber(getPreTotal())}
