@@ -31,6 +31,8 @@ const Cargar = () => {
   const [companyData, setCompanyData] = useState(COMPANY_DATA);
   const [timesData, setTimesData] = useState([TIME_DATA]);
   const [formData, setFormData] = useState(TIME_DATA);
+  const [formDataAux, setFormDataAux] = useState(TIME_DATA);
+
   const [taxesData, setTaxesData] = useState([TAXES_DATA]);
   const [period, setPeriod] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
@@ -210,7 +212,7 @@ const Cargar = () => {
       getNumber(tax_pr) -
       getNumber(social_tips) -
       getNumber(choferil);
-    console.log(total);
+
     if (formData.id == 0) {
       taxesData.map((item) => {
         if (item.is_active || item.requiered == 2) {
@@ -352,6 +354,7 @@ const Cargar = () => {
 
     if (timesData.length > 0 && value >= 0) {
       setFormData(filterById(timesData, value));
+      setFormDataAux(filterById(timesData, value));
       console.log(formData);
     }
   };
@@ -363,8 +366,29 @@ const Cargar = () => {
   };
 
   const handleCreate = () => {
-    setLoanding(true);
     if (formData.id == 0) {
+      if (
+        Number(formData.vacations_hours) > employerData.vacation_hours ||
+        (Number(formData.vacations_hours) == employerData.vacation_hours &&
+          Number(formData.vacations_min) > 0)
+      ) {
+        showError(
+          "El maximo de horas de vaciones son: " + employerData.vacation_hours
+        );
+        return;
+      }
+      if (
+        Number(formData.sick_hours) > employerData.sicks_hours ||
+        (Number(formData.sick_hours) == employerData.sicks_hours &&
+          Number(formData.sick_hours) > 0)
+      ) {
+        showError(
+          "El maximo de horas de enfermedades son: " +
+            employerData.vacation_hours
+        );
+        return;
+      }
+      setLoanding(true);
       setTime(formData, Number(params.id_employer))
         .then(() => {
           // Data retrieval and processing
@@ -379,6 +403,40 @@ const Cargar = () => {
           showError(error.response.data.detail);
         });
     } else {
+      console.log(Number(formDataAux.vacations_hours));
+
+      console.log(
+        Number(employerData.vacation_hours) +
+          Number(formDataAux.vacations_hours)
+      );
+      if (
+        Number(formData.vacations_hours) >
+          Number(employerData.vacation_hours) +
+            Number(formDataAux.vacations_hours) ||
+        (Number(formData.vacations_hours) ==
+          Number(employerData.vacation_hours) +
+            Number(formDataAux.vacations_hours) &&
+          Number(formData.vacations_min) > 0)
+      ) {
+        showError(
+          "El maximo de horas de vaciones son: " + employerData.vacation_hours
+        );
+        return;
+      }
+      if (
+        Number(formData.sick_hours) >
+          Number(employerData.sicks_hours) + Number(formDataAux.sick_hours) ||
+        (Number(formData.sick_hours) ==
+          Number(employerData.sicks_hours) + Number(formDataAux.sick_hours) &&
+          Number(formData.sick_hours) > 0)
+      ) {
+        showError(
+          "El maximo de horas de enfermedades son: " +
+            employerData.vacation_hours
+        );
+        return;
+      }
+      setLoanding(true);
       editTime(formData, Number(formData.id))
         .then(() => {
           // Data retrieval and processing
