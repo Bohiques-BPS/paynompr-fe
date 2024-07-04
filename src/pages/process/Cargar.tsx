@@ -48,37 +48,52 @@ const Cargar = () => {
   };
 
   const recalculate = () => {
+    let regular_amount = 0;
+    let over_amount = 0;
+    let meal_amount = 0;
+    if (formData.id == 0) {
+      regular_amount = employerData.regular_time;
+      over_amount = employerData.overtime;
+      meal_amount = employerData.mealtime;
+    } else {
+      regular_amount = formData.regular_amount;
+      over_amount = formData.over_amount;
+      meal_amount = formData.meal_amount;
+    }
+
     const regular_pay =
-      employerData.regular_time *
+      regular_amount *
         convertTimeToHoursWithDecimals(
           formData.vacations_hours + ":" + formData.vacations_min
         ) +
-      employerData.regular_time *
+      regular_amount *
         convertTimeToHoursWithDecimals(
           formData.sick_hours + ":" + formData.sick_min
         ) +
-      employerData.regular_time *
+      regular_amount *
         convertTimeToHoursWithDecimals(
           formData.holiday_hours + ":" + formData.holiday_min
         ) +
       getNumber(formData.tips) +
       getNumber(formData.commissions) +
       getNumber(formData.concessions) +
-      employerData.regular_time *
+      regular_amount *
         convertTimeToHoursWithDecimals(
           formData.regular_hours + ":" + formData.regular_min
         ) +
-      employerData.overtime *
+      over_amount *
         convertTimeToHoursWithDecimals(
           formData.over_hours + ":" + formData.over_min
         ) +
-      employerData.mealtime *
+      meal_amount *
         convertTimeToHoursWithDecimals(
           formData.meal_hours + ":" + formData.meal_min
         );
     let aux: any = [];
 
-    let inability = regular_pay * (0.3 / 100);
+    let inability = 0;
+    if (employerData.choferil != "SI") inability = regular_pay * (0.3 / 100);
+
     let medicare = regular_pay * (1.45 / 100);
     let secure_social = (regular_pay - formData.tips) * (6.2 / 100);
 
@@ -105,37 +120,37 @@ const Cargar = () => {
       ["tax_pr"]: getNumber(tax_pr),
       ["social_tips"]: getNumber(social_tips),
       ["holyday_pay"]: Number(
-        employerData.regular_time *
+        regular_amount *
           convertTimeToHoursWithDecimals(
             formData.holiday_hours + ":" + formData.holiday_min
           )
       ),
       ["vacation_pay"]: Number(
-        employerData.regular_time *
+        regular_amount *
           convertTimeToHoursWithDecimals(
             formData.vacations_hours + ":" + formData.vacations_min
           )
       ),
       ["sick_pay"]: Number(
-        employerData.regular_time *
+        regular_amount *
           convertTimeToHoursWithDecimals(
             formData.sick_hours + ":" + formData.sick_min
           )
       ),
       ["overtime_pay"]: Number(
-        employerData.overtime *
+        over_amount *
           convertTimeToHoursWithDecimals(
             formData.over_hours + ":" + formData.over_min
           )
       ),
       ["meal_time_pay"]: Number(
-        employerData.mealtime *
+        meal_amount *
           convertTimeToHoursWithDecimals(
             formData.meal_hours + ":" + formData.meal_min
           )
       ),
       ["regular_pay"]: Number(
-        employerData.regular_time *
+        regular_amount *
           convertTimeToHoursWithDecimals(
             formData.regular_hours + ":" + formData.regular_min
           )
@@ -168,6 +183,7 @@ const Cargar = () => {
 
   const getTotal = () => {
     var total = 0;
+    console.log(formData);
     const regular_pay =
       formData.vacation_pay +
       formData.sick_pay +
@@ -223,14 +239,11 @@ const Cargar = () => {
       });
     } else {
       formData.payment.map((item) => {
-        console.log(item);
-        if (item.is_active || item.requiered == 2) {
-          total = total + item.value;
-        }
+        if (item.is_active || item.requiered == 2) total = total + item.value;
       });
     }
-
-    return total;
+    if (total > 0) return total;
+    else return 0;
   };
 
   const getPreTotal = () => {
@@ -319,20 +332,32 @@ const Cargar = () => {
     const isActive = e.currentTarget.checked;
 
     item.is_active = isActive;
+
     const updatedItem = { ...item, is_active: isActive };
 
     // Crea un nuevo array con el item actualizado
-    const updatedTaxesData = taxesData.map((el) =>
-      el === item ? updatedItem : el
-    );
+    if (formData.id == 0) {
+      const updatedTaxesData = taxesData.map((el) =>
+        el === item ? updatedItem : el
+      );
 
-    // Actualiza el estado con el nuevo array
-    setTaxesData(updatedTaxesData);
+      // Actualiza el estado con el nuevo array
+      setTaxesData(updatedTaxesData);
 
-    setFormData({
-      ...formData,
-      ["payment"]: taxesData,
-    });
+      setFormData({
+        ...formData,
+        ["payment"]: taxesData,
+      });
+    } else {
+      // Crea un nuevo array con el item actualizado
+      const updatedPayment = formData.payment.map((el) =>
+        el === item ? updatedItem : el
+      );
+      setFormData({
+        ...formData,
+        ["payment"]: updatedPayment,
+      });
+    }
   };
 
   const setAmountTaxe = (taxe: TAXES, regular_pay: number) => {
@@ -388,6 +413,7 @@ const Cargar = () => {
         );
         return;
       }
+
       setLoanding(true);
       setTime(formData, Number(params.id_employer))
         .then(() => {
@@ -395,6 +421,7 @@ const Cargar = () => {
           setLoanding(false);
           setFormData(TIME_DATA);
           getData(idEmployer);
+
           handleModal();
           showSuccess("Creado exitosamente.");
         })
@@ -453,6 +480,12 @@ const Cargar = () => {
     }
   };
 
+  const getAmountTaxe = (taxe: TAXES) => {
+    console.log(taxe);
+    if (taxe.type_taxe == 1) return taxe.amount;
+    else return taxe.value;
+  };
+
   const handleDelete = () => {
     setLoanding(true);
     deleteTime(formData.id)
@@ -479,10 +512,14 @@ const Cargar = () => {
         setCompanyData(response.data.result.company);
         setEmployers(response.data.result.employers);
         setTimesData([]);
+
         setTaxesData(response.data.result.taxes);
         if (response.data.result.time.length == 0) setTimesData([TIME_DATA]);
         else {
           setTimesData([...response.data.result.time, TIME_DATA]);
+        }
+        if (formData.id == 0) {
+          recalculate();
         }
       })
       .catch(() => {
@@ -1005,7 +1042,7 @@ const Cargar = () => {
                         type="number"
                         onChange={(e) => handleitem(e, item)}
                         name={item.name}
-                        value={getNumber(item.value)}
+                        value={getAmountTaxe(item)}
                       />
                     </label>
                   </div>
@@ -1045,7 +1082,7 @@ const Cargar = () => {
                         tabIndex={0}
                         type="number"
                         name={item.name}
-                        value={getNumber(item.value)}
+                        value={getAmountTaxe(item)}
                       />
                     </label>
                   </div>

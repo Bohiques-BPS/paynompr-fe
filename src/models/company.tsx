@@ -24,6 +24,7 @@ export const COMPANY_DATA = {
   desem: "0.5",
   disabled_percent: "0",
   vacation_hours: 0,
+  choferil_number: "",
   vacation_date: 0,
   sicks_hours: 0,
   sicks_date: 0,
@@ -44,6 +45,7 @@ export interface COMPANY {
   vacation_date: number;
   sicks_hours: number;
   sicks_date: number;
+  choferil_number: string;
   number_patronal: string;
   coml: any;
   contact: string;

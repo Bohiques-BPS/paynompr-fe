@@ -239,7 +239,15 @@ const CompanyForm = (props: Props) => {
               placeholder=""
               type="text"
             />
-
+            <CustomInputs
+              name="choferil_number"
+              onChange={props.onChange}
+              value={props.formData.choferil_number}
+              class="w-1/3 mx-auto ps-1  inline-block "
+              label="# Choferil"
+              placeholder=""
+              type="text"
+            />
             <CustomInputs
               name="driver_rate"
               onChange={props.onChange}

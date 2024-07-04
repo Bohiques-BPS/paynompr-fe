@@ -24,7 +24,9 @@ export const TIME_DATA = {
   secure_social: 0,
   social_tips: 0,
   tax_pr: 0,
-
+  regular_amount: 0,
+  over_amount: 0,
+  meal_amount: 0,
   commissions: 0,
   concessions: 0,
   sick_hours: "00",
@@ -43,6 +45,9 @@ export interface TIME {
   tips: number;
   inability: number;
   choferil: number;
+  regular_amount: number;
+  over_amount: number;
+  meal_amount: number;
   medicare: number;
   secure_social: number;
   social_tips: number;
