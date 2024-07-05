@@ -1081,6 +1081,7 @@ const Cargar = () => {
                         className={` bg-gray-50 text-sm text-center invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5`}
                         tabIndex={0}
                         type="number"
+                        onChange={(e) => handleitem(e, item)}
                         name={item.name}
                         value={getAmountTaxe(item)}
                       />
