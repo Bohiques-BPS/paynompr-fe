@@ -306,9 +306,9 @@ const Cargar = () => {
   const handleitem = (e: React.FormEvent<HTMLInputElement>, item: TAXES) => {
     // Crea un nuevo objeto con el cambio
 
-    item.value = parseInt(e.currentTarget.value);
+    item.value = parseFloat(e.currentTarget.value);
     item.edited = true;
-    item.amount = parseInt(e.currentTarget.value);
+    item.amount = parseFloat(e.currentTarget.value);
 
     const updatedItem = { ...item };
 

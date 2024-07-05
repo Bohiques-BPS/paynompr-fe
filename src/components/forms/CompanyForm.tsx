@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import CustomInputs from "../../components/forms/CustomInputs";
 import CustomSelect from "../../components/forms/CustomSelect";
 import { COMPANY } from "../../models/company";
@@ -12,6 +12,23 @@ type Props = {
 };
 
 const CompanyForm = (props: Props) => {
+  const [sameAddress, setSameAddress] = useState(false);
+  useEffect(() => {
+    if (sameAddress)
+      props.setFormData({
+        ...props.formData,
+        physical_address: sameAddress ? props.formData.postal_address : "",
+        country_physical_address: sameAddress
+          ? props.formData.country_postal_address
+          : "",
+        state_physical_address: sameAddress
+          ? props.formData.state_postal_addess
+          : "",
+        zipcode_physical_address: sameAddress
+          ? props.formData.zipcode_postal_address
+          : "",
+      });
+  }, [sameAddress]);
   return (
     <>
       <div className="flex w-full xl:flex-col flex-col gap-4 ">
@@ -54,6 +71,15 @@ const CompanyForm = (props: Props) => {
               placeholder="00820"
               type="text"
             />
+            <label>
+              <input
+                type="checkbox"
+                checked={sameAddress}
+                onChange={() => setSameAddress(!sameAddress)}
+              />{" "}
+              Usar misma dirección Postal para la Física
+            </label>
+
             <CustomInputs
               name="physical_address"
               onChange={props.onChange}
