@@ -25,10 +25,10 @@ const TaxesForm = (props: Props) => {
           type="text"
         />
         <CustomSelect
-          name="requiered"
+          name="required"
           options={REQUIERED}
           onChange={props.onChange}
-          value={props.formData.requiered}
+          value={props.formData.required}
           class="w-1/3 mx-auto pe-1  inline-block "
           label="Requerido/Opcional"
           placeholder=""

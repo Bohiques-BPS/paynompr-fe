@@ -3,7 +3,7 @@ export const TAXES_DATA = {
   name: "",
   amount: 0,
   value: 0,
-  requiered: 0,
+  required: 0,
   type_taxe: 0,
   is_active: false,
   edited: false,
@@ -16,7 +16,7 @@ export interface TAXES {
   amount: number;
   value: number;
   is_active: boolean;
-  requiered: number;
+  required: number;
   type_taxe: number;
   edited: boolean;
   type_amount: number;

@@ -24,9 +24,9 @@ export const EMPLOYER_DATA = {
   date_egress: null,
   overtime: 0,
   mealtime: 0,
-  vacation_hours: 0,
+  vacation_time: "0",
   vacation_date: null,
-  sicks_hours: 0,
+  sick_time: "0",
   sicks_date: null,
   number_dependents: 0,
   shared_custody: false,
@@ -68,9 +68,9 @@ export interface EMPLOYEER {
   date_egress: any;
   overtime: number;
   mealtime: number;
-  vacation_hours: number;
+  vacation_time: string;
   vacation_date: any;
-  sicks_hours: number;
+  sick_time: string;
   sicks_date: any;
   number_dependents: number;
   shared_custody: boolean;

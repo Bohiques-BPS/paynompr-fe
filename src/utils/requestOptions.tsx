@@ -74,7 +74,7 @@ export function getCompanyWithEmployer(
   id_employer: number
 ) {
   return Axios.request(
-    setOptions("companies/" + id_company + "/" + id_employer, "GET")
+    setOptions("companies/" + id_company + "/employer/" + id_employer, "GET")
   ); // Using a post request, specifying the user
 }
 export function getTalonario(

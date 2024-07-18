@@ -319,11 +319,11 @@ const EmployeerForm = (props: Props) => {
         <CustomInputs
           class="xl:w-1/5 w-1/2 mx-auto pe-1  inline-block   "
           label=""
-          name="vacation_hours"
+          name="vacation_time"
           onChange={props.onChange}
-          value={props.formData.vacation_hours}
+          value={props.formData.vacation_time}
           placeholder=""
-          type="number"
+          type="text"
         />
 
         <CustomInputs
@@ -342,9 +342,9 @@ const EmployeerForm = (props: Props) => {
           label=""
           placeholder=""
           onChange={props.onChange}
-          value={props.formData.sicks_hours}
-          name="sicks_hours"
-          type="number"
+          value={props.formData.sick_time}
+          name="sick_time"
+          type="text"
         />
         <CustomInputs
           class="xl:w-4/5 w-1/2 mx-auto   ps-2 inline-block xl:inline-flex  justify-between items-center  "

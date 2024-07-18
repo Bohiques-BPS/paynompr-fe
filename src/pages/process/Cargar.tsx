@@ -62,33 +62,15 @@ const Cargar = () => {
     }
 
     const regular_pay =
-      regular_amount *
-        convertTimeToHoursWithDecimals(
-          formData.vacations_hours + ":" + formData.vacations_min
-        ) +
-      regular_amount *
-        convertTimeToHoursWithDecimals(
-          formData.sick_hours + ":" + formData.sick_min
-        ) +
-      regular_amount *
-        convertTimeToHoursWithDecimals(
-          formData.holiday_hours + ":" + formData.holiday_min
-        ) +
+      regular_amount * convertTimeToHoursWithDecimals(formData.vacation_time) +
+      regular_amount * convertTimeToHoursWithDecimals(formData.sick_time) +
+      regular_amount * convertTimeToHoursWithDecimals(formData.holiday_time) +
       getNumber(formData.tips) +
       getNumber(formData.commissions) +
       getNumber(formData.concessions) +
-      regular_amount *
-        convertTimeToHoursWithDecimals(
-          formData.regular_hours + ":" + formData.regular_min
-        ) +
-      over_amount *
-        convertTimeToHoursWithDecimals(
-          formData.over_hours + ":" + formData.over_min
-        ) +
-      meal_amount *
-        convertTimeToHoursWithDecimals(
-          formData.meal_hours + ":" + formData.meal_min
-        );
+      regular_amount * convertTimeToHoursWithDecimals(formData.regular_time) +
+      over_amount * convertTimeToHoursWithDecimals(formData.over_time) +
+      meal_amount * convertTimeToHoursWithDecimals(formData.meal_time);
     let aux: any = [];
 
     let inability = 0;
@@ -112,7 +94,7 @@ const Cargar = () => {
 
     setFormData({
       ...formData,
-      ["payment"]: aux,
+      ["payments"]: aux,
       ["inability"]: getNumber(inability),
       ["choferil"]: getNumber(choferil),
       ["medicare"]: getNumber(medicare),
@@ -120,40 +102,22 @@ const Cargar = () => {
       ["tax_pr"]: getNumber(tax_pr),
       ["social_tips"]: getNumber(social_tips),
       ["holyday_pay"]: Number(
-        regular_amount *
-          convertTimeToHoursWithDecimals(
-            formData.holiday_hours + ":" + formData.holiday_min
-          )
+        regular_amount * convertTimeToHoursWithDecimals(formData.holiday_time)
       ),
       ["vacation_pay"]: Number(
-        regular_amount *
-          convertTimeToHoursWithDecimals(
-            formData.vacations_hours + ":" + formData.vacations_min
-          )
+        regular_amount * convertTimeToHoursWithDecimals(formData.vacation_time)
       ),
       ["sick_pay"]: Number(
-        regular_amount *
-          convertTimeToHoursWithDecimals(
-            formData.sick_hours + ":" + formData.sick_min
-          )
+        regular_amount * convertTimeToHoursWithDecimals(formData.sick_time)
       ),
       ["overtime_pay"]: Number(
-        over_amount *
-          convertTimeToHoursWithDecimals(
-            formData.over_hours + ":" + formData.over_min
-          )
+        over_amount * convertTimeToHoursWithDecimals(formData.over_time)
       ),
       ["meal_time_pay"]: Number(
-        meal_amount *
-          convertTimeToHoursWithDecimals(
-            formData.meal_hours + ":" + formData.meal_min
-          )
+        meal_amount * convertTimeToHoursWithDecimals(formData.meal_time)
       ),
       ["regular_pay"]: Number(
-        regular_amount *
-          convertTimeToHoursWithDecimals(
-            formData.regular_hours + ":" + formData.regular_min
-          )
+        regular_amount * convertTimeToHoursWithDecimals(formData.regular_time)
       ),
     });
   };
@@ -163,27 +127,21 @@ const Cargar = () => {
       recalculate();
     }
   }, [
-    formData.vacations_min,
-    formData.over_min,
-    formData.meal_min,
+    formData.vacation_time,
+    formData.over_time,
+    formData.meal_time,
     period,
-    formData.sick_min,
+    formData.sick_time,
     formData.tips,
     formData.commissions,
     formData.concessions,
-    formData.holiday_hours,
-    formData.holiday_min,
-    formData.regular_min,
-    formData.regular_hours,
-    formData.over_hours,
-    formData.meal_hours,
-    formData.vacations_hours,
-    formData.sick_hours,
+    formData.holiday_time,
+    formData.regular_time,
   ]);
 
   const getTotal = () => {
     var total = 0;
-    console.log(formData);
+
     const regular_pay =
       formData.vacation_pay +
       formData.sick_pay +
@@ -231,15 +189,15 @@ const Cargar = () => {
 
     if (formData.id == 0) {
       taxesData.map((item) => {
-        if (item.is_active || item.requiered == 2) {
+        if (item.is_active || item.required == 2) {
           item.value = setAmountTaxe(item, regular_pay);
 
           total = total + item.value;
         }
       });
     } else {
-      formData.payment.map((item) => {
-        if (item.is_active || item.requiered == 2) total = total + item.value;
+      formData.payments.map((item) => {
+        if (item.is_active || item.required == 2) total = total + item.value;
       });
     }
     if (total > 0) return total;
@@ -293,13 +251,30 @@ const Cargar = () => {
           : e.currentTarget.value,
     });
   };
-  const handleInputTimeChange = (e: React.FormEvent<HTMLInputElement>) => {
-    let value = 0;
-    value = parseInt(e.currentTarget.value);
-    if (parseInt(e.currentTarget.value) >= 60) value = 59;
+  const handleInputTimeChange = (
+    e: React.FormEvent<HTMLInputElement>,
+    time: any,
+    target: any
+  ) => {
+    let value = "";
+
+    if (e.currentTarget.name.includes("hours")) {
+      if (e.currentTarget.value == "") value = "00";
+      else value = e.currentTarget.value;
+      value = value + ":" + time.split(":")[1];
+    }
+    if (e.currentTarget.name.includes("min")) {
+      if (e.currentTarget.value == "") value = "00";
+      else value = e.currentTarget.value;
+      if (parseInt(e.currentTarget.value) >= 60) value = "59";
+      value = time.split(":")[0] + ":" + value;
+    }
+    console.log(target);
+    console.log(value);
+
     setFormData({
       ...formData,
-      [e.currentTarget.name]: value + "",
+      [target]: value + "",
     });
   };
 
@@ -322,7 +297,7 @@ const Cargar = () => {
 
     setFormData({
       ...formData,
-      ["payment"]: taxesData,
+      ["payments"]: taxesData,
     });
   };
 
@@ -346,16 +321,16 @@ const Cargar = () => {
 
       setFormData({
         ...formData,
-        ["payment"]: taxesData,
+        ["payments"]: taxesData,
       });
     } else {
       // Crea un nuevo array con el item actualizado
-      const updatedPayment = formData.payment.map((el) =>
+      const updatedPayment = formData.payments.map((el) =>
         el === item ? updatedItem : el
       );
       setFormData({
         ...formData,
-        ["payment"]: updatedPayment,
+        ["payments"]: updatedPayment,
       });
     }
   };
@@ -376,11 +351,18 @@ const Cargar = () => {
   const handlePeriodChange = (e: React.FormEvent<any>) => {
     const value = e.currentTarget.value;
     setPeriod(value);
+    let times = [];
+    times = filterById(timesData, value).times;
 
-    if (timesData.length > 0 && value >= 0) {
-      setFormData(filterById(timesData, value));
-      setFormDataAux(filterById(timesData, value));
+    if (times.length > 0 && value > 0) {
+      console.log(filterById(timesData, value).times);
+      setFormData(filterById(timesData, value).times[0]);
+      setFormDataAux(filterById(timesData, value).times[0]);
       console.log(formData);
+    } else {
+      console.log(filterById(timesData, value));
+      setFormData(TIME_DATA);
+      setFormDataAux(TIME_DATA);
     }
   };
 
@@ -393,23 +375,23 @@ const Cargar = () => {
   const handleCreate = () => {
     if (formData.id == 0) {
       if (
-        Number(formData.vacations_hours) > employerData.vacation_hours ||
-        (Number(formData.vacations_hours) == employerData.vacation_hours &&
-          Number(formData.vacations_min) > 0)
+        Number(formData.vacation_time) > Number(employerData.vacation_time) ||
+        (Number(formData.vacation_time) == Number(employerData.vacation_time) &&
+          Number(formData.vacation_time) > 0)
       ) {
         showError(
-          "El maximo de horas de vaciones son: " + employerData.vacation_hours
+          "El maximo de horas de vaciones son: " + employerData.vacation_time
         );
         return;
       }
       if (
-        Number(formData.sick_hours) > employerData.sicks_hours ||
-        (Number(formData.sick_hours) == employerData.sicks_hours &&
-          Number(formData.sick_hours) > 0)
+        Number(formData.sick_time) > Number(employerData.sick_time) ||
+        (Number(formData.sick_time) == Number(employerData.sick_time) &&
+          Number(formData.sick_time) > 0)
       ) {
         showError(
           "El maximo de horas de enfermedades son: " +
-            employerData.vacation_hours
+            employerData.vacation_time
         );
         return;
       }
@@ -430,36 +412,30 @@ const Cargar = () => {
           showError(error.response.data.detail);
         });
     } else {
-      console.log(Number(formDataAux.vacations_hours));
-
-      console.log(
-        Number(employerData.vacation_hours) +
-          Number(formDataAux.vacations_hours)
-      );
       if (
-        Number(formData.vacations_hours) >
-          Number(employerData.vacation_hours) +
-            Number(formDataAux.vacations_hours) ||
-        (Number(formData.vacations_hours) ==
-          Number(employerData.vacation_hours) +
-            Number(formDataAux.vacations_hours) &&
-          Number(formData.vacations_min) > 0)
+        Number(formData.vacation_time) >
+          Number(employerData.vacation_time) +
+            Number(formDataAux.vacation_time) ||
+        (Number(formData.vacation_time) ==
+          Number(employerData.vacation_time) +
+            Number(formDataAux.vacation_time) &&
+          Number(formData.vacation_time) > 0)
       ) {
         showError(
-          "El maximo de horas de vaciones son: " + employerData.vacation_hours
+          "El maximo de horas de vaciones son: " + employerData.vacation_time
         );
         return;
       }
       if (
-        Number(formData.sick_hours) >
-          Number(employerData.sicks_hours) + Number(formDataAux.sick_hours) ||
-        (Number(formData.sick_hours) ==
-          Number(employerData.sicks_hours) + Number(formDataAux.sick_hours) &&
-          Number(formData.sick_hours) > 0)
+        Number(formData.sick_time) >
+          Number(employerData.sick_time) + Number(formDataAux.sick_time) ||
+        (Number(formData.sick_time) ==
+          Number(employerData.sick_time) + Number(formDataAux.sick_time) &&
+          Number(formData.sick_time) > 0)
       ) {
         showError(
           "El maximo de horas de enfermedades son: " +
-            employerData.vacation_hours
+            employerData.vacation_time
         );
         return;
       }
@@ -481,7 +457,6 @@ const Cargar = () => {
   };
 
   const getAmountTaxe = (taxe: TAXES) => {
-    console.log(taxe);
     if (taxe.type_taxe == 1) return taxe.amount;
     else return taxe.value;
   };
@@ -514,12 +489,11 @@ const Cargar = () => {
         setTimesData([]);
 
         setTaxesData(response.data.result.taxes);
-        if (response.data.result.time.length == 0) setTimesData([TIME_DATA]);
-        else {
-          setTimesData([...response.data.result.time, TIME_DATA]);
-        }
+
+        setTimesData([...response.data.result.periods]);
+
         if (formData.id == 0) {
-          recalculate();
+          //recalculate();
         }
       })
       .catch(() => {
@@ -594,8 +568,14 @@ const Cargar = () => {
                 label=""
                 inputCss="text-center"
                 name="regular_hours"
-                onChange={handleInputChange}
-                value={formData.regular_hours}
+                onChange={(e) =>
+                  handleInputTimeChange(
+                    e,
+                    formData.regular_time,
+                    "regular_time"
+                  )
+                }
+                value={formData.regular_time.split(":")[0]}
                 placeholder=""
                 type="text"
               />
@@ -605,10 +585,16 @@ const Cargar = () => {
               <CustomInputs
                 class="w-5/12 mx-auto   inline-block time-input "
                 label=""
-                onChange={handleInputTimeChange}
+                onChange={(e) =>
+                  handleInputTimeChange(
+                    e,
+                    formData.regular_time,
+                    "regular_time"
+                  )
+                }
                 inputCss="text-center"
                 name="regular_min"
-                value={formData.regular_min}
+                value={formData.regular_time.split(":")[1]}
                 placeholder=""
                 type="text"
               />
@@ -622,8 +608,10 @@ const Cargar = () => {
                 label=""
                 inputCss="text-center"
                 name="over_hours"
-                onChange={handleInputChange}
-                value={formData.over_hours}
+                onChange={(e) =>
+                  handleInputTimeChange(e, formData.over_time, "over_time")
+                }
+                value={formData.over_time.split(":")[0]}
                 placeholder=""
                 type="text"
               />
@@ -635,8 +623,10 @@ const Cargar = () => {
                 label=""
                 inputCss="text-center"
                 name="over_min"
-                onChange={handleInputTimeChange}
-                value={formData.over_min}
+                onChange={(e) =>
+                  handleInputTimeChange(e, formData.over_time, "over_time")
+                }
+                value={formData.over_time.split(":")[1]}
                 placeholder=""
                 type="text"
               />
@@ -650,8 +640,10 @@ const Cargar = () => {
                 label=""
                 inputCss="text-center"
                 name="meal_hours"
-                onChange={handleInputChange}
-                value={formData.meal_hours}
+                onChange={(e) =>
+                  handleInputTimeChange(e, formData.meal_time, "meal_time")
+                }
+                value={formData.meal_time.split(":")[0]}
                 placeholder=""
                 type="text"
               />
@@ -661,10 +653,12 @@ const Cargar = () => {
               <CustomInputs
                 class="w-5/12 mx-auto ps-1  inline-block time-input"
                 label=""
-                onChange={handleInputTimeChange}
+                onChange={(e) =>
+                  handleInputTimeChange(e, formData.meal_time, "meal_time")
+                }
                 inputCss="text-center"
                 name="meal_min"
-                value={formData.meal_min}
+                value={formData.meal_time.split(":")[1]}
                 placeholder=""
                 type="text"
               />
@@ -678,8 +672,14 @@ const Cargar = () => {
                 label=""
                 inputCss="text-center"
                 name="vacations_hours"
-                onChange={handleInputChange}
-                value={formData.vacations_hours}
+                onChange={(e) =>
+                  handleInputTimeChange(
+                    e,
+                    formData.vacation_time,
+                    "vacation_time"
+                  )
+                }
+                value={formData.vacation_time.split(":")[0]}
                 placeholder=""
                 type="text"
               />
@@ -689,10 +689,16 @@ const Cargar = () => {
               <CustomInputs
                 class="w-5/12 mx-auto ps-1  inline-block time-input"
                 label=""
-                onChange={handleInputTimeChange}
+                onChange={(e) =>
+                  handleInputTimeChange(
+                    e,
+                    formData.vacation_time,
+                    "vacation_time"
+                  )
+                }
                 inputCss="text-center"
                 name="vacations_min"
-                value={formData.vacations_min}
+                value={formData.vacation_time.split(":")[1]}
                 placeholder=""
                 type="text"
               />
@@ -706,8 +712,10 @@ const Cargar = () => {
                 label=""
                 name="sick_hours"
                 inputCss="text-center"
-                onChange={handleInputChange}
-                value={formData.sick_hours}
+                onChange={(e) =>
+                  handleInputTimeChange(e, formData.sick_time, "sick_time")
+                }
+                value={formData.sick_time.split(":")[0]}
                 placeholder=""
                 type="text"
               />
@@ -717,10 +725,12 @@ const Cargar = () => {
               <CustomInputs
                 class="w-5/12 mx-auto ps-1  inline-block time-input"
                 label=""
-                onChange={handleInputTimeChange}
+                onChange={(e) =>
+                  handleInputTimeChange(e, formData.sick_time, "sick_time")
+                }
                 inputCss="text-center"
                 name="sick_min"
-                value={formData.sick_min}
+                value={formData.sick_time.split(":")[1]}
                 placeholder=""
                 type="text"
               />
@@ -734,8 +744,14 @@ const Cargar = () => {
                 label=""
                 name="holiday_hours"
                 inputCss="text-center"
-                onChange={handleInputChange}
-                value={formData.holiday_hours}
+                onChange={(e) =>
+                  handleInputTimeChange(
+                    e,
+                    formData.holiday_time,
+                    "holiday_time"
+                  )
+                }
+                value={formData.holiday_time.split(":")[0]}
                 placeholder=""
                 type="text"
               />
@@ -745,10 +761,16 @@ const Cargar = () => {
               <CustomInputs
                 class="w-5/12 mx-auto ps-1  inline-block time-input"
                 label=""
-                onChange={handleInputTimeChange}
+                onChange={(e) =>
+                  handleInputTimeChange(
+                    e,
+                    formData.holiday_time,
+                    "holiday_time"
+                  )
+                }
                 inputCss="text-center"
                 name="holiday_min"
-                value={formData.holiday_min}
+                value={formData.holiday_time.split(":")[1]}
                 placeholder=""
                 type="text"
               />
@@ -784,6 +806,16 @@ const Cargar = () => {
                 value={formData.concessions}
                 onChange={handleInputChange}
                 type="number"
+              />
+            </div>
+            <div className="w-full mx-auto ps-1 inline-block  ">
+              <CustomInputs
+                class=" w-full mx-auto   inline-block "
+                label="Memo"
+                name="memo"
+                value={formData.memo}
+                onChange={handleInputChange}
+                type="textarea"
               />
             </div>
           </div>
@@ -1016,7 +1048,7 @@ const Cargar = () => {
                     className={` block mb-2   font-medium text-gray-700 w-1/6 mx-auto pe-1  inline-block `}
                   >
                     <label>
-                      {item.requiered === 1 && (
+                      {item.required === 1 && (
                         <>
                           <input
                             key={item.id}
@@ -1051,7 +1083,7 @@ const Cargar = () => {
             )}
             {formData.id != 0 && (
               <>
-                {formData.payment.map((item: any) => (
+                {formData.payments.map((item: any) => (
                   <div
                     key={item.id}
                     className={` block mb-2   font-medium text-gray-700 w-1/6 mx-auto pe-1  inline-block `}

@@ -2,22 +2,20 @@ import { PAYMENT_DATA, PAYMENT } from "../models/payment";
 export const TIME_DATA = {
   id: 0,
   period: 0,
-  regular_hours: "00",
-  regular_min: "00",
-  over_hours: "00",
-  over_min: "00",
+  regular_time: "00:00",
 
-  meal_hours: "00",
-  meal_min: "00",
+  over_time: "00:00",
 
+  meal_time: "00:00",
+  memo: "",
   tips: 0,
   regular_pay: 0,
   created_at: new Date(),
-  payment: [PAYMENT_DATA],
-  vacations_hours: "00",
-  vacations_min: "00",
-  holiday_hours: "00",
-  holiday_min: "00",
+  payments: [PAYMENT_DATA],
+  vacation_time: "00:00",
+  period_id: 1,
+  holiday_time: "00:00",
+
   inability: 0,
   medicare: 0,
   choferil: 0,
@@ -29,9 +27,8 @@ export const TIME_DATA = {
   meal_amount: 0,
   commissions: 0,
   concessions: 0,
-  sick_hours: "00",
+  sick_time: "00:00",
 
-  sick_min: "00",
   holyday_pay: 0,
   vacation_pay: 0,
   sick_pay: 0,
@@ -43,6 +40,7 @@ export interface TIME {
   id: number;
   period: number;
   tips: number;
+  period_id: number;
   inability: number;
   choferil: number;
   regular_amount: number;
@@ -61,18 +59,15 @@ export interface TIME {
   concessions: number;
   sick_pay: number;
   created_at: Date;
-  payment: [PAYMENT];
-  regular_hours: string;
-  regular_min: string;
-  over_min: string;
-  holiday_hours: string;
-  holiday_min: string;
-  over_hours: string;
-  meal_hours: string;
-  meal_min: string;
-  vacations_min: string;
-  sick_min: string;
+  payments: [PAYMENT];
+  regular_time: string;
+  memo: string;
 
-  vacations_hours: string;
-  sick_hours: string;
+  over_time: string;
+  holiday_time: string;
+
+  meal_time: string;
+
+  vacation_time: string;
+  sick_time: string;
 }
