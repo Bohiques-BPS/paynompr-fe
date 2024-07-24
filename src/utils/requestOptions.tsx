@@ -69,6 +69,14 @@ export function getCompanyWithOutEmployer(
     setOptions("outemployers/" + id_company + "/" + id_employer, "GET")
   ); // Using a post request, specifying the user
 }
+export function getCompanyWithOutEmployerTime(
+  id_company: number,
+  id_employer: number
+) {
+  return Axios.request(
+    setOptions("outemployers/time/" + id_company + "/" + id_employer, "GET")
+  ); // Using a post request, specifying the user
+}
 export function getCompanyWithEmployer(
   id_company: number,
   id_employer: number

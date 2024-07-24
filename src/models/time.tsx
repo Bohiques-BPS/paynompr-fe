@@ -11,7 +11,7 @@ export const TIME_DATA = {
   tips: 0,
   regular_pay: 0,
   created_at: new Date(),
-  payments: [PAYMENT_DATA],
+  payment: [PAYMENT_DATA],
   vacation_time: "00:00",
   period_id: 1,
   holiday_time: "00:00",
@@ -59,7 +59,7 @@ export interface TIME {
   concessions: number;
   sick_pay: number;
   created_at: Date;
-  payments: [PAYMENT];
+  payment: [PAYMENT];
   regular_time: string;
   memo: string;
 

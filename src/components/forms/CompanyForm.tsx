@@ -257,7 +257,7 @@ const CompanyForm = (props: Props) => {
               type="text"
             />
             <CustomInputs
-              class="w-1/3 mx-auto ps-1 pe-1  inline-block "
+              class="w-1/3 mx-auto  pe-1  inline-block "
               name="driver_code"
               onChange={props.onChange}
               value={props.formData.driver_code}
@@ -265,15 +265,7 @@ const CompanyForm = (props: Props) => {
               placeholder=""
               type="text"
             />
-            <CustomInputs
-              name="choferil_number"
-              onChange={props.onChange}
-              value={props.formData.choferil_number}
-              class="w-1/3 mx-auto ps-1  inline-block "
-              label="# Choferil"
-              placeholder=""
-              type="text"
-            />
+
             <CustomInputs
               name="driver_rate"
               onChange={props.onChange}
@@ -283,12 +275,22 @@ const CompanyForm = (props: Props) => {
               placeholder="00820"
               type="text"
             />
+
             <CustomInputs
-              class="w-1/3 mx-auto ps-1 pe-1  inline-block "
+              class="w-1/3 mx-auto ps-1  inline-block "
               name="employed_contribution"
               onChange={props.onChange}
               value={props.formData.employed_contribution}
               label="Aportación Empleado"
+              placeholder=""
+              type="text"
+            />
+            <CustomInputs
+              name="choferil_number"
+              onChange={props.onChange}
+              value={props.formData.choferil_number}
+              class="w-1/2 mx-auto pe-1  inline-block "
+              label="# Choferil"
               placeholder=""
               type="text"
             />
@@ -316,7 +318,7 @@ const CompanyForm = (props: Props) => {
               name="polize_number"
               onChange={props.onChange}
               value={props.formData.polize_number}
-              class="w-1/2 mx-auto ps-1  inline-block "
+              class="w-1/2 mx-auto inline-block "
               label="Numero de póliza de fondo"
               placeholder="00820"
               type="text"

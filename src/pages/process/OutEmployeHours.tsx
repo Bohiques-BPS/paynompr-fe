@@ -4,7 +4,7 @@ import CustomInputs from "../../components/forms/CustomInputs";
 import {
   deleteTime,
   editOutTime,
-  getCompanyWithOutEmployer,
+  getCompanyWithOutEmployerTime,
   setOutTime,
 } from "../../utils/requestOptions";
 import { useParams } from "react-router-dom";
@@ -27,6 +27,8 @@ const OutEmployeHours = () => {
   const [companyData, setCompanyData] = useState(COMPANY_DATA);
   const [timesData, setTimesData] = useState([FOREIGN_DATA]);
   const [formData, setFormData] = useState(FOREIGN_DATA);
+  const [employers, setEmployers] = useState([]);
+  const [idEmployer, setIdEmployer] = useState(0);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
@@ -90,7 +92,7 @@ const OutEmployeHours = () => {
         .then(() => {
           // Data retrieval and processing
           setFormData(FOREIGN_DATA);
-          getData();
+          getData(idEmployer);
           handleModal();
           showSuccess("Creado exitosamente.");
         })
@@ -103,7 +105,7 @@ const OutEmployeHours = () => {
         .then(() => {
           // Data retrieval and processing
           setFormData(FOREIGN_DATA);
-          getData();
+          getData(idEmployer);
           handleModal();
           showSuccess("Editado exitosamente.");
         })
@@ -113,13 +115,17 @@ const OutEmployeHours = () => {
         });
     }
   };
-
+  const handleChangeEmployer = (e: React.FormEvent<any>) => {
+    const value = e.currentTarget.value;
+    setIdEmployer(Number(value));
+    getData(Number(value));
+  };
   const handleDelete = () => {
     deleteTime(formData.id)
       .then(() => {
         // Data retrieval and processing
         setFormData(FOREIGN_DATA);
-        getData();
+        getData(idEmployer);
         handleModal();
         showSuccess("Creado exitosamente.");
       })
@@ -128,12 +134,13 @@ const OutEmployeHours = () => {
         showError(error.response.data.detail);
       });
   };
-  const getData = () => {
-    getCompanyWithOutEmployer(Number(params.id), Number(params.id_employer))
+  const getData = (id: number) => {
+    getCompanyWithOutEmployerTime(Number(params.id), id)
       .then((response) => {
         // Data retrieval and processing
         setEmployerData(response.data.result.employer);
         setCompanyData(response.data.result.company);
+        setEmployers(response.data.result.employers);
         setTimesData([]);
 
         if (response.data.result.time.length == 0) setTimesData([FOREIGN_DATA]);
@@ -156,7 +163,8 @@ const OutEmployeHours = () => {
   };
 
   useEffect(() => {
-    getData();
+    getData(Number(params.id_employer));
+    setIdEmployer(Number(params.id_employer));
   }, []);
 
   return (
@@ -194,14 +202,19 @@ const OutEmployeHours = () => {
             type="text"
           />
 
-          <CustomInputs
-            class="w-1/2 mx-auto ps-1  inline-block "
-            label=""
-            value={employerData.first_name + " " + employerData.last_name}
-            disabled={true}
-            placeholder=""
-            type="text"
-          />
+          <select
+            name="employers"
+            onChange={handleChangeEmployer}
+            value={idEmployer}
+            className={`w-1/2 bg-gray-50 border inline-block  border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-3`}
+          >
+            <option value={-1}>Seleccione una opción</option>
+            {employers.map((item: any) => (
+              <option key={item.id} value={item.id}>
+                {item.first_name + " " + item.last_name}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="flex flex-col gap-4">
           <div className="xl:w-full w-full ">

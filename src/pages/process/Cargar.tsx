@@ -26,12 +26,11 @@ import ModalAlert from "../../components/dashboard/ModalAlert";
 const Cargar = () => {
   const params = useParams();
   const [loanding, setLoanding] = useState(false);
-
+  const [selectedPeriod, setSelectedPeriod] = useState(0);
   const [employerData, setEmployerData] = useState(EMPLOYER_DATA);
   const [companyData, setCompanyData] = useState(COMPANY_DATA);
   const [timesData, setTimesData] = useState([TIME_DATA]);
   const [formData, setFormData] = useState(TIME_DATA);
-  const [formDataAux, setFormDataAux] = useState(TIME_DATA);
 
   const [taxesData, setTaxesData] = useState([TAXES_DATA]);
   const [period, setPeriod] = useState(0);
@@ -94,7 +93,7 @@ const Cargar = () => {
 
     setFormData({
       ...formData,
-      ["payments"]: aux,
+      ["payment"]: aux,
       ["inability"]: getNumber(inability),
       ["choferil"]: getNumber(choferil),
       ["medicare"]: getNumber(medicare),
@@ -123,13 +122,12 @@ const Cargar = () => {
   };
 
   useEffect(() => {
-    if (formData.id == 0) {
-      recalculate();
-    }
+    recalculate();
   }, [
     formData.vacation_time,
     formData.over_time,
     formData.meal_time,
+    selectedPeriod,
     period,
     formData.sick_time,
     formData.tips,
@@ -160,14 +158,13 @@ const Cargar = () => {
     let social_tips = 0;
     let choferil = 0;
     if (formData.id == 0) {
-      inability = regular_pay * (0.3 / 100);
-      medicare = regular_pay * (1.45 / 100);
-      secure_social = regular_pay * (6.2 / 100);
-      const withholdingValue = employerData.payment_percentage.replace("%", "");
-      tax_pr = regular_pay * (Number(withholdingValue) / 100);
-      social_tips = formData.tips * (6.2 / 100);
-      choferil = 0;
-      if (employerData.choferil == "SI") choferil = 0.5;
+      inability = getNumber(formData.inability);
+      medicare = getNumber(formData.medicare);
+      secure_social = getNumber(formData.secure_social);
+
+      tax_pr = getNumber(formData.tax_pr);
+      social_tips = getNumber(formData.social_tips);
+      choferil = getNumber(formData.choferil);
     } else {
       inability = formData.inability;
       medicare = formData.medicare;
@@ -196,7 +193,7 @@ const Cargar = () => {
         }
       });
     } else {
-      formData.payments.map((item) => {
+      formData.payment.map((item) => {
         if (item.is_active || item.required == 2) total = total + item.value;
       });
     }
@@ -297,7 +294,7 @@ const Cargar = () => {
 
     setFormData({
       ...formData,
-      ["payments"]: taxesData,
+      ["payment"]: taxesData,
     });
   };
 
@@ -321,16 +318,16 @@ const Cargar = () => {
 
       setFormData({
         ...formData,
-        ["payments"]: taxesData,
+        ["payment"]: taxesData,
       });
     } else {
       // Crea un nuevo array con el item actualizado
-      const updatedPayment = formData.payments.map((el) =>
+      const updatedPayment = formData.payment.map((el) =>
         el === item ? updatedItem : el
       );
       setFormData({
         ...formData,
-        ["payments"]: updatedPayment,
+        ["payment"]: updatedPayment,
       });
     }
   };
@@ -353,16 +350,12 @@ const Cargar = () => {
     setPeriod(value);
     let times = [];
     times = filterById(timesData, value).times;
-
+    setSelectedPeriod(filterById(timesData, value).id);
     if (times.length > 0 && value > 0) {
-      console.log(filterById(timesData, value).times);
-      setFormData(filterById(timesData, value).times[0]);
-      setFormDataAux(filterById(timesData, value).times[0]);
-      console.log(formData);
+      setFormData({ ...times[0], period_id: filterById(timesData, value).id });
+      setFormData({ ...times[0], period_id: filterById(timesData, value).id });
     } else {
-      console.log(filterById(timesData, value));
-      setFormData(TIME_DATA);
-      setFormDataAux(TIME_DATA);
+      setFormData({ ...TIME_DATA, period_id: filterById(timesData, value).id });
     }
   };
 
@@ -374,34 +367,12 @@ const Cargar = () => {
 
   const handleCreate = () => {
     if (formData.id == 0) {
-      if (
-        Number(formData.vacation_time) > Number(employerData.vacation_time) ||
-        (Number(formData.vacation_time) == Number(employerData.vacation_time) &&
-          Number(formData.vacation_time) > 0)
-      ) {
-        showError(
-          "El maximo de horas de vaciones son: " + employerData.vacation_time
-        );
-        return;
-      }
-      if (
-        Number(formData.sick_time) > Number(employerData.sick_time) ||
-        (Number(formData.sick_time) == Number(employerData.sick_time) &&
-          Number(formData.sick_time) > 0)
-      ) {
-        showError(
-          "El maximo de horas de enfermedades son: " +
-            employerData.vacation_time
-        );
-        return;
-      }
-
       setLoanding(true);
       setTime(formData, Number(params.id_employer))
         .then(() => {
           // Data retrieval and processing
           setLoanding(false);
-          setFormData(TIME_DATA);
+          //setFormData(TIME_DATA);
           getData(idEmployer);
 
           handleModal();
@@ -412,33 +383,6 @@ const Cargar = () => {
           showError(error.response.data.detail);
         });
     } else {
-      if (
-        Number(formData.vacation_time) >
-          Number(employerData.vacation_time) +
-            Number(formDataAux.vacation_time) ||
-        (Number(formData.vacation_time) ==
-          Number(employerData.vacation_time) +
-            Number(formDataAux.vacation_time) &&
-          Number(formData.vacation_time) > 0)
-      ) {
-        showError(
-          "El maximo de horas de vaciones son: " + employerData.vacation_time
-        );
-        return;
-      }
-      if (
-        Number(formData.sick_time) >
-          Number(employerData.sick_time) + Number(formDataAux.sick_time) ||
-        (Number(formData.sick_time) ==
-          Number(employerData.sick_time) + Number(formDataAux.sick_time) &&
-          Number(formData.sick_time) > 0)
-      ) {
-        showError(
-          "El maximo de horas de enfermedades son: " +
-            employerData.vacation_time
-        );
-        return;
-      }
       setLoanding(true);
       editTime(formData, Number(formData.id))
         .then(() => {
@@ -491,10 +435,6 @@ const Cargar = () => {
         setTaxesData(response.data.result.taxes);
 
         setTimesData([...response.data.result.periods]);
-
-        if (formData.id == 0) {
-          //recalculate();
-        }
       })
       .catch(() => {
         // If the query fails, an error will be displayed on the terminal.
@@ -518,13 +458,13 @@ const Cargar = () => {
           <select
             name="period"
             onChange={handlePeriodChange}
-            value={formData.period}
+            value={selectedPeriod}
             className={` bg-gray-50 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-3`}
           >
             <option value={-1}>Seleccione una opción</option>
             {timesData.map((item: any, i: number) => (
-              <option key={i} value={item.id}>
-                Periodo {i + 1}
+              <option key={item.id} value={item.id}>
+                Periodo {i + 1} - {item.period_start} - {item.period_end}
               </option>
             ))}
           </select>
@@ -548,8 +488,8 @@ const Cargar = () => {
             className={`w-1/2 bg-gray-50 border inline-block  border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-3`}
           >
             <option value={-1}>Seleccione una opción</option>
-            {employers.map((item: any, i: number) => (
-              <option key={i} value={item.id}>
+            {employers.map((item: any) => (
+              <option key={item.id} value={item.id}>
                 {item.first_name + " " + item.last_name}
               </option>
             ))}
@@ -1042,16 +982,15 @@ const Cargar = () => {
 
             {formData.id == 0 && (
               <>
-                {taxesData.map((item) => (
+                {taxesData.map((item, index: number) => (
                   <div
-                    key={item.id}
+                    key={index}
                     className={` block mb-2   font-medium text-gray-700 w-1/6 mx-auto pe-1  inline-block `}
                   >
                     <label>
                       {item.required === 1 && (
                         <>
                           <input
-                            key={item.id}
                             type="checkbox"
                             checked={item.is_active}
                             onChange={(e) => handleCheck(e, item)}
@@ -1083,16 +1022,15 @@ const Cargar = () => {
             )}
             {formData.id != 0 && (
               <>
-                {formData.payments.map((item: any) => (
+                {formData.payment.map((item: any, index: number) => (
                   <div
-                    key={item.id}
+                    key={index}
                     className={` block mb-2   font-medium text-gray-700 w-1/6 mx-auto pe-1  inline-block `}
                   >
                     <label>
                       {item.requiered === 1 && (
                         <>
                           <input
-                            key={item.id}
                             type="checkbox"
                             onChange={(e) => handleCheck(e, item)}
                             checked={item.is_active}

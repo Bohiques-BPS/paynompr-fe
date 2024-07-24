@@ -35,8 +35,8 @@ const EditOutEmployee = () => {
   useEffect(() => {
     getOutEmployer(Number(params.id), Number(params.id_employer))
       .then((response) => {
-        console.log(response.data.result.employer);
-        setFormData(response.data.result.employer);
+        console.log(response.data.result);
+        setFormData(response.data.result);
 
         // Data retrieval and processing
       })
