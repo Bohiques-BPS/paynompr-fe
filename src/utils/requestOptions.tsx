@@ -213,16 +213,27 @@ export function setOutTime(data: object, id_employer: number) {
 export function editOutTime(data: object, id_time: number) {
   return Axios.request(setOptions("outtime/" + id_time, "PUT", data)); // Using a post request, specifying the user
 }
-
 export function getCounterFoil(
   id_company: number,
   id_time: number,
   employer_id: number
 ) {
-  return Axios.request(
-    setOptions(
-      "reports/counterfoil/" + id_company + "/" + id_time + "/" + employer_id,
-      "GET"
-    )
-  ); // Using a post request, specifying the user
+  return Axios.request({
+    url: `reports/counterfoil/${id_company}/${id_time}/${employer_id}`,
+    method: "GET",
+    responseType: "blob", // Importante para manejar el archivo binario
+  })
+    .then((response) => {
+      // Crear un enlace para descargar el archivo
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "Talonario_de_Pagos.pdf"); // Nombre del archivo
+      document.body.appendChild(link);
+      link.click();
+      link.remove(); // Eliminar el enlace después de la descarga
+    })
+    .catch((error) => {
+      console.error("Error al descargar el PDF:", error);
+    });
 }

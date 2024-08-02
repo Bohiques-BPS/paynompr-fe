@@ -206,7 +206,7 @@ const OutEmployeHours = () => {
             name="employers"
             onChange={handleChangeEmployer}
             value={idEmployer}
-            className={`w-1/2 bg-gray-50 border inline-block  border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-3`}
+            className={`w-1/2 bg-gray-50 border inline-block  border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-[0.7em]`}
           >
             <option value={-1}>Seleccione una opción</option>
             {employers.map((item: any) => (
@@ -216,7 +216,7 @@ const OutEmployeHours = () => {
             ))}
           </select>
         </div>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-row xl:flex-col gap-4">
           <div className="xl:w-full w-full ">
             <h2 className="mt-2 text-center text-2xl">Horas</h2>
             <hr className="mt-2 mb-6" />

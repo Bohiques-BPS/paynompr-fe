@@ -61,10 +61,10 @@ const Taxes = () => {
     {
       name: "Requerido/Opcional",
       button: true,
-      cell: (row: { requiered: number }) => (
-        <>{row.requiered === 1 ? <h1>Opcional</h1> : <h1>Requerido</h1>}</>
+      cell: (row: { required: number }) => (
+        <>{row.required === 1 ? <h1>Opcional</h1> : <h1>Requerido</h1>}</>
       ),
-      selector: (row: { requiered: any }) => row.requiered,
+      selector: (row: { required: any }) => row.required,
     },
     {
       name: "Descuento/Aumento",

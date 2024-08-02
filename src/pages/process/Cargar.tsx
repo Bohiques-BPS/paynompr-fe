@@ -34,6 +34,7 @@ const Cargar = () => {
 
   const [taxesData, setTaxesData] = useState([TAXES_DATA]);
   const [period, setPeriod] = useState(0);
+  const [flag, setFlag] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [idEmployer, setIdEmployer] = useState(0);
   const [employers, setEmployers] = useState([]);
@@ -84,12 +85,13 @@ const Cargar = () => {
 
     let choferil = 0;
     if (employerData.choferil === "SI") choferil = 0.5;
+    if (formData.id == 0)
+      taxesData.map((item) => {
+        item.value = setAmountTaxe(item, regular_pay);
 
-    taxesData.map((item) => {
-      item.value = setAmountTaxe(item, regular_pay);
-
-      aux.push(item);
-    });
+        aux.push(item);
+      });
+    else aux = formData.payment;
 
     setFormData({
       ...formData,
@@ -122,13 +124,13 @@ const Cargar = () => {
   };
 
   useEffect(() => {
-    recalculate();
+    if (formData.id == 0) recalculate();
   }, [
     formData.vacation_time,
     formData.over_time,
     formData.meal_time,
     selectedPeriod,
-    period,
+
     formData.sick_time,
     formData.tips,
     formData.commissions,
@@ -266,8 +268,6 @@ const Cargar = () => {
       if (parseInt(e.currentTarget.value) >= 60) value = "59";
       value = time.split(":")[0] + ":" + value;
     }
-    console.log(target);
-    console.log(value);
 
     setFormData({
       ...formData,
@@ -353,6 +353,20 @@ const Cargar = () => {
     setSelectedPeriod(filterById(timesData, value).id);
     if (times.length > 0 && value > 0) {
       setFormData({ ...times[0], period_id: filterById(timesData, value).id });
+    } else {
+      setFormData({ ...TIME_DATA, period_id: filterById(timesData, value).id });
+    }
+  };
+
+  const setPeriodChange = () => {
+    const value = period;
+
+    setPeriod(value);
+    let times = [];
+    times = filterById(timesData, value).times;
+
+    setSelectedPeriod(filterById(timesData, value).id);
+    if (times.length > 0 && value > 0) {
       setFormData({ ...times[0], period_id: filterById(timesData, value).id });
     } else {
       setFormData({ ...TIME_DATA, period_id: filterById(timesData, value).id });
@@ -372,9 +386,8 @@ const Cargar = () => {
         .then(() => {
           // Data retrieval and processing
           setLoanding(false);
-          //setFormData(TIME_DATA);
-          getData(idEmployer);
 
+          resetData(idEmployer);
           handleModal();
           showSuccess("Creado exitosamente.");
         })
@@ -387,9 +400,9 @@ const Cargar = () => {
       editTime(formData, Number(formData.id))
         .then(() => {
           // Data retrieval and processing
-          setFormData(TIME_DATA);
+
           setLoanding(false);
-          getData(idEmployer);
+          resetData(idEmployer);
           handleModal();
           showSuccess("Editado exitosamente.");
         })
@@ -411,12 +424,13 @@ const Cargar = () => {
       .then(() => {
         // Data retrieval and processing
         setLoanding(false);
-        setFormData(TIME_DATA);
+        handleModal2();
         getData(idEmployer);
-        handleModal();
-        showSuccess("Creado exitosamente.");
+
+        showSuccess("Eliminado exitosamente.");
       })
       .catch((error) => {
+        setLoanding(false);
         // If the query fails, an error will be displayed on the terminal.
         showError(error.response.data.detail);
       });
@@ -427,12 +441,31 @@ const Cargar = () => {
       .then((response) => {
         // Data retrieval and processing
         setLoanding(false);
-        setEmployerData(response.data.result.employer);
-        setCompanyData(response.data.result.company);
-        setEmployers(response.data.result.employers);
+        if (formData.id == 0) {
+          setEmployerData(response.data.result.employer);
+          setCompanyData(response.data.result.company);
+          setEmployers(response.data.result.employers);
+          setTaxesData(response.data.result.taxes);
+        } else {
+          setFlag(flag + 1);
+        }
         setTimesData([]);
 
-        setTaxesData(response.data.result.taxes);
+        setTimesData([...response.data.result.periods]);
+      })
+      .catch(() => {
+        // If the query fails, an error will be displayed on the terminal.
+      });
+  };
+
+  const resetData = (id_employer: any) => {
+    setLoanding(true);
+    getCompanyWithEmployer(Number(params.id_company), id_employer)
+      .then((response) => {
+        // Data retrieval and processing
+        setLoanding(false);
+        setFlag(flag + 1);
+        setTimesData([]);
 
         setTimesData([...response.data.result.periods]);
       })
@@ -446,6 +479,14 @@ const Cargar = () => {
     getData(Number(params.id_employer));
   }, []);
 
+  useEffect(() => {
+    recalculate();
+  }, [period]);
+  useEffect(() => {
+    if (flag > 0) {
+      setPeriodChange();
+    }
+  }, [flag]);
   return (
     <>
       <div className="text-[#EED102] bg-[#333160] p-6 rounded-lg text-center">
@@ -485,7 +526,7 @@ const Cargar = () => {
             name="employers"
             onChange={handleChangeEmployer}
             value={idEmployer}
-            className={`w-1/2 bg-gray-50 border inline-block  border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-3`}
+            className={`w-1/2 bg-gray-50 border inline-block  border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-[0.7em]`}
           >
             <option value={-1}>Seleccione una opción</option>
             {employers.map((item: any) => (
@@ -495,11 +536,11 @@ const Cargar = () => {
             ))}
           </select>
         </div>
-        <div className="flex flex-col gap-4">
-          <div className="xl:w-full w-full ">
+        <div className="flex flex-col xl:flex-row gap-4 mt-4">
+          <div className="xl:w-1/3 w-full border rounded-lg border-gray-500 p-2 ">
             <h2 className="mt-2 text-center text-2xl">Horas</h2>
-            <hr className="mt-2 mb-6" />
-            <div className="w-1/6 mx-auto  inline-block  ">
+            <hr className="mt-2 mb-4" />
+            <div className="w-1/2  mx-auto  inline-block  ">
               <label className="block" htmlFor="">
                 Horas Regulares
               </label>
@@ -539,7 +580,7 @@ const Cargar = () => {
                 type="text"
               />
             </div>
-            <div className="w-1/6 mx-auto ps-1 inline-block  ">
+            <div className="w-1/2  mx-auto ps-1 inline-block  ">
               <label className="block" htmlFor="">
                 Horas de Overtime
               </label>
@@ -571,7 +612,7 @@ const Cargar = () => {
                 type="text"
               />
             </div>
-            <div className="w-1/6 mx-auto ps-1 inline-block  ">
+            <div className="w-1/2  mx-auto ps-1 inline-block  ">
               <label className="block" htmlFor="">
                 Horas de Almuerzo
               </label>
@@ -603,7 +644,7 @@ const Cargar = () => {
                 type="text"
               />
             </div>
-            <div className="w-1/6 mx-auto ps-1 inline-block  ">
+            <div className="w-1/2  mx-auto ps-1 inline-block  ">
               <label className="block" htmlFor="">
                 Horas de Vacaciones
               </label>
@@ -643,7 +684,7 @@ const Cargar = () => {
                 type="text"
               />
             </div>
-            <div className="w-1/6 mx-auto ps-1 inline-block  ">
+            <div className="w-1/2  mx-auto ps-1 inline-block  ">
               <label className="block" htmlFor="">
                 Horas de Enfermedad
               </label>
@@ -675,7 +716,7 @@ const Cargar = () => {
                 type="text"
               />
             </div>
-            <div className="w-1/6 mx-auto ps-1 inline-block  ">
+            <div className="w-1/2  mx-auto ps-1 inline-block  ">
               <label className="block" htmlFor="">
                 Horas de Feriados
               </label>
@@ -716,7 +757,7 @@ const Cargar = () => {
               />
             </div>
 
-            <div className="w-1/6 mx-auto ps-1 inline-block  ">
+            <div className="w-1/2  mx-auto ps-1 inline-block  ">
               <CustomInputs
                 class="time-input mx-auto pe-1  inline-block "
                 label="Propinas"
@@ -737,7 +778,7 @@ const Cargar = () => {
               />
             </div>
 
-            <div className="w-1/6 mx-auto ps-1 inline-block  ">
+            <div className="w-1/2  mx-auto ps-1 inline-block  ">
               <CustomInputs
                 class="time-input mx-auto   inline-block "
                 label="Concesiones"
@@ -760,11 +801,11 @@ const Cargar = () => {
             </div>
           </div>
 
-          <div className="xl:w-full      w-full ">
+          <div className="xl:w-1/3 w-full border rounded-lg border-gray-500 p-2 ">
             <h2 className="mt-2 text-center text-2xl">Montos</h2>
-            <hr className="mt-2 mb-6" />
+            <hr className="mt-2 mb-4" />
             <CustomInputs
-              class="w-1/6 mx-auto pe-1  inline-block "
+              class="w-1/3 mx-auto pe-1  inline-block "
               label="REG. PAY"
               inputCss="text-center"
               disabled={true}
@@ -774,8 +815,8 @@ const Cargar = () => {
               type="number"
             />
             <CustomInputs
-              class="w-1/6 mx-auto pe-1  inline-block "
-              label="OVER TIME PAY"
+              class="w-1/3 mx-auto pe-1  inline-block "
+              label="OVER TIME"
               disabled={true}
               inputCss="text-center"
               name="overtime_pay"
@@ -784,8 +825,8 @@ const Cargar = () => {
               type="number"
             />
             <CustomInputs
-              class="w-1/6 mx-auto pe-1  inline-block "
-              label="MEAL TIME PAY"
+              class="w-1/3 mx-auto pe-1  inline-block "
+              label="MEAL TIME"
               disabled={true}
               inputCss="text-center"
               name="meal_time_pay"
@@ -794,8 +835,8 @@ const Cargar = () => {
               type="number"
             />
             <CustomInputs
-              class="w-1/6 mx-auto pe-1  inline-block "
-              label="VACATION PAY"
+              class="w-1/3 mx-auto pe-1  inline-block "
+              label="VACATION"
               disabled={true}
               inputCss="text-center"
               name="vacation_pay"
@@ -804,7 +845,7 @@ const Cargar = () => {
               type="number"
             />
             <CustomInputs
-              class="w-1/6 mx-auto mb-4 pe-1  inline-block "
+              class="w-1/3 mx-auto mb-4 pe-1  inline-block "
               label="SICK PAY"
               disabled={true}
               inputCss="text-center"
@@ -813,7 +854,7 @@ const Cargar = () => {
               type="number"
             />
             <CustomInputs
-              class="w-1/6 mx-auto mb-4 pe-1  inline-block "
+              class="w-1/3 mx-auto mb-4 pe-1  inline-block "
               label="HOLYDAY PAY"
               disabled={true}
               inputCss="text-center"
@@ -822,7 +863,7 @@ const Cargar = () => {
               type="number"
             />
             <CustomInputs
-              class="w-1/6 mx-auto mb-4 pe-1  inline-block "
+              class="w-1/3 mx-auto mb-4 pe-1  inline-block "
               label="Propinas"
               disabled={true}
               inputCss="text-center"
@@ -831,7 +872,7 @@ const Cargar = () => {
               type="number"
             />
             <CustomInputs
-              class="w-1/6 mx-auto mb-4 pe-1  inline-block "
+              class="w-1/3 mx-auto mb-4 pe-1  inline-block "
               label="Comisiones"
               disabled={true}
               inputCss="text-center"
@@ -840,7 +881,7 @@ const Cargar = () => {
               type="number"
             />
             <CustomInputs
-              class="w-1/6 mx-auto mb-4 pe-1  inline-block "
+              class="w-1/3 mx-auto mb-4 pe-1  inline-block "
               label="Concesiones"
               disabled={true}
               inputCss="text-center"
@@ -848,26 +889,26 @@ const Cargar = () => {
               placeholder=""
               type="number"
             />
-          </div>
-          <div className="xl:w-full w-full text-end ">
-            <CustomInputs
-              class="w-1/6 mx-auto pe-1  inline-block text-center "
-              label="Total"
-              disabled={true}
-              inputCss="text-center border-0"
-              value={getNumber(getPreTotal())}
-              placeholder=""
-              type="number"
-            />
+            <div className="xl:w-full w-full text-end ">
+              <CustomInputs
+                class="w-1/3 mx-auto pe-1  inline-block text-center "
+                label="Total"
+                disabled={true}
+                inputCss="text-center border-0"
+                value={getNumber(getPreTotal())}
+                placeholder=""
+                type="number"
+              />
+            </div>
           </div>
 
-          <div className="xl:w-full w-full ">
+          <div className="xl:w-1/3 w-full border rounded-lg border-gray-500 p-2 ">
             <>
               <h2 className="mt-2 text-center text-2xl">Taxes</h2>
-              <hr className="mt-2 mb-6" />
+              <hr className="mt-2 mb-4" />
             </>
             <div
-              className={` block mb-2   font-medium text-gray-700 w-1/6 mx-auto pe-1  inline-block `}
+              className={` block mb-2   font-medium text-gray-700 w-1/2 mx-auto pe-1  inline-block `}
             >
               <label>
                 <span>
@@ -886,7 +927,7 @@ const Cargar = () => {
               </label>
             </div>
             <div
-              className={` block mb-2   font-medium text-gray-700 w-1/6 mx-auto pe-1  inline-block `}
+              className={` block mb-2   font-medium text-gray-700 w-1/2 mx-auto pe-1  inline-block `}
             >
               <label>
                 <span>
@@ -905,7 +946,7 @@ const Cargar = () => {
               </label>
             </div>
             <div
-              className={` block mb-2   font-medium text-gray-700 w-1/6 mx-auto pe-1  inline-block `}
+              className={` block mb-2   font-medium text-gray-700 w-1/2 mx-auto pe-1  inline-block `}
             >
               <label>
                 <span>
@@ -924,7 +965,7 @@ const Cargar = () => {
               </label>
             </div>
             <div
-              className={` block mb-2   font-medium text-gray-700 w-1/6 mx-auto pe-1  inline-block `}
+              className={` block mb-2   font-medium text-gray-700 w-1/2 mx-auto pe-1  inline-block `}
             >
               <label>
                 <span>
@@ -943,7 +984,7 @@ const Cargar = () => {
               </label>
             </div>
             <div
-              className={` block mb-2   font-medium text-gray-700 w-1/6 mx-auto pe-1  inline-block `}
+              className={` block mb-2   font-medium text-gray-700 w-1/2 mx-auto pe-1  inline-block `}
             >
               <label>
                 <span>
@@ -962,7 +1003,7 @@ const Cargar = () => {
               </label>
             </div>
             <div
-              className={` block mb-2   font-medium text-gray-700 w-1/6 mx-auto pe-1  inline-block `}
+              className={` block mb-2   font-medium text-gray-700 w-1/2 mx-auto pe-1  inline-block `}
             >
               <label>
                 <span>
@@ -985,7 +1026,7 @@ const Cargar = () => {
                 {taxesData.map((item, index: number) => (
                   <div
                     key={index}
-                    className={` block mb-2   font-medium text-gray-700 w-1/6 mx-auto pe-1  inline-block `}
+                    className={` block mb-2   font-medium text-gray-700 w-1/2 mx-auto pe-1  inline-block `}
                   >
                     <label>
                       {item.required === 1 && (
@@ -1025,10 +1066,10 @@ const Cargar = () => {
                 {formData.payment.map((item: any, index: number) => (
                   <div
                     key={index}
-                    className={` block mb-2   font-medium text-gray-700 w-1/6 mx-auto pe-1  inline-block `}
+                    className={` block mb-2   font-medium text-gray-700 w-1/2 mx-auto pe-1  inline-block `}
                   >
                     <label>
-                      {item.requiered === 1 && (
+                      {item.required === 1 && (
                         <>
                           <input
                             type="checkbox"
@@ -1063,9 +1104,9 @@ const Cargar = () => {
           </div>
         </div>
 
-        <div className="xl:w-full w-full text-end ">
+        <div className="xl:w-full w-full text-end mt-4 ">
           <CustomInputs
-            class="w-1/6 mx-auto pe-1  inline-block text-center "
+            class="w-1/2 xl:w-1/6 mx-auto pe-1  inline-block text-center "
             label="Total"
             inputCss="text-center border-0"
             disabled={true}
@@ -1075,7 +1116,7 @@ const Cargar = () => {
           />
         </div>
         <div className="w-full text-end">
-          {formData.id != 0 && period == timesData[timesData.length - 2].id && (
+          {formData.id != 0 && (
             <button
               onClick={handleModal2}
               className="w-auto mt-4  me-4 mx-auto bg-[#333160] py-4 text-black bg-red-500 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-8 text-center "
@@ -1116,7 +1157,7 @@ const Cargar = () => {
         setIsOpen={handleModal2}
         title={`Eliminar`}
         description={`¿Esta seguro que desea ELIMINAR
-         el periodo: ${period}?`}
+         el periodo seleccionado?`}
       />
       <ModalAlert
         isOpen={isOpen}
