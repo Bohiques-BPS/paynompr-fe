@@ -213,6 +213,7 @@ export function setOutTime(data: object, id_employer: number) {
 export function editOutTime(data: object, id_time: number) {
   return Axios.request(setOptions("outtime/" + id_time, "PUT", data)); // Using a post request, specifying the user
 }
+
 export function getCounterFoil(
   id_company: number,
   id_time: number,

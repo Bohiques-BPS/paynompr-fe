@@ -190,13 +190,21 @@ const Cargar = () => {
       taxesData.map((item) => {
         if (item.is_active || item.required == 2) {
           item.value = setAmountTaxe(item, regular_pay);
-
+          console.log(item.value);
           total = total + item.value;
         }
       });
     } else {
       formData.payment.map((item) => {
-        if (item.is_active || item.required == 2) total = total + item.value;
+        let value = 0;
+        if (item.type_taxe == 1) {
+          value = ((getPreTotal() * item.amount) / 100) * -1;
+        } else {
+          value = item.amount;
+        }
+
+        console.log(value);
+        if (item.is_active || item.required == 2) total = total + value;
       });
     }
     if (total > 0) return total;
@@ -363,7 +371,7 @@ const Cargar = () => {
 
     setPeriod(value);
     let times = [];
-    times = filterById(timesData, value).times;
+    if (timesData) times = filterById(timesData, value).times;
 
     setSelectedPeriod(filterById(timesData, value).id);
     if (times.length > 0 && value > 0) {
@@ -414,7 +422,12 @@ const Cargar = () => {
   };
 
   const getAmountTaxe = (taxe: TAXES) => {
-    if (taxe.type_taxe == 1) return taxe.amount;
+    if (taxe.type_taxe == 1) return (getPreTotal() * taxe.amount) / 100;
+    else return taxe.value;
+  };
+
+  const getAmountTaxe2 = (taxe: TAXES) => {
+    if (taxe.type_taxe == 1) return (getPreTotal() * taxe.amount) / 100;
     else return taxe.value;
   };
 
@@ -767,6 +780,7 @@ const Cargar = () => {
                 onChange={handleInputChange}
                 type="number"
               />
+              <div className="w-1/6 inline-block text-center time-separator"></div>
               <CustomInputs
                 class="time-input mx-auto ps-1   inline-block "
                 label="Comisiones"
@@ -786,6 +800,32 @@ const Cargar = () => {
                 inputCss="text-center"
                 value={formData.concessions}
                 onChange={handleInputChange}
+                type="number"
+              />
+              <div className="w-1/6 inline-block text-center time-separator"></div>
+              <CustomInputs
+                class="time-input mx-auto ps-1   inline-block "
+                label="Salario"
+                name="salary"
+                inputCss="text-center"
+                type="number"
+              />
+            </div>
+            <div className="w-1/2  mx-auto ps-1 inline-block  ">
+              <CustomInputs
+                class="time-input mx-auto   inline-block "
+                label="Bono"
+                name="bonus"
+                inputCss="text-center"
+                onChange={handleInputChange}
+                type="number"
+              />
+              <div className="w-1/6 inline-block text-center time-separator"></div>
+              <CustomInputs
+                class="time-input mx-auto ps-1  inline-block "
+                label=""
+                name="salary"
+                inputCss="text-center"
                 type="number"
               />
             </div>
@@ -1054,7 +1094,7 @@ const Cargar = () => {
                         type="number"
                         onChange={(e) => handleitem(e, item)}
                         name={item.name}
-                        value={getAmountTaxe(item)}
+                        value={getAmountTaxe2(item)}
                       />
                     </label>
                   </div>
