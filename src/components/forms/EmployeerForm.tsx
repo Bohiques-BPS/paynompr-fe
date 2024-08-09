@@ -266,7 +266,7 @@ const EmployeerForm = (props: Props) => {
 
         <CustomSelect
           options={SELECT_SIMPLE}
-          class="w-1/5 mx-auto pe-1  inline-block "
+          class="w-1/6 mx-auto pe-1  inline-block "
           label="Choferil"
           name="choferil"
           onChange={props.onChange}
@@ -275,7 +275,16 @@ const EmployeerForm = (props: Props) => {
           type="number"
         />
         <CustomInputs
-          class="xl:w-1/5 w-1/3 mx-auto pe-1  inline-block "
+          class="xl:w-1/6 w-1/3 mx-auto pe-1  inline-block "
+          label="Salario"
+          name="salary"
+          onChange={props.onChange}
+          value={props.formData.salary}
+          placeholder=""
+          type="number"
+        />
+        <CustomInputs
+          class="xl:w-1/6 w-1/3 mx-auto pe-1  inline-block "
           label="Hora regular"
           name="regular_time"
           onChange={handleRegularTime}
@@ -284,7 +293,7 @@ const EmployeerForm = (props: Props) => {
           type="number"
         />
         <CustomInputs
-          class="xl:w-1/5 w-1/3 mx-auto pe-1  inline-block "
+          class="xl:w-1/6 w-1/3 mx-auto pe-1  inline-block "
           label="Sobretiempo"
           name="overtime"
           onChange={props.onChange}
@@ -293,7 +302,7 @@ const EmployeerForm = (props: Props) => {
           type="number"
         />
         <CustomInputs
-          class="xl:w-1/5 w-1/2  mx-auto pe-1  inline-block "
+          class="xl:w-1/6 w-1/2  mx-auto pe-1  inline-block "
           label="Hora de comida"
           name="mealtime"
           onChange={props.onChange}
@@ -301,7 +310,7 @@ const EmployeerForm = (props: Props) => {
           placeholder=""
           type="number"
         />
-        <label className=" mb-2  font-medium text-gray-700 w-1/2 xl:w-1/5 mx-auto ps-1  inline-block">
+        <label className=" mb-2  font-medium text-gray-700 w-1/2 xl:w-1/6 mx-auto ps-1  inline-block">
           <span>% de Retención</span>
 
           <NumericFormat

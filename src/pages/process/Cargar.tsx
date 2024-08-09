@@ -50,12 +50,17 @@ const Cargar = () => {
   const recalculate = () => {
     let regular_amount = 0;
     let over_amount = 0;
+    let salary = 0;
     let meal_amount = 0;
     if (formData.id == 0) {
+      salary = employerData.salary;
+
       regular_amount = employerData.regular_time;
       over_amount = employerData.overtime;
       meal_amount = employerData.mealtime;
     } else {
+      salary = formData.salary;
+
       regular_amount = formData.regular_amount;
       over_amount = formData.over_amount;
       meal_amount = formData.meal_amount;
@@ -66,6 +71,9 @@ const Cargar = () => {
       regular_amount * convertTimeToHoursWithDecimals(formData.sick_time) +
       regular_amount * convertTimeToHoursWithDecimals(formData.holiday_time) +
       getNumber(formData.tips) +
+      getNumber(formData.salary) +
+      getNumber(formData.bonus) +
+      getNumber(formData.others) +
       getNumber(formData.commissions) +
       getNumber(formData.concessions) +
       regular_amount * convertTimeToHoursWithDecimals(formData.regular_time) +
@@ -96,6 +104,8 @@ const Cargar = () => {
     setFormData({
       ...formData,
       ["payment"]: aux,
+      ["salary"]: salary,
+
       ["inability"]: getNumber(inability),
       ["choferil"]: getNumber(choferil),
       ["medicare"]: getNumber(medicare),
@@ -118,7 +128,10 @@ const Cargar = () => {
         meal_amount * convertTimeToHoursWithDecimals(formData.meal_time)
       ),
       ["regular_pay"]: Number(
-        regular_amount * convertTimeToHoursWithDecimals(formData.regular_time)
+        regular_amount * convertTimeToHoursWithDecimals(formData.regular_time) +
+          formData.bonus +
+          formData.others +
+          salary
       ),
     });
   };
@@ -130,6 +143,9 @@ const Cargar = () => {
     formData.over_time,
     formData.meal_time,
     selectedPeriod,
+    formData.salary,
+    formData.bonus,
+    formData.others,
 
     formData.sick_time,
     formData.tips,
@@ -159,6 +175,7 @@ const Cargar = () => {
     let tax_pr = 0;
     let social_tips = 0;
     let choferil = 0;
+
     if (formData.id == 0) {
       inability = getNumber(formData.inability);
       medicare = getNumber(formData.medicare);
@@ -186,24 +203,27 @@ const Cargar = () => {
       getNumber(social_tips) -
       getNumber(choferil);
 
+    console.log(regular_pay);
     if (formData.id == 0) {
       taxesData.map((item) => {
         if (item.is_active || item.required == 2) {
           item.value = setAmountTaxe(item, regular_pay);
-          console.log(item.value);
+
           total = total + item.value;
         }
       });
     } else {
       formData.payment.map((item) => {
         let value = 0;
-        if (item.type_taxe == 1) {
+        if (item.type_amount == 1) {
           value = ((getPreTotal() * item.amount) / 100) * -1;
         } else {
           value = item.amount;
         }
+        if (item.type_taxe == 1) {
+          value = value * -1;
+        }
 
-        console.log(value);
         if (item.is_active || item.required == 2) total = total + value;
       });
     }
@@ -422,12 +442,12 @@ const Cargar = () => {
   };
 
   const getAmountTaxe = (taxe: TAXES) => {
-    if (taxe.type_taxe == 1) return (getPreTotal() * taxe.amount) / 100;
+    if (taxe.type_amount == 1) return (getPreTotal() * taxe.amount) / 100;
     else return taxe.value;
   };
 
   const getAmountTaxe2 = (taxe: TAXES) => {
-    if (taxe.type_taxe == 1) return (getPreTotal() * taxe.amount) / 100;
+    if (taxe.type_amount == 1) return (getPreTotal() * taxe.amount) / 100;
     else return taxe.value;
   };
 
@@ -807,6 +827,8 @@ const Cargar = () => {
                 class="time-input mx-auto ps-1   inline-block "
                 label="Salario"
                 name="salary"
+                value={formData.salary}
+                onChange={handleInputChange}
                 inputCss="text-center"
                 type="number"
               />
@@ -816,6 +838,7 @@ const Cargar = () => {
                 class="time-input mx-auto   inline-block "
                 label="Bono"
                 name="bonus"
+                value={formData.bonus}
                 inputCss="text-center"
                 onChange={handleInputChange}
                 type="number"
@@ -823,8 +846,10 @@ const Cargar = () => {
               <div className="w-1/6 inline-block text-center time-separator"></div>
               <CustomInputs
                 class="time-input mx-auto ps-1  inline-block "
-                label=""
-                name="salary"
+                label="Others"
+                onChange={handleInputChange}
+                value={formData.others}
+                name="others"
                 inputCss="text-center"
                 type="number"
               />

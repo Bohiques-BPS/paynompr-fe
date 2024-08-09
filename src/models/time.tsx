@@ -9,6 +9,10 @@ export const TIME_DATA = {
   meal_time: "00:00",
   memo: "",
   tips: 0,
+  salary: 0,
+  others: 0,
+  bonus: 0,
+
   regular_pay: 0,
   created_at: new Date(),
   payment: [PAYMENT_DATA],
@@ -43,6 +47,9 @@ export interface TIME {
   period_id: number;
   inability: number;
   choferil: number;
+  salary: number;
+  others: number;
+  bonus: number;
   regular_amount: number;
   over_amount: number;
   meal_amount: number;
