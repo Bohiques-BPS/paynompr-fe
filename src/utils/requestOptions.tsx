@@ -236,7 +236,7 @@ export function getCounterFoil(
 ) {
   return Axios({
     url:
-      BASE_URL + `/reports/counterfoil/${id_company}/${id_time}/${employer_id}`,
+      BASE_URL + `reports/counterfoil/${id_company}/${id_time}/${employer_id}`,
     method: "GET",
     responseType: "blob", // importante
   }).then((response) => {

@@ -154,7 +154,54 @@ const Cargar = () => {
     formData.holiday_time,
     formData.regular_time,
   ]);
+  const getFormule = () => {
+    let inability = 0;
+    let medicare = 0;
+    let secure_social = 0;
 
+    let tax_pr = 0;
+    let social_tips = 0;
+    let choferil = 0;
+
+    if (formData.id == 0) {
+      inability = getNumber(formData.inability);
+      medicare = getNumber(formData.medicare);
+      secure_social = getNumber(formData.secure_social);
+
+      tax_pr = getNumber(formData.tax_pr);
+      social_tips = getNumber(formData.social_tips);
+      choferil = getNumber(formData.choferil);
+    } else {
+      inability = formData.inability;
+      medicare = formData.medicare;
+      secure_social = formData.secure_social;
+
+      tax_pr = formData.tax_pr;
+      social_tips = formData.social_tips;
+      choferil = formData.choferil;
+    }
+
+    const total =
+      formData.vacation_pay +
+      formData.sick_pay +
+      formData.holyday_pay +
+      getNumber(formData.tips) +
+      getNumber(formData.commissions) +
+      getNumber(formData.concessions) +
+      formData.regular_pay +
+      formData.overtime_pay +
+      formData.meal_time_pay -
+      getNumber(inability) -
+      getNumber(medicare) -
+      getNumber(secure_social) -
+      getNumber(tax_pr) -
+      getNumber(social_tips) -
+      getNumber(choferil) +
+      formData.donation +
+      formData.refund;
+
+    return total.toString();
+  };
   const getTotal = () => {
     var total = 0;
 
@@ -201,7 +248,9 @@ const Cargar = () => {
       getNumber(secure_social) -
       getNumber(tax_pr) -
       getNumber(social_tips) -
-      getNumber(choferil);
+      getNumber(choferil) +
+      formData.donation +
+      formData.refund;
 
     console.log(regular_pay);
     if (formData.id == 0) {
@@ -1082,6 +1131,44 @@ const Cargar = () => {
                   type="number"
                   name="choferil"
                   value={getNumber(formData.choferil)}
+                />
+              </label>
+            </div>
+            <div
+              className={` block mb-2   font-medium text-gray-700 w-1/2 mx-auto pe-1  inline-block `}
+            >
+              <label>
+                <span>
+                  {" "}
+                  Donativo
+                  <span>( - )</span>
+                </span>
+
+                <input
+                  className={` bg-gray-50 text-sm text-center invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5`}
+                  type="number"
+                  onChange={handleInputChange}
+                  name="donation"
+                  value={getNumber(formData.donation)}
+                />
+              </label>
+            </div>
+            <div
+              className={` block mb-2   font-medium text-gray-700 w-1/2 mx-auto pe-1  inline-block `}
+            >
+              <label>
+                <span>
+                  {" "}
+                  Gastos Reembolsados
+                  <span>( - )</span>
+                </span>
+
+                <input
+                  className={` bg-gray-50 text-sm text-center invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5`}
+                  type="number"
+                  onChange={handleInputChange}
+                  name="refund"
+                  value={getNumber(formData.refund)}
                 />
               </label>
             </div>

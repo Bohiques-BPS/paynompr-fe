@@ -12,6 +12,9 @@ export const TIME_DATA = {
   salary: 0,
   others: 0,
   bonus: 0,
+  refund: 0,
+
+  donation: 0,
 
   regular_pay: 0,
   created_at: new Date(),
@@ -53,6 +56,9 @@ export interface TIME {
   regular_amount: number;
   over_amount: number;
   meal_amount: number;
+  refund: number;
+
+  donation: number;
   medicare: number;
   secure_social: number;
   social_tips: number;
