@@ -4,7 +4,7 @@ export const ACCOUNTANTS = {
   second_last_name: "Maldonado",
   company: "JW ACCOUNTING TAX SERVICE",
   phone: "787-390-9740",
-  country: 53,
+  country: "53",
   name: "Jose",
   email: "jwtaxes@yahoo.com",
   state: "PR",

@@ -24,6 +24,9 @@ import OutEmployers from "./pages/outemployers/OutEmployers";
 import AddOutEmployee from "./pages/outemployers/AddOutEmployers";
 import EditOutEmployee from "./pages/outemployers/EditOutEmployers";
 import OutEmployeHours from "./pages/process/OutEmployeHours";
+import Accountants from "./pages/accountants/Accountants";
+import AddCounter from "./pages/accountants/AddAccountants";
+import EditAccountants from "./pages/accountants/EditAccountants";
 
 const App = () => {
   return (
@@ -44,9 +47,9 @@ const App = () => {
             <Route path="empresas/agregar" element={<AddCompany />} />
             <Route path="empresas/editar/:id" element={<EditCompany />} />
 
-            {/*  <Route path="contadores" element={<Accountants />} />
+            <Route path="contadores" element={<Accountants />} />
             <Route path="contadores/agregar" element={<AddCounter />} />
-            <Route path="contadores/editar/:id" element={<EditAccountants />} /> */}
+            <Route path="contadores/editar/:id" element={<EditAccountants />} />
 
             <Route path="procesos" element={<Process />} />
             <Route

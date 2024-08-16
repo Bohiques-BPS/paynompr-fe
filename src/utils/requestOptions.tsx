@@ -232,7 +232,9 @@ export function editOutTime(data: object, id_time: number) {
 export function getCounterFoil(
   id_company: number,
   id_time: number,
-  employer_id: number
+  employer_id: number,
+  period: any,
+  employer: any
 ) {
   return Axios({
     url:
@@ -243,7 +245,16 @@ export function getCounterFoil(
     const url = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute("download", id_company + id_time + "talonario.pdf");
+    link.setAttribute(
+      "download",
+      "Empleado-" +
+        employer.first_name +
+        "-" +
+        employer.last_name +
+        "-Periodo-" +
+        period.period_number +
+        ".pdf"
+    );
     document.body.appendChild(link);
     link.click();
   });

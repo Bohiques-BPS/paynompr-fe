@@ -4,6 +4,7 @@ import {
   faBars,
   faHouse,
   faBuilding,
+  faUsers,
   faDiagramProject,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -107,31 +108,31 @@ const Sidebar = ({
                 )}
               </NavLink>
             </li>
-            {/*     {adminLevel(role) && (
-              <li>
-                <NavLink
-                  onClick={toggleSidebar}
-                  to="/escritorio/contadores"
-                  className={({ isActive }) =>
-                    [
-                      "flex items-center py-4 justify-items-center  text-gray-900 rounded-lg text-white ",
-                      isActive ? " active group" : "",
-                    ].join("")
-                  }
-                >
-                  <div className="p-3 rounded-lg border-white border group-[.active]:bg-[#a29dc5ad]">
-                    <FontAwesomeIcon
-                      className="text-2xl text-white fa-fw"
-                      icon={faUsers}
-                    />
-                  </div>
-                  {sidebarOpen === "true" && (
-                    <span className="ms-3 text-white">Contadores</span>
-                  )}
-                </NavLink>
-              </li>
-            )} */}
-            {/*  {ownerLevel(role) && (
+
+            <li>
+              <NavLink
+                onClick={toggleSidebar}
+                to="/escritorio/contadores"
+                className={({ isActive }) =>
+                  [
+                    "flex items-center py-4 justify-items-center  text-gray-900 rounded-lg text-white ",
+                    isActive ? " active group" : "",
+                  ].join("")
+                }
+              >
+                <div className="p-3 rounded-lg border-white border group-[.active]:bg-[#a29dc5ad]">
+                  <FontAwesomeIcon
+                    className="text-2xl text-white fa-fw"
+                    icon={faUsers}
+                  />
+                </div>
+                {sidebarOpen === "true" && (
+                  <span className="ms-3 text-white">Contadores</span>
+                )}
+              </NavLink>
+            </li>
+
+            {/*   {ownerLevel(role) && (
               <li>
                 <NavLink
                   onClick={toggleSidebar}
@@ -154,7 +155,7 @@ const Sidebar = ({
                   )}
                 </NavLink>
               </li>
-            )} */}
+            )}  */}
 
             <li className=" block xl:hidden">
               <NavLink

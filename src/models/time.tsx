@@ -13,7 +13,8 @@ export const TIME_DATA = {
   others: 0,
   bonus: 0,
   refund: 0,
-
+  asume: 0,
+  aflac: 0,
   donation: 0,
 
   regular_pay: 0,
@@ -57,7 +58,8 @@ export interface TIME {
   over_amount: number;
   meal_amount: number;
   refund: number;
-
+  asume: number;
+  aflac: number;
   donation: number;
   medicare: number;
   secure_social: number;
