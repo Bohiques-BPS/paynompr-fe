@@ -144,6 +144,10 @@ export function deleteOutEmployer(id: number) {
   return Axios.request(setOptions("outemployers/delete/" + id, "DELETE"));
 }
 
+export function deleteAccountant(id: number) {
+  return Axios.request(setOptions("accountant/delete/" + id, "DELETE"));
+}
+
 export function deleteEmployer(id: number) {
   return Axios.request(setOptions("employers/delete/" + id, "DELETE"));
 }

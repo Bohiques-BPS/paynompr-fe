@@ -12,6 +12,7 @@ export const TIME_DATA = {
   salary: 0,
   others: 0,
   bonus: 0,
+  accountant_id: 0,
   refund: 0,
   asume: 0,
   aflac: 0,
@@ -48,6 +49,7 @@ export interface TIME {
   id: number;
   period: number;
   tips: number;
+  accountant_id: number;
   period_id: number;
   inability: number;
   choferil: number;

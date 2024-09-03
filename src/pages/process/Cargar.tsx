@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import CustomInputs from "../../components/forms/CustomInputs";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   deleteTime,
   editTime,
+  getAccountants,
   getCompanyWithEmployer,
   getCounterFoil,
   setTime,
@@ -31,6 +34,8 @@ const Cargar = () => {
   const [companyData, setCompanyData] = useState(COMPANY_DATA);
   const [timesData, setTimesData] = useState([TIME_DATA]);
   const [formData, setFormData] = useState(TIME_DATA);
+  const [accountants, setAccountants] = useState([]);
+  const [times, setTimes] = useState([TIME_DATA]);
 
   const [taxesData, setTaxesData] = useState([TAXES_DATA]);
   const [period, setPeriod] = useState(0);
@@ -51,17 +56,20 @@ const Cargar = () => {
     let regular_amount = 0;
     let over_amount = 0;
     let salary = 0;
+    let accountant_id = 0;
+
     let meal_amount = 0;
     if (formData.id == 0) {
       salary = employerData.salary;
+      accountant_id = companyData.accountant_id;
 
       regular_amount = employerData.regular_time;
       over_amount = employerData.overtime;
       meal_amount = employerData.mealtime;
     } else {
       salary = formData.salary;
-
-      regular_amount = formData.regular_amount;
+      accountant_id: formData.accountant_id,
+        (regular_amount = formData.regular_amount);
       over_amount = formData.over_amount;
       meal_amount = formData.meal_amount;
     }
@@ -105,7 +113,7 @@ const Cargar = () => {
       ...formData,
       ["payment"]: aux,
       ["salary"]: salary,
-
+      ["accountant_id"]: accountant_id,
       ["inability"]: getNumber(inability),
       ["choferil"]: getNumber(choferil),
       ["medicare"]: getNumber(medicare),
@@ -137,7 +145,9 @@ const Cargar = () => {
   };
 
   useEffect(() => {
-    if (formData.id == 0) recalculate();
+    if (formData.id == 0) {
+      recalculate();
+    }
   }, [
     formData.vacation_time,
     formData.over_time,
@@ -154,6 +164,10 @@ const Cargar = () => {
     formData.holiday_time,
     formData.regular_time,
   ]);
+
+  useEffect(() => {
+    recalculate();
+  }, [formData.id]);
 
   const getTotal = () => {
     var total = 0;
@@ -207,7 +221,6 @@ const Cargar = () => {
       formData.asume -
       formData.aflac;
 
-    console.log(regular_pay);
     if (formData.id == 0) {
       taxesData.map((item) => {
         if (item.is_active || item.required == 2) {
@@ -275,7 +288,7 @@ const Cargar = () => {
       });
   };
 
-  const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.FormEvent<any>) => {
     if (e.currentTarget.type === "number" && e.currentTarget.value == null)
       e.currentTarget.value = "0";
 
@@ -390,9 +403,25 @@ const Cargar = () => {
     setSelectedPeriod(filterById(timesData, value).id);
     if (times.length > 0 && value > 0) {
       setFormData({ ...times[0], period_id: filterById(timesData, value).id });
+      setTimes(times);
     } else {
+      setTimes([TIME_DATA]);
+
       setFormData({ ...TIME_DATA, period_id: filterById(timesData, value).id });
     }
+  };
+
+  const handleTimeChange = (e: React.FormEvent<any>) => {
+    const value = e.currentTarget.value;
+    var timeEncontrado: any = times.find((time) => time.id == Number(value));
+
+    setFormData({ ...timeEncontrado, period_id: selectedPeriod });
+  };
+  const addTime = () => {
+    let aux_times = times;
+    aux_times.push(TIME_DATA);
+    setTimes(aux_times);
+    setFormData({ ...TIME_DATA, period_id: selectedPeriod });
   };
 
   const setPeriodChange = () => {
@@ -405,7 +434,9 @@ const Cargar = () => {
     setSelectedPeriod(filterById(timesData, value).id);
     if (times.length > 0 && value > 0) {
       setFormData({ ...times[0], period_id: filterById(timesData, value).id });
+      setTimes(times);
     } else {
+      setTimes([TIME_DATA]);
       setFormData({ ...TIME_DATA, period_id: filterById(timesData, value).id });
     }
   };
@@ -491,6 +522,7 @@ const Cargar = () => {
         } else {
           setFlag(flag + 1);
         }
+
         setTimesData([]);
 
         setTimesData([...response.data.result.periods]);
@@ -517,6 +549,19 @@ const Cargar = () => {
   };
 
   useEffect(() => {
+    getAccountants()
+      .then((response) => {
+        setLoanding(false);
+
+        // Data retrieval and processing
+        setAccountants(response.data.result);
+      })
+      .catch((error) => {
+        // If the query fails, an error will be displayed on the terminal.
+        setLoanding(false);
+
+        showError(error.response.data.detail);
+      });
     setIdEmployer(Number(params.id_employer));
     getData(Number(params.id_employer));
   }, []);
@@ -536,13 +581,13 @@ const Cargar = () => {
 
         <p className="text-white mt-4">Seleccionar período de trabajo</p>
         <label
-          className={` block mb-2 text-sm font-medium text-gray-700 w-2/6 mx-auto mt-4 inline-block`}
+          className={` block mb-2 text-sm font-medium text-gray-700 w-2/5 mx-auto mt-4 inline-block`}
         >
           <select
             name="period"
             onChange={handlePeriodChange}
             value={selectedPeriod}
-            className={` bg-gray-50 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-3`}
+            className={` bg-gray-50 border mt-2 w-2/5 pe-1 border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 inline-block  p-3`}
           >
             <option value={-1}>Seleccione una opción</option>
             {timesData.map((item: any, i: number) => (
@@ -551,12 +596,31 @@ const Cargar = () => {
               </option>
             ))}
           </select>
+          <select
+            name="id"
+            onChange={handleTimeChange}
+            value={formData.id}
+            className={` bg-gray-50 border mt-2 w-2/5 border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 inline-block  p-3`}
+          >
+            {times.map((item: any, i: number) => (
+              <option key={item.id} value={item.id}>
+                Time {i + 1}
+              </option>
+            ))}
+          </select>
+          <button
+            onClick={addTime}
+            className="w-1/5  inline-block rounded-lg mt-2 px-4 h-[44px] py-0 font-bold bg-[#FED102]  content-center items-center"
+          >
+            {" "}
+            <FontAwesomeIcon icon={faPlus} className="text-2xl" />
+          </button>
         </label>
       </div>
       <div className="w-full  mt-4 bg-white rounded-lg shadow p-4 ">
         <div className="xl:w-full w-full ">
           <CustomInputs
-            class="w-1/2 mx-auto pe-1  inline-block "
+            class="w-1/3 mx-auto pe-1  inline-block "
             label=""
             disabled={true}
             value={companyData.name}
@@ -568,7 +632,7 @@ const Cargar = () => {
             name="employers"
             onChange={handleChangeEmployer}
             value={idEmployer}
-            className={`w-1/2 bg-gray-50 border inline-block  border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-[0.7em]`}
+            className={`w-1/3 bg-gray-50 pe-1 border inline-block  border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-[0.7em]`}
           >
             <option value={-1}>Seleccione una opción</option>
             {employers.map((item: any) => (
@@ -576,6 +640,21 @@ const Cargar = () => {
                 {item.first_name + " " + item.last_name}
               </option>
             ))}
+          </select>
+          <select
+            name="accountant_id"
+            onChange={handleInputChange}
+            value={formData.accountant_id}
+            className={`w-1/3 bg-gray-50  border inline-block  border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-[0.7em] `}
+          >
+            <option value={-1}>Seleccione una opción</option>
+            {accountants
+              .filter((item: any) => !item.is_deleted) // Filter out deleted accountants
+              .map((item: any) => (
+                <option key={item.id} value={item.id}>
+                  {item.name + " " + item.first_last_name}
+                </option>
+              ))}
           </select>
         </div>
         <div className="flex flex-col xl:flex-row gap-4 mt-4">

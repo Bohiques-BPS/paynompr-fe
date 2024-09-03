@@ -76,14 +76,16 @@ const AddCompany = () => {
           name="accountant_id"
           onChange={handleInputChange}
           value={formData.accountant_id}
-          className={`w-1/4 bg-gray-50 border ms-1 inline-block  border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-[0.7em]`}
+          className={`w-1/4 bg-gray-50 border ms-1 inline-block  border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-[0.7em]`}
         >
           <option value={-1}>Seleccione un/a Contador/a</option>
-          {accountants.map((item: any) => (
-            <option key={item.id} value={item.id}>
-              {item.name + " " + item.first_last_name}
-            </option>
-          ))}
+          {accountants
+            .filter((item: any) => !item.is_deleted) // Filter out deleted accountants
+            .map((item: any) => (
+              <option key={item.id} value={item.id}>
+                {item.name + " " + item.first_last_name}
+              </option>
+            ))}
         </select>
         <div className="w-1/4 mx-auto mt-4 inline-block "></div>
       </div>
