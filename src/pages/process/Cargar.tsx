@@ -581,7 +581,7 @@ const Cargar = () => {
 
         <p className="text-white mt-4">Seleccionar período de trabajo</p>
         <div
-          className={` justify-center block mb-2 text-sm font-medium text-gray-700 xl:w-2/5 xl-full mx-auto mt-4 flex xl:flex-row flex-col gap-2 align-middle items-center`}
+          className={` justify-center block mb-2 text-sm font-medium text-gray-700 xl:w-2/3 xl-full mx-auto mt-4 flex xl:flex-row flex-col gap-2 align-middle items-center`}
         >
           <select
             name="period"
@@ -600,7 +600,7 @@ const Cargar = () => {
             name="id"
             onChange={handleTimeChange}
             value={formData.id}
-            className={` bg-gray-50  border  xl:w-2/7 w-full xl:ms-2 border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 inline-block  p-3`}
+            className={` bg-gray-50  border  xl:w-2/12 w-full xl:ms-2 border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 inline-block  p-3`}
           >
             {times.map((item: any, i: number) => (
               <option key={item.id} value={item.id}>
@@ -609,7 +609,7 @@ const Cargar = () => {
             ))}
           </select>
 
-          <div className="xl:w-1/7 w-full inline-block  ">
+          <div className="xl:w-1/6 w-full inline-block  ">
             <button
               className="rounded-lg  px-4 h-[44px] py-0 font-bold bg-[#FED102] xl:ms-2 w-[100%] content-center items-center"
               onClick={addTime}
