@@ -216,7 +216,7 @@ const Cargar = () => {
       getNumber(tax_pr) -
       getNumber(social_tips) -
       getNumber(choferil) -
-      formData.donation -
+      formData.donation +
       formData.refund -
       formData.asume -
       formData.aflac;
