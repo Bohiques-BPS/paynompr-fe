@@ -580,14 +580,14 @@ const Cargar = () => {
         <h3 className="text-2xl">Cargar Tiempo</h3>
 
         <p className="text-white mt-4">Seleccionar período de trabajo</p>
-        <label
-          className={` block mb-2 text-sm font-medium text-gray-700 w-2/5 mx-auto mt-4 inline-block`}
+        <div
+          className={` justify-center block mb-2 text-sm font-medium text-gray-700 xl:w-2/5 xl-full mx-auto mt-4 flex xl:flex-row flex-col gap-2 align-middle items-center`}
         >
           <select
             name="period"
             onChange={handlePeriodChange}
             value={selectedPeriod}
-            className={` bg-gray-50 border mt-2 w-2/5 pe-1 border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 inline-block  p-3`}
+            className={` bg-gray-50 border xl:w-2/5  w-full pe-1 border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 inline-block  p-3`}
           >
             <option value={-1}>Seleccione una opción</option>
             {timesData.map((item: any, i: number) => (
@@ -600,7 +600,7 @@ const Cargar = () => {
             name="id"
             onChange={handleTimeChange}
             value={formData.id}
-            className={` bg-gray-50 border mt-2 w-2/5 border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 inline-block  p-3`}
+            className={` bg-gray-50  border  xl:w-2/7 w-full xl:ms-2 border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 inline-block  p-3`}
           >
             {times.map((item: any, i: number) => (
               <option key={item.id} value={item.id}>
@@ -608,19 +608,22 @@ const Cargar = () => {
               </option>
             ))}
           </select>
-          <button
-            onClick={addTime}
-            className="w-1/5  inline-block rounded-lg mt-2 px-4 h-[44px] py-0 font-bold bg-[#FED102]  content-center items-center"
-          >
-            {" "}
-            <FontAwesomeIcon icon={faPlus} className="text-2xl" />
-          </button>
-        </label>
+
+          <div className="xl:w-1/7 w-full inline-block  ">
+            <button
+              className="rounded-lg  px-4 h-[44px] py-0 font-bold bg-[#FED102] xl:ms-2 w-[100%] content-center items-center"
+              onClick={addTime}
+            >
+              {" "}
+              <FontAwesomeIcon icon={faPlus} className="text-2xl" />
+            </button>
+          </div>
+        </div>
       </div>
       <div className="w-full  mt-4 bg-white rounded-lg shadow p-4 ">
         <div className="xl:w-full w-full ">
           <CustomInputs
-            class="w-1/3 mx-auto pe-1  inline-block "
+            class="xl:w-1/3 w-full mx-auto xl:pe-1  inline-block "
             label=""
             disabled={true}
             value={companyData.name}
@@ -632,7 +635,7 @@ const Cargar = () => {
             name="employers"
             onChange={handleChangeEmployer}
             value={idEmployer}
-            className={`w-1/3 bg-gray-50 pe-1 border inline-block  border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-[0.7em]`}
+            className={`xl:w-1/3 w-full bg-gray-50 pe-1 border inline-block  border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-[0.7em]`}
           >
             <option value={-1}>Seleccione una opción</option>
             {employers.map((item: any) => (
@@ -645,7 +648,7 @@ const Cargar = () => {
             name="accountant_id"
             onChange={handleInputChange}
             value={formData.accountant_id}
-            className={`w-1/3 bg-gray-50  border inline-block  border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-[0.7em] `}
+            className={`xl:w-1/3 w-full xl:mt-0 mt-2 bg-gray-50  border inline-block  border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-[0.7em] `}
           >
             <option value={-1}>Seleccione una opción</option>
             {accountants
@@ -878,7 +881,7 @@ const Cargar = () => {
               />
             </div>
 
-            <div className="w-1/2  mx-auto ps-1 inline-block  ">
+            <div className="xl:w-1/2 w-full  mx-auto ps-1 inline-block  ">
               <CustomInputs
                 class="time-input mx-auto pe-1  inline-block "
                 label="Propinas"
@@ -900,7 +903,7 @@ const Cargar = () => {
               />
             </div>
 
-            <div className="w-1/2  mx-auto ps-1 inline-block  ">
+            <div className="xl:w-1/2 w-full  mx-auto ps-1 inline-block  ">
               <CustomInputs
                 class="time-input mx-auto   inline-block "
                 label="Concesiones"
@@ -921,7 +924,7 @@ const Cargar = () => {
                 type="number"
               />
             </div>
-            <div className="w-1/2  mx-auto ps-1 inline-block  ">
+            <div className="xl:w-1/2 w-full  mx-auto ps-1 inline-block  ">
               <CustomInputs
                 class="time-input mx-auto   inline-block "
                 label="Bono"
