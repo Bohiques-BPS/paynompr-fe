@@ -1,3 +1,5 @@
+import { FLOAT } from "html2canvas/dist/types/css/property-descriptors/float";
+
 export const EMPLOYER_DATA = {
   name: "Andres",
   last_name: "Fernandez",
@@ -26,9 +28,13 @@ export const EMPLOYER_DATA = {
   date_egress: null,
   overtime: 0,
   mealtime: 0,
-  vacation_time: "0",
+  vacation_time: "00:00",
+  vacation_hours: 0,
+  vacation_hours_monthly:0,
+  sicks_hours_monthly:0,
   vacation_date: null,
-  sick_time: "0",
+  sick_time: "00:00",
+  sicks_hours: 0,
   sicks_date: null,
   number_dependents: 0,
   shared_custody: false,
@@ -73,9 +79,13 @@ export interface EMPLOYEER {
   overtime: number;
   mealtime: number;
   vacation_time: string;
-  vacation_date: any;
+  vacation_date: string;
+  vacation_hours: number;
   sick_time: string;
-  sicks_date: any;
+  sicks_hours: number;
+  sicks_date: string;
+  vacation_hours_monthly: number;
+  sicks_hours_monthly: number,
   number_dependents: number;
   shared_custody: boolean;
   number_concessions: number;

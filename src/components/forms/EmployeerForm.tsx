@@ -407,6 +407,52 @@ const EmployeerForm = (props: Props) => {
           placeholder=""
           type="checkbox"
         />
+
+
+      <div className="xl:w-full block  w-full">
+          <CustomInputs
+            class="xl:w-2/3 w-1/2 mx-auto pe-1  inline-block xl:inline-flex  justify-between items-center   "
+            label="Las vacaciones se acumularan razon de"
+            name="vacation_hours"
+            inputCss="xl:inline-block xl:w-1/3  mt-0 "
+            onChange={props.onChange}
+            value={props.formData.vacation_hours}
+            placeholder=""
+            type="number"
+          />
+
+          <CustomInputs
+            class="xl:w-1/3 w-1/2 mx-auto ps-2  inline-block xl:inline-flex  justify-between items-center  "
+            label="Horas X Mes X"
+            inputCss="xl:inline-block xl:w-1/3  mt-0"
+            name="vacation_hours_monthly"
+            onChange={props.onChange}
+            value={props.formData.vacation_hours_monthly}
+            placeholder=""
+            type="number"
+          />
+
+          <CustomInputs
+            class="xl:w-2/3 w-1/2 mx-auto   inline-block xl:inline-flex  justify-between items-center   "
+            label="Las enfermedades se acumularan razon de"
+            placeholder=""
+            inputCss="xl:inline-block xl:w-1/3  mt-0"
+            onChange={props.onChange}
+            value={props.formData.sicks_hours}
+            name="sicks_hours"
+            type="number"
+          />
+          <CustomInputs
+            class="xl:w-1/3 w-1/2 mx-auto   ps-2 inline-block xl:inline-flex  justify-between items-center  "
+            label="Horas X Mes X"
+            value={props.formData.sicks_hours_monthly}
+            name="sicks_hours_monthly"
+            inputCss="xl:inline-block xl:w-1/3  mt-0"
+            onChange={props.onChange}
+            placeholder=""
+            type="number"
+          />
+        </div>
       </div>
     </>
   );
