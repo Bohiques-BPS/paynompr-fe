@@ -68,8 +68,8 @@ const Cargar = () => {
       meal_amount = employerData.mealtime;
     } else {
       salary = formData.salary;
-      accountant_id: formData.accountant_id,
-        (regular_amount = formData.regular_amount);
+      accountant_id = formData.accountant_id;
+      regular_amount = formData.regular_amount;
       over_amount = formData.over_amount;
       meal_amount = formData.meal_amount;
     }
