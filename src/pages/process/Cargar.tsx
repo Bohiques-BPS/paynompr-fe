@@ -449,6 +449,8 @@ const Cargar = () => {
 
   const handleCreate = () => {
     if (formData.id == 0) {
+      if (selectedPeriod == 0)
+        return showError("Por favor seleccione el Periodo");
       setLoanding(true);
       setTime(formData, Number(params.id_employer))
         .then(() => {
@@ -464,6 +466,8 @@ const Cargar = () => {
           showError(error.response.data.detail);
         });
     } else {
+      if (selectedPeriod == 0)
+        return showError("Por favor seleccione el Periodo");
       setLoanding(true);
       editTime(formData, Number(formData.id))
         .then(() => {

@@ -483,30 +483,10 @@ export const PERIOD_PAYROLL = [
     id: 2,
     name: "BISEMANAL / BIWEEKLY",
   },
-  ,
-  {
-    id: 3,
-    name: "QUINCENAL / SEMIMONTHLY",
-  },
-  ,
+
   {
     id: 4,
     name: "MENSUAL / MONTHLY",
-  },
-  ,
-  {
-    id: 5,
-    name: "TRIMESTRAL / QUARTERLY",
-  },
-  ,
-  {
-    id: 6,
-    name: "ANUAL / ANNUAL",
-  },
-  ,
-  {
-    id: 7,
-    name: "DIARIO / DAILY",
   },
 ];
 
