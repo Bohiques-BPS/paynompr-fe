@@ -448,15 +448,23 @@ const Cargar = () => {
   };
 
   const handleCreate = () => {
+    const { vacation_time
+      
+     } = formData;
+
     if (formData.id == 0) {
       if (selectedPeriod == 0)
         return showError("Por favor seleccione el Periodo");
+
+      if (vacation_time != "00:00")
+        if (!window.confirm(`¿Confirma que desea registrar ${vacation_time} horas de vacaciones para este empleado?`))  
+          return;
+           
       setLoanding(true);
       setTime(formData, Number(params.id_employer))
         .then(() => {
           // Data retrieval and processing
           setLoanding(false);
-
           resetData(idEmployer);
           handleModal();
           showSuccess("Creado exitosamente.");
@@ -468,6 +476,13 @@ const Cargar = () => {
     } else {
       if (selectedPeriod == 0)
         return showError("Por favor seleccione el Periodo");
+
+        if (vacation_time != "00:00")
+          if (!window.confirm(`¿Confirma que desea registrar ${vacation_time} horas de vacaciones para este empleado?`))  
+            return;
+  
+
+
       setLoanding(true);
       editTime(formData, Number(formData.id))
         .then(() => {
