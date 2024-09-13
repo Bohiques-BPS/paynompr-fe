@@ -472,7 +472,7 @@ const Cargar = () => {
       editTime(formData, Number(formData.id))
         .then(() => {
           // Data retrieval and processing
-
+          recalculate();
           setLoanding(false);
           resetData(idEmployer);
           handleModal();
@@ -576,6 +576,7 @@ const Cargar = () => {
   useEffect(() => {
     if (flag > 0) {
       setPeriodChange();
+      recalculate();
     }
   }, [flag]);
   return (
