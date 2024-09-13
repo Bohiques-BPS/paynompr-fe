@@ -470,6 +470,10 @@ const Cargar = () => {
           showSuccess("Creado exitosamente.");
         })
         .catch((error) => {
+          recalculate();
+          setLoanding(false);
+          resetData(idEmployer);
+          handleModal();          
           // If the query fails, an error will be displayed on the terminal.
           showError(error.response.data.detail);
         });
