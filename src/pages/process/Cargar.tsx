@@ -10,6 +10,7 @@ import {
   getCompanyWithEmployer,
   getCounterFoil,
   setTime,
+
 } from "../../utils/requestOptions";
 import { useParams } from "react-router-dom";
 import { COMPANY_DATA } from "../../models/company";
@@ -21,6 +22,9 @@ import {
   getNumber,
   showError,
   showSuccess,
+  subtractHoursMinutes,
+  addHoursMinutes,
+  majorHour,
 } from "../../utils/functions";
 import { TAXES, TAXES_DATA } from "../../models/taxes";
 
@@ -43,6 +47,9 @@ const Cargar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [idEmployer, setIdEmployer] = useState(0);
   const [employers, setEmployers] = useState([]);
+  const [message, setMessage] = useState("");
+  const [vacationTimeInit, setVacationTimeInit] = useState("");
+  const [sickTimeInit, setSickTimeInit] = useState("");
 
   const [isOpen2, setIsOpen2] = useState(false);
   const handleModal = () => {
@@ -51,6 +58,8 @@ const Cargar = () => {
   const handleModal2 = () => {
     setIsOpen2(!isOpen2);
   };
+
+
 
   const recalculate = () => {
     let regular_amount = 0;
@@ -167,7 +176,61 @@ const Cargar = () => {
 
   useEffect(() => {
     recalculate();
+    setVacationTimeInit(formData.vacation_time);
+    setSickTimeInit(formData.sick_time);
   }, [formData.id]);
+
+  useEffect(() => {
+      const messageArray = []
+
+      if (isOpen) {
+        messageArray.push(`¿Esta seguro que desea cargar esta data por un monto de ${getTotal().toFixed(
+          2
+        )}?`);
+
+        if(vacationTimeInit != formData.vacation_time){
+          if(vacationTimeInit == "00:00"){
+            messageArray.push(`, Esta por pagar ${formData.vacation_time} de vacaciones el cual afecta al empleado que actualmente cuenta con ${employerData.vacation_time} horas de vacaciones
+              actualizandolo a ${subtractHoursMinutes(employerData.vacation_time, formData.vacation_time)}`);
+          }else{
+            const newTime = subtractHoursMinutes(vacationTimeInit,formData.vacation_time);
+            if(majorHour(vacationTimeInit,formData.vacation_time) == vacationTimeInit){
+              messageArray.push(`, Esta por disminuir el pago de vacaciones de ${vacationTimeInit} a ${formData.vacation_time}, lo cual afecta al empleado que actualmente cuenta con ${employerData.vacation_time} horas de vacaciones
+                actualizandolo a ${addHoursMinutes(employerData.vacation_time, newTime)}`);
+              }else{
+                messageArray.push(`, Esta por aumentar el pago de vacaciones de ${vacationTimeInit} a ${formData.vacation_time}, lo cual afecta al empleado que actualmente cuenta con ${employerData.vacation_time} horas de vacaciones
+                  actualizandolo a ${subtractHoursMinutes(employerData.vacation_time, newTime)}`);
+                }
+          }          
+        }
+
+
+        if(sickTimeInit != formData.sick_time){
+          if(sickTimeInit == "00:00"){
+            messageArray.push(`, Esta por pagar ${formData.sick_time} horas de enfermedad el cual afecta al empleado que actualmente cuenta con ${employerData.vacation_time} horas de enfermedad
+              actualizandolo a ${subtractHoursMinutes(employerData.sick_time, formData.sick_time)}`);
+          }else{
+            const newTime = subtractHoursMinutes(sickTimeInit,formData.sick_time);
+            if(majorHour(sickTimeInit,formData.sick_time) == sickTimeInit){
+              messageArray.push(`, Esta por disminuir el pago de enfermedad de ${sickTimeInit} a ${formData.sick_time}, lo cual afecta al empleado que actualmente cuenta con ${employerData.sick_time} horas de enfermedad
+                actualizandolo a ${addHoursMinutes(employerData.sick_time, newTime)}`);
+              }else{
+                messageArray.push(`, Esta por aumentar el pago de enfermedad de ${sickTimeInit} a ${formData.sick_time}, lo cual afecta al empleado que actualmente cuenta con ${employerData.sick_time} horas de  enfermedad
+                  actualizandolo a ${subtractHoursMinutes(employerData.sick_time, newTime)}`);
+                }
+          }          
+        }        
+                
+        
+        //employerData
+        const messageOk = messageArray.join('\n')
+        setMessage(messageOk);
+      }
+  }, [isOpen]);
+
+
+
+
 
   const getTotal = () => {
     var total = 0;
@@ -448,17 +511,12 @@ const Cargar = () => {
   };
 
   const handleCreate = () => {
-    const { vacation_time
-      
-     } = formData;
 
     if (formData.id == 0) {
       if (selectedPeriod == 0)
         return showError("Por favor seleccione el Periodo");
 
-      if (vacation_time != "00:00")
-        if (!window.confirm(`¿Confirma que desea registrar ${vacation_time} horas de vacaciones para este empleado?`))  
-          return;
+
            
       setLoanding(true);
       setTime(formData, Number(params.id_employer))
@@ -480,12 +538,6 @@ const Cargar = () => {
     } else {
       if (selectedPeriod == 0)
         return showError("Por favor seleccione el Periodo");
-
-        if (vacation_time != "00:00")
-          if (!window.confirm(`¿Confirma que desea registrar ${vacation_time} horas de vacaciones para este empleado?`))  
-            return;
-  
-
 
       setLoanding(true);
       editTime(formData, Number(formData.id))
@@ -1420,9 +1472,7 @@ const Cargar = () => {
         action={handleCreate}
         setIsOpen={handleModal}
         title={`Cargar Hora`}
-        description={`¿Esta seguro que desea cargar esta data por un monto de ${getTotal().toFixed(
-          2
-        )}?`}
+        description={message}
       />
     </>
   );

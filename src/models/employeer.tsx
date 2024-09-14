@@ -1,4 +1,3 @@
-import { FLOAT } from "html2canvas/dist/types/css/property-descriptors/float";
 
 export const EMPLOYER_DATA = {
   name: "Andres",
