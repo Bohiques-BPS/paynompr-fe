@@ -500,3 +500,14 @@ export const STATUS_CIVIL = [
     name: "Casado",
   },
 ];
+
+export const FILES = [
+  {
+    id: 1,
+    name: "W2P",
+  },
+  {
+    id: 2,
+    name: "940",
+  },
+];
