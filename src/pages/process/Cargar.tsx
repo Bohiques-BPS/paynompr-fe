@@ -440,18 +440,28 @@ const Cargar = () => {
     item.amount = parseFloat(e.currentTarget.value);
 
     const updatedItem = { ...item };
+    console.log("updatedItem", updatedItem);
 
     // Crea un nuevo array con el item actualizado
-    const updatedTaxesData = taxesData.map((el) =>
-      el === item ? updatedItem : el
-    );
 
+    let updatedTaxesData: any;
+    if (formData.id == 0) {
+      updatedTaxesData = taxesData.map((el) =>
+        el === item ? updatedItem : el
+      );
+    } else {
+      updatedTaxesData = formData.payment.map((el) =>
+        el === item ? updatedItem : el
+      );
+    }
+
+    console.log(updatedTaxesData);
     // Actualiza el estado con el nuevo array
     setTaxesData(updatedTaxesData);
 
     setFormData({
       ...formData,
-      ["payment"]: taxesData,
+      ["payment"]: updatedTaxesData,
     });
   };
 
