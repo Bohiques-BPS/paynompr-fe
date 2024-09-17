@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import CustomInputs from "../../components/forms/CustomInputs";
 import CustomSelect from "../../components/forms/CustomSelect";
-import { EMPLOYEER } from "../../models/employeer";
+
 import {
   COUNTRY,
   GENDER,
@@ -14,8 +14,8 @@ import { NumericFormat, PatternFormat } from "react-number-format";
 import CustomCheckBox from "./CustomCheckBox";
 
 type Props = {
-  formData: EMPLOYEER;
-  setFormData: Dispatch<SetStateAction<EMPLOYEER>>;
+  formData: any;
+  setFormData: Dispatch<SetStateAction<any>>;
   onChange: (e: React.ChangeEvent<any>) => void;
 };
 
@@ -408,8 +408,7 @@ const EmployeerForm = (props: Props) => {
           type="checkbox"
         />
 
-
-      <div className="xl:w-full block  w-full">
+        <div className="xl:w-full block  w-full">
           <CustomInputs
             class="xl:w-2/3 w-1/2 mx-auto pe-1  inline-block xl:inline-flex  justify-between items-center   "
             label="Las vacaciones se acumularan razon de"

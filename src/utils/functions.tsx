@@ -45,12 +45,11 @@ export function convertTimeToHoursWithDecimals(timeString: string): number {
   return decimalHours;
 }
 
-
-export function subtractHoursMinutes(hora1: string, hora2:string) {
+export function subtractHoursMinutes(hora1: string, hora2: string) {
   // Convertir las horas y minutos a números
-  const [horas1, minutos1] = hora1.split(':').map(Number);
-  const [horas2, minutos2] = hora2.split(':').map(Number);
-  let hora;
+  const [horas1, minutos1] = hora1.split(":").map(Number);
+  const [horas2, minutos2] = hora2.split(":").map(Number);
+  /*   let hora; */
 
   // Restar los minutos
   let minutosRestantes = minutos1 - minutos2;
@@ -58,21 +57,22 @@ export function subtractHoursMinutes(hora1: string, hora2:string) {
   // Si los minutos son negativos, pedir prestado una hora
   if (minutosRestantes < 0) {
     minutosRestantes += 60;
-    hora = horas1 - 1; // Declaramos una nueva variable local 'horas1' y le asignamos el valor decrementado
+    /*  hora = horas1 - 1; // Declaramos una nueva variable local 'horas1' y le asignamos el valor decrementado */
   }
 
   // Restar las horas
   const horasRestantes = horas1 - horas2;
 
   // Formatear el resultado
-  return `${horasRestantes.toString().padStart(2, '0')}:${minutosRestantes.toString().padStart(2, '0')}`;
+  return `${horasRestantes.toString().padStart(2, "0")}:${minutosRestantes
+    .toString()
+    .padStart(2, "0")}`;
 }
 
 export function addHoursMinutes(hora1: string, hora2: string): string {
   // Convertir las horas y minutos a números
-  const [horas1, minutos1] = hora1.split(':').map(Number);
-  const [horas2, minutos2] = hora2.split(':').map(Number);
-  let hora;
+  const [horas1, minutos1] = hora1.split(":").map(Number);
+  const [horas2, minutos2] = hora2.split(":").map(Number);
 
   // Sumar los minutos
   let minutosTotales = minutos1 + minutos2;
@@ -80,20 +80,22 @@ export function addHoursMinutes(hora1: string, hora2: string): string {
   // Si los minutos superan 60, llevar una hora
   if (minutosTotales >= 60) {
     minutosTotales -= 60;
-    hora = horas1 + 1; 
+    /*   hora = horas1 + 1; */
   }
 
   // Sumar las horas
   const horasTotales = horas1 + horas2;
 
   // Formatear el resultado
-  return `${horasTotales.toString().padStart(2, '0')}:${minutosTotales.toString().padStart(2, '0')}`;
+  return `${horasTotales.toString().padStart(2, "0")}:${minutosTotales
+    .toString()
+    .padStart(2, "0")}`;
 }
 
 export function majorHour(hora1: string, hora2: string): string {
   // Convertir las horas y minutos a números
-  const [horas1, minutos1] = hora1.split(':').map(Number);
-  const [horas2, minutos2] = hora2.split(':').map(Number);
+  const [horas1, minutos1] = hora1.split(":").map(Number);
+  const [horas2, minutos2] = hora2.split(":").map(Number);
 
   // Convertir ambas horas a minutos para una comparación más sencilla
   const totalMinutos1 = horas1 * 60 + minutos1;
