@@ -11,6 +11,7 @@ export const COMPANY_DATA = {
   zipcode_postal_address: "28001",
   number_patronal: "2323",
   coml: null,
+  special_contribution: "1",
   country_postal_address: "España",
   state_postal_addess: "Madrid",
   physical_address: "Calle Real, 456",
@@ -46,6 +47,7 @@ export interface COMPANY {
   sicks_hours: number;
   sicks_date: number;
   choferil_number: string;
+  special_contribution: string;
   number_patronal: string;
   coml: any;
   contact: string;

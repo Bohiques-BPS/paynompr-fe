@@ -3,6 +3,7 @@ import {
   get940Foil,
   get941Foil,
   getCompanies,
+  getHaciendaFoil,
   getW2PFoil,
 } from "../utils/requestOptions";
 import CustomSelect from "../components/forms/CustomSelect";
@@ -13,12 +14,13 @@ import {
   faClock,
   faMoneyCheckDollar,
 } from "@fortawesome/free-solid-svg-icons";
-import { FILES } from "../utils/consts";
+import { FILES, TRIMESTRE } from "../utils/consts";
 import { showError, showSuccess } from "../utils/functions";
 
 const Process = () => {
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(0);
+  const [selectedTrimestre, setSelectedTrimestre] = useState(0);
 
   const [data, setData] = useState([]);
   const [companyId, setCompanyId] = useState(0);
@@ -48,6 +50,12 @@ const Process = () => {
     const value = e.currentTarget.value;
 
     setSelectedFile(Number(value));
+  };
+
+  const handleTrimestre = (e: React.FormEvent<HTMLSelectElement>) => {
+    const value = e.currentTarget.value;
+
+    setSelectedTrimestre(Number(value));
   };
 
   const navigateToLoad = () => {
@@ -85,7 +93,20 @@ const Process = () => {
     }
     if (selectedFile == 3) {
       var companies = filterById(data, companyId);
-      get941Foil(companyId, companies)
+      get941Foil(companyId, companies, selectedTrimestre)
+        .then(() => {
+          // Data retrieval and processing
+
+          showSuccess("Creado exitosamente.");
+        })
+        .catch((error) => {
+          // If the query fails, an error will be displayed on the terminal.
+          showError(error.response.data.detail);
+        });
+    }
+    if (selectedFile == 4) {
+      var companies = filterById(data, companyId);
+      getHaciendaFoil(companyId, companies, selectedTrimestre)
         .then(() => {
           // Data retrieval and processing
 
@@ -149,6 +170,20 @@ const Process = () => {
               placeholder="Seleccione un archivo"
               type="text"
             />
+            {selectedFile == 3 || selectedFile == 4 ? (
+              <>
+                {" "}
+                <CustomSelect
+                  class="w-full mx-auto inline-block"
+                  label="Seleccione el trimestre"
+                  disabled={false}
+                  onChange={handleTrimestre}
+                  options={TRIMESTRE}
+                  placeholder="Seleccione el trimestre"
+                  type="text"
+                />{" "}
+              </>
+            ) : null}
           </div>
         </div>
       </div>

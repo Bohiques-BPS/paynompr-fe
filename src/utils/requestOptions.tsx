@@ -297,9 +297,30 @@ export function get940Foil(company_id: number, company: any) {
   });
 }
 
-export function get941Foil(company_id: number, company: any) {
+export function get941Foil(company_id: number, company: any, trimestre: any) {
   return Axios({
-    url: BASE_URL + `/reports/form_941_pdf/${company_id}/2024`,
+    url: BASE_URL + `/reports/form_941_pdf/${company_id}/2024/${trimestre}`,
+    method: "GET",
+    responseType: "blob", // importante
+  }).then((response) => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "Company-" + company.name + ".pdf");
+    document.body.appendChild(link);
+    link.click();
+  });
+}
+
+export function getHaciendaFoil(
+  company_id: number,
+  company: any,
+  trimestre: any
+) {
+  return Axios({
+    url:
+      BASE_URL +
+      `/reports/form_withheld_499_pdf/${company_id}/2024/${trimestre}`,
     method: "GET",
     responseType: "blob", // importante
   }).then((response) => {
