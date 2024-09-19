@@ -10,7 +10,45 @@ export const data_company = [
     contact: "Jose Ortiz",
   },
 ];
+export const FILES = [
+  {
+    id: 1,
+    name: "W2P",
+  },
+  {
+    id: 2,
+    name: "940",
+  },
+  {
+    id: 3,
+    name: "941",
+  },
 
+  {
+    id: 4,
+    name: "Hacienda",
+  },
+];
+
+export const TRIMESTRE = [
+  {
+    id: 1,
+    name: "Enero - Marzo",
+  },
+  {
+    id: 2,
+    name: "Abril - Junio",
+  },
+  {
+    id: 3,
+    name: "Julio - Septiembre",
+  },
+  ,
+  {
+    id: 4,
+    name: "Octubre - Diciembre",
+  },
+];
 export const JURISDICTION = [
   {
     id: 1,

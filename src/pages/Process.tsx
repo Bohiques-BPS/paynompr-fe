@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { getCompanies } from "../utils/requestOptions";
+import {
+  get940Foil,
+  get941Foil,
+  getCompanies,
+  getHaciendaFoil,
+  getW2PFoil,
+} from "../utils/requestOptions";
 import CustomSelect from "../components/forms/CustomSelect";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,9 +14,13 @@ import {
   faClock,
   faMoneyCheckDollar,
 } from "@fortawesome/free-solid-svg-icons";
+import { FILES, TRIMESTRE } from "../utils/consts";
+import { showError, showSuccess } from "../utils/functions";
 
 const Process = () => {
   const navigate = useNavigate();
+  const [selectedFile, setSelectedFile] = useState(0);
+  const [selectedTrimestre, setSelectedTrimestre] = useState(0);
 
   const [data, setData] = useState([]);
   const [companyId, setCompanyId] = useState(0);
@@ -36,10 +46,84 @@ const Process = () => {
     setEmployerId(Number(value));
   };
 
+  const handleFileChange = (e: React.FormEvent<HTMLSelectElement>) => {
+    const value = e.currentTarget.value;
+
+    setSelectedFile(Number(value));
+  };
+
+  const handleTrimestre = (e: React.FormEvent<HTMLSelectElement>) => {
+    const value = e.currentTarget.value;
+
+    setSelectedTrimestre(Number(value));
+  };
+
   const navigateToLoad = () => {
     if (employerId == 0) return;
     navigate(companyId + "/" + employerId + "/cargar");
   };
+
+  const downloadFile = () => {
+    if (selectedFile == 0) return;
+    if (selectedFile == 1) {
+      var employer = filterById(employers, employerId);
+      getW2PFoil(employerId, employer)
+        .then(() => {
+          // Data retrieval and processing
+
+          showSuccess("Creado exitosamente.");
+        })
+        .catch((error) => {
+          // If the query fails, an error will be displayed on the terminal.
+          showError(error.response.data.detail);
+        });
+    }
+    if (selectedFile == 2) {
+      var companies = filterById(data, companyId);
+      get940Foil(companyId, companies)
+        .then(() => {
+          // Data retrieval and processing
+
+          showSuccess("Creado exitosamente.");
+        })
+        .catch((error) => {
+          // If the query fails, an error will be displayed on the terminal.
+          showError(error.response.data.detail);
+        });
+    }
+    if (selectedFile == 3) {
+      var companies = filterById(data, companyId);
+      get941Foil(companyId, companies, selectedTrimestre)
+        .then(() => {
+          // Data retrieval and processing
+
+          showSuccess("Creado exitosamente.");
+        })
+        .catch((error) => {
+          // If the query fails, an error will be displayed on the terminal.
+          showError(error.response.data.detail);
+        });
+    }
+    if (selectedFile == 4) {
+      var companies = filterById(data, companyId);
+      getHaciendaFoil(companyId, companies, selectedTrimestre)
+        .then(() => {
+          // Data retrieval and processing
+
+          showSuccess("Creado exitosamente.");
+        })
+        .catch((error) => {
+          // If the query fails, an error will be displayed on the terminal.
+          showError(error.response.data.detail);
+        });
+    }
+  };
+
+  function filterById(jsonObject: any[], id: any) {
+    return jsonObject.filter(function (jsonObject) {
+      return jsonObject["id"] == id;
+    })[0];
+  }
 
   useEffect(() => {
     getCompanies()
@@ -77,6 +161,29 @@ const Process = () => {
               placeholder="Nombre de la compañía"
               type="text"
             />
+            <CustomSelect
+              class="w-full mx-auto  inline-block "
+              label="Seleccione tipo de archivo"
+              disabled={false}
+              onChange={handleFileChange}
+              options={FILES}
+              placeholder="Seleccione un archivo"
+              type="text"
+            />
+            {selectedFile == 3 || selectedFile == 4 ? (
+              <>
+                {" "}
+                <CustomSelect
+                  class="w-full mx-auto inline-block"
+                  label="Seleccione el trimestre"
+                  disabled={false}
+                  onChange={handleTrimestre}
+                  options={TRIMESTRE}
+                  placeholder="Seleccione el trimestre"
+                  type="text"
+                />{" "}
+              </>
+            ) : null}
           </div>
         </div>
       </div>
@@ -92,13 +199,18 @@ const Process = () => {
             Cargar tiempo
           </h3>
         </button>
-        <button className="xl:w-1/3 w-full shadow-xl  bg-white rounded-lg shadow p-4 py-6	text-center	 opacity-50 ">
+        <button
+          onClick={downloadFile}
+          className={`xl:w-1/3 w-full shadow-xl  bg-white rounded-lg shadow p-4 py-6	text-center	 ${
+            selectedFile != 0 ? "" : "opacity-50"
+          }`}
+        >
           <FontAwesomeIcon
             icon={faCalendarCheck}
             className="text-6xl text-[#333160]"
           />
           <h3 className="text-[#333160] text-xl font-bold mt-4">
-            Generar nómina
+            Descargar Archivo
           </h3>
         </button>
         <div className="xl:w-1/3 w-full shadow-xl  bg-white rounded-lg shadow p-4 py-6	text-center	opacity-50  ">

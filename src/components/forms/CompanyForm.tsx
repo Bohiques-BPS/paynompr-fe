@@ -257,7 +257,7 @@ const CompanyForm = (props: Props) => {
               type="text"
             />
             <CustomInputs
-              class="w-1/3 mx-auto  pe-1  inline-block "
+              class="w-1/4 mx-auto  pe-1  inline-block "
               name="driver_code"
               onChange={props.onChange}
               value={props.formData.driver_code}
@@ -270,18 +270,27 @@ const CompanyForm = (props: Props) => {
               name="driver_rate"
               onChange={props.onChange}
               value={props.formData.driver_rate}
-              class="w-1/3 mx-auto ps-1  inline-block "
+              class="w-1/4 mx-auto ps-1  inline-block "
               label="Rate Choferil"
               placeholder="00820"
               type="text"
             />
 
             <CustomInputs
-              class="w-1/3 mx-auto ps-1  inline-block "
+              class="w-1/4 mx-auto ps-1  inline-block "
               name="employed_contribution"
               onChange={props.onChange}
               value={props.formData.employed_contribution}
               label="Aportación Empleado"
+              placeholder=""
+              type="text"
+            />
+            <CustomInputs
+              class="w-1/4 mx-auto ps-1  inline-block "
+              name="special_contribution"
+              onChange={props.onChange}
+              value={props.formData.special_contribution}
+              label="Contribución Especial"
               placeholder=""
               type="text"
             />

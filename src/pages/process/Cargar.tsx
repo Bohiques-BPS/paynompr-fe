@@ -246,56 +246,103 @@ useEffect(() => {
   }, [formData.id]);
 
   useEffect(() => {
-      const messageArray = []
+    const messageArray = [];
 
-      if (isOpen) {
-        messageArray.push(`¿Esta seguro que desea cargar esta data por un monto de ${getTotal().toFixed(
+    if (isOpen) {
+      messageArray.push(
+        `¿Esta seguro que desea cargar esta data por un monto de ${getTotal().toFixed(
           2
-        )}?`);
+        )}?`
+      );
 
-        if(vacationTimeInit != formData.vacation_time){
-          if(vacationTimeInit == "00:00"){
-            messageArray.push(`, Esta por pagar ${formData.vacation_time} de vacaciones el cual afecta al empleado que actualmente cuenta con ${employerData.vacation_time} horas de vacaciones
-              actualizandolo a ${subtractHoursMinutes(employerData.vacation_time, formData.vacation_time)}`);
-          }else{
-            const newTime = subtractHoursMinutes(vacationTimeInit,formData.vacation_time);
-            if(majorHour(vacationTimeInit,formData.vacation_time) == vacationTimeInit){
-              messageArray.push(`, Esta por disminuir el pago de vacaciones de ${vacationTimeInit} a ${formData.vacation_time}, lo cual afecta al empleado que actualmente cuenta con ${employerData.vacation_time} horas de vacaciones
-                actualizandolo a ${addHoursMinutes(employerData.vacation_time, newTime)}`);
-              }else{
-                messageArray.push(`, Esta por aumentar el pago de vacaciones de ${vacationTimeInit} a ${formData.vacation_time}, lo cual afecta al empleado que actualmente cuenta con ${employerData.vacation_time} horas de vacaciones
-                  actualizandolo a ${subtractHoursMinutes(employerData.vacation_time, newTime)}`);
-                }
-          }          
+      if (vacationTimeInit != formData.vacation_time) {
+        if (vacationTimeInit == "00:00") {
+          messageArray.push(`, Esta por pagar ${
+            formData.vacation_time
+          } de vacaciones el cual afecta al empleado que actualmente cuenta con ${
+            employerData.vacation_time
+          } horas de vacaciones
+              actualizandolo a ${subtractHoursMinutes(
+                employerData.vacation_time,
+                formData.vacation_time
+              )}`);
+        } else {
+          const newTime = subtractHoursMinutes(
+            vacationTimeInit,
+            formData.vacation_time
+          );
+          if (
+            majorHour(vacationTimeInit, formData.vacation_time) ==
+            vacationTimeInit
+          ) {
+            messageArray.push(`, Esta por disminuir el pago de vacaciones de ${vacationTimeInit} a ${
+              formData.vacation_time
+            }, lo cual afecta al empleado que actualmente cuenta con ${
+              employerData.vacation_time
+            } horas de vacaciones
+                actualizandolo a ${addHoursMinutes(
+                  employerData.vacation_time,
+                  newTime
+                )}`);
+          } else {
+            messageArray.push(`, Esta por aumentar el pago de vacaciones de ${vacationTimeInit} a ${
+              formData.vacation_time
+            }, lo cual afecta al empleado que actualmente cuenta con ${
+              employerData.vacation_time
+            } horas de vacaciones
+                  actualizandolo a ${subtractHoursMinutes(
+                    employerData.vacation_time,
+                    newTime
+                  )}`);
+          }
         }
-
-
-        if(sickTimeInit != formData.sick_time){
-          if(sickTimeInit == "00:00"){
-            messageArray.push(`, Esta por pagar ${formData.sick_time} horas de enfermedad el cual afecta al empleado que actualmente cuenta con ${employerData.vacation_time} horas de enfermedad
-              actualizandolo a ${subtractHoursMinutes(employerData.sick_time, formData.sick_time)}`);
-          }else{
-            const newTime = subtractHoursMinutes(sickTimeInit,formData.sick_time);
-            if(majorHour(sickTimeInit,formData.sick_time) == sickTimeInit){
-              messageArray.push(`, Esta por disminuir el pago de enfermedad de ${sickTimeInit} a ${formData.sick_time}, lo cual afecta al empleado que actualmente cuenta con ${employerData.sick_time} horas de enfermedad
-                actualizandolo a ${addHoursMinutes(employerData.sick_time, newTime)}`);
-              }else{
-                messageArray.push(`, Esta por aumentar el pago de enfermedad de ${sickTimeInit} a ${formData.sick_time}, lo cual afecta al empleado que actualmente cuenta con ${employerData.sick_time} horas de  enfermedad
-                  actualizandolo a ${subtractHoursMinutes(employerData.sick_time, newTime)}`);
-                }
-          }          
-        }        
-                
-        
-        //employerData
-        const messageOk = messageArray.join('\n')
-        setMessage(messageOk);
       }
+
+      if (sickTimeInit != formData.sick_time) {
+        if (sickTimeInit == "00:00") {
+          messageArray.push(`, Esta por pagar ${
+            formData.sick_time
+          } horas de enfermedad el cual afecta al empleado que actualmente cuenta con ${
+            employerData.vacation_time
+          } horas de enfermedad
+              actualizandolo a ${subtractHoursMinutes(
+                employerData.sick_time,
+                formData.sick_time
+              )}`);
+        } else {
+          const newTime = subtractHoursMinutes(
+            sickTimeInit,
+            formData.sick_time
+          );
+          if (majorHour(sickTimeInit, formData.sick_time) == sickTimeInit) {
+            messageArray.push(`, Esta por disminuir el pago de enfermedad de ${sickTimeInit} a ${
+              formData.sick_time
+            }, lo cual afecta al empleado que actualmente cuenta con ${
+              employerData.sick_time
+            } horas de enfermedad
+                actualizandolo a ${addHoursMinutes(
+                  employerData.sick_time,
+                  newTime
+                )}`);
+          } else {
+            messageArray.push(`, Esta por aumentar el pago de enfermedad de ${sickTimeInit} a ${
+              formData.sick_time
+            }, lo cual afecta al empleado que actualmente cuenta con ${
+              employerData.sick_time
+            } horas de  enfermedad
+                  actualizandolo a ${subtractHoursMinutes(
+                    employerData.sick_time,
+                    newTime
+                  )}`);
+          }
+        }
+      }
+
+      //employerData
+      const messageOk = messageArray.join("\n");
+      setMessage(messageOk);
+    }
   }, [isOpen]);
-
-
-
-
 
   const getTotal = () => {
     var total = 0;
@@ -462,18 +509,28 @@ useEffect(() => {
     item.amount = parseFloat(e.currentTarget.value);
 
     const updatedItem = { ...item };
+    console.log("updatedItem", updatedItem);
 
     // Crea un nuevo array con el item actualizado
-    const updatedTaxesData = taxesData.map((el) =>
-      el === item ? updatedItem : el
-    );
 
+    let updatedTaxesData: any;
+    if (formData.id == 0) {
+      updatedTaxesData = taxesData.map((el) =>
+        el === item ? updatedItem : el
+      );
+    } else {
+      updatedTaxesData = formData.payment.map((el) =>
+        el === item ? updatedItem : el
+      );
+    }
+
+    console.log(updatedTaxesData);
     // Actualiza el estado con el nuevo array
     setTaxesData(updatedTaxesData);
 
     setFormData({
       ...formData,
-      ["payment"]: taxesData,
+      ["payment"]: updatedTaxesData,
     });
   };
 
@@ -577,13 +634,10 @@ useEffect(() => {
   };
 
   const handleCreate = () => {
-
     if (formData.id == 0) {
       if (selectedPeriod == 0)
         return showError("Por favor seleccione el Periodo");
 
-
-           
       setLoanding(true);
       setTime(formData, Number(params.id_employer))
         .then(() => {
@@ -597,7 +651,7 @@ useEffect(() => {
           recalculate();
           setLoanding(false);
           resetData(idEmployer);
-          handleModal();          
+          handleModal();
           // If the query fails, an error will be displayed on the terminal.
           showError(error.response.data.detail);
         });
@@ -1381,7 +1435,7 @@ useEffect(() => {
               <label>
                 <span>
                   {" "}
-                  AFLAC
+                  Aportaciones a planes Calificados
                   <span>( - )</span>
                 </span>
 

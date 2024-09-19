@@ -291,3 +291,72 @@ export function getCounterFoil(
     link.click();
   });
 }
+
+export function getW2PFoil(employer_id: number, employer: any) {
+  return Axios({
+    url: BASE_URL + `/reports/form_w2pr_pdf/${employer_id}/2024`,
+    method: "GET",
+    responseType: "blob", // importante
+  }).then((response) => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute(
+      "download",
+      "Empleado-" + employer.first_name + "-" + employer.last_name + ".pdf"
+    );
+    document.body.appendChild(link);
+    link.click();
+  });
+}
+
+export function get940Foil(company_id: number, company: any) {
+  return Axios({
+    url: BASE_URL + `/reports/form_940_pdf/${company_id}/2024`,
+    method: "GET",
+    responseType: "blob", // importante
+  }).then((response) => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "Company-" + company.name + ".pdf");
+    document.body.appendChild(link);
+    link.click();
+  });
+}
+
+export function get941Foil(company_id: number, company: any, trimestre: any) {
+  return Axios({
+    url: BASE_URL + `/reports/form_941_pdf/${company_id}/2024/${trimestre}`,
+    method: "GET",
+    responseType: "blob", // importante
+  }).then((response) => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "Company-" + company.name + ".pdf");
+    document.body.appendChild(link);
+    link.click();
+  });
+}
+
+export function getHaciendaFoil(
+  company_id: number,
+  company: any,
+  trimestre: any
+) {
+  return Axios({
+    url:
+      BASE_URL +
+      `/reports/form_withheld_499_pdf/${company_id}/2024/${trimestre}`,
+    method: "GET",
+    responseType: "blob", // importante
+  }).then((response) => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "Company-" + company.name + ".pdf");
+    document.body.appendChild(link);
+    link.click();
+  });
+}
