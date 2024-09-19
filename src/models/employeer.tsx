@@ -1,5 +1,6 @@
 
 export const EMPLOYER_DATA = {
+  id: 0,
   name: "Andres",
   last_name: "Fernandez",
   mother_last_name: "Ortiz",
@@ -12,7 +13,6 @@ export const EMPLOYER_DATA = {
   marbete: "23",
   type: 1,
   salary: 0,
-
   date_marb: null,
   clipboard: "23",
   exec_personal: 1,
@@ -30,10 +30,10 @@ export const EMPLOYER_DATA = {
   vacation_time: "00:00",
   vacation_hours: 0,
   vacation_hours_monthly:0,
-  sicks_hours_monthly:0,
+  sicks_hours_monthly:130,
   vacation_date: null,
   sick_time: "00:00",
-  sicks_hours: 0,
+  sicks_hours: 8,
   sicks_date: null,
   number_dependents: 0,
   shared_custody: false,
@@ -50,6 +50,7 @@ export const EMPLOYER_DATA = {
 };
 
 export interface EMPLOYEER {
+  id:number;
   name: string;
   last_name: string;
   mother_last_name: string;
@@ -64,7 +65,6 @@ export interface EMPLOYEER {
   date_marb: any;
   clipboard: string;
   salary: number;
-
   exec_personal: number;
   choferil: string;
   regular_time: number;
@@ -78,11 +78,11 @@ export interface EMPLOYEER {
   overtime: number;
   mealtime: number;
   vacation_time: string;
-  vacation_date: string;
+  vacation_date: any;
   vacation_hours: number;
   sick_time: string;
   sicks_hours: number;
-  sicks_date: string;
+  sicks_date: any;
   vacation_hours_monthly: number;
   sicks_hours_monthly: number,
   number_dependents: number;

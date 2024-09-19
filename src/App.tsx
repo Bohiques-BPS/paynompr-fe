@@ -20,6 +20,12 @@ import EditEmployee from "./pages/employee/EditEmployee";
 import Taxes from "./pages/taxes/taxes";
 import AddTaxes from "./pages/taxes/AddTaxes";
 import EditTaxes from "./pages/taxes/EditTaxes";
+
+import FixedTaxes from "./pages/fixedtaxes/taxes";
+import AddFixedTaxes from "./pages/fixedtaxes/AddTaxes";
+import EditFixedTaxes from "./pages/fixedtaxes/EditTaxes";
+
+
 import OutEmployers from "./pages/outemployers/OutEmployers";
 import AddOutEmployee from "./pages/outemployers/AddOutEmployers";
 import EditOutEmployee from "./pages/outemployers/EditOutEmployers";
@@ -61,6 +67,14 @@ const App = () => {
             <Route
               path="empresas/:id/taxes/:id_taxes/editar"
               element={<EditTaxes />}
+            />
+
+
+          <Route path="fixed-taxes" element={<FixedTaxes />} />
+            <Route path="fixed-taxes/agregar" element={<AddFixedTaxes />} />
+            <Route
+              path="fixed-taxes/:id_taxes/editar"
+              element={<EditFixedTaxes />}
             />
 
             <Route path="empresas/:id/empleados" element={<Empleados />} />

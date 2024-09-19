@@ -58,9 +58,26 @@ export function getOutEmployers(id_company: number) {
 export function getTaxes(id_company: number) {
   return Axios.request(setOptions("taxes/" + id_company, "GET")); // Using a post request, specifying the user
 }
+
 export function getTaxesByID(id_company: number, id_taxes: number) {
   return Axios.request(
     setOptions("taxes/" + id_company + "/" + id_taxes, "GET")
+  ); // Using a post request, specifying the user
+}
+
+export function getFixedTaxes() {
+  return Axios.request(setOptions("fixed-taxes/", "GET")); // Using a post request, specifying the user
+}
+
+export function getFixedTaxesByID(id_taxes: number) {
+  return Axios.request(
+    setOptions("fixed-taxes/" + id_taxes, "GET")
+  ); // Using a post request, specifying the user
+}
+
+export function getSumFixedTaxesByID(employer_id: number) {
+  return Axios.request(
+    setOptions("fixed-taxes/sum_taxes_by_id/" + employer_id, "GET")
   ); // Using a post request, specifying the user
 }
 
@@ -68,9 +85,20 @@ export function setTaxe(data: object, id_company: number) {
   return Axios.request(setOptions("taxes/" + id_company, "POST", data)); // Using a post request, specifying the user
 }
 
+export function setFixedTaxe(data: object) {
+  return Axios.request(setOptions("fixed-taxes/", "POST", data)); // Using a post request, specifying the user
+}
+
+
+
 export function editTaxe(data: object, id_taxes: number) {
   return Axios.request(setOptions("taxes/" + id_taxes, "PUT", data)); // Using a post request, specifying the user
 }
+
+export function editFixedTaxe(data: object, id_taxes: number) {
+  return Axios.request(setOptions("fixed-taxes/" + id_taxes, "PUT", data)); // Using a post request, specifying the user
+}
+
 
 export function disableTaxe(id_taxes: number) {
   return Axios.request(setOptions("taxes/" + id_taxes, "DELETE")); // Using a post request, specifying the user

@@ -9,7 +9,9 @@ import {
   getAccountants,
   getCompanyWithEmployer,
   getCounterFoil,
+  getFixedTaxes,
   setTime,
+  getSumFixedTaxesByID,
 
 } from "../../utils/requestOptions";
 import { useParams } from "react-router-dom";
@@ -27,7 +29,8 @@ import {
   majorHour,
 } from "../../utils/functions";
 import { TAXES, TAXES_DATA } from "../../models/taxes";
-
+import { FIXEDTAXES_DATA } from "../../models/fixedTaxes";
+import { SUM_DATA } from "../../models/sumTaxes";
 import ModalAlert from "../../components/dashboard/ModalAlert";
 
 const Cargar = () => {
@@ -42,6 +45,8 @@ const Cargar = () => {
   const [times, setTimes] = useState([TIME_DATA]);
 
   const [taxesData, setTaxesData] = useState([TAXES_DATA]);
+  const [fixedTaxesData, setFixedTaxesData] = useState([FIXEDTAXES_DATA]);
+
   const [period, setPeriod] = useState(0);
   const [flag, setFlag] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
@@ -50,6 +55,8 @@ const Cargar = () => {
   const [message, setMessage] = useState("");
   const [vacationTimeInit, setVacationTimeInit] = useState("");
   const [sickTimeInit, setSickTimeInit] = useState("");
+ 
+  const [sumTaxes, setSumTaxes] = useState(SUM_DATA);
 
   const [isOpen2, setIsOpen2] = useState(false);
   const handleModal = () => {
@@ -59,6 +66,15 @@ const Cargar = () => {
     setIsOpen2(!isOpen2);
   };
 
+useEffect(() => {
+  getFixedTaxes().then((response) => {
+    setFixedTaxesData(response.data.result);
+  });
+  getSumFixedTaxesByID(employerData.id).then((response) => {
+    setSumTaxes(response.data.result);
+  });
+
+}, []);
 
 
   const recalculate = () => {
@@ -98,18 +114,67 @@ const Cargar = () => {
       meal_amount * convertTimeToHoursWithDecimals(formData.meal_time);
     let aux: any = [];
 
-    let inability = 0;
-    if (employerData.choferil != "SI") inability = regular_pay * (0.3 / 100);
+    let inabilityAmount = 0;
+    let inability = 0;    const taxeInability = fixedTaxesData.find(tax => tax.id === 1);
+    if(taxeInability){ 
+      inabilityAmount =  taxeInability.amount;
 
-    let medicare = regular_pay * (1.45 / 100);
-    let secure_social = (regular_pay - formData.tips) * (6.2 / 100);
+      if (employerData.choferil != "SI") {
+        inability = regular_pay * (inabilityAmount / 100);
+
+        if(sumTaxes.total_inability >= taxeInability.limit)  inability =  0;
+        else if((sumTaxes.total_inability + inability) > taxeInability.limit) 
+          inability =  taxeInability.limit - sumTaxes.total_inability;        
+      }
+    }
+
+    let medicareAmount = 0;
+    let medicare = 0;
+    const taxeMedicare = fixedTaxesData.find(tax => tax.id === 2);
+    if(taxeMedicare){ 
+      medicareAmount =  taxeMedicare.amount;
+      medicare = regular_pay * (medicareAmount / 100);
+      if(sumTaxes.total_medicare >= taxeMedicare.limit)  medicare =  0;
+      else if((sumTaxes.total_medicare + medicare) > taxeMedicare.limit) 
+        medicare =  taxeMedicare.limit - sumTaxes.total_medicare;              
+    }
+
+
+    let secureSocialAmount = 0;
+    let secure_social = 0;
+    const taxeSecureSocial = fixedTaxesData.find(tax => tax.id === 3);
+    
+    if(taxeSecureSocial){ 
+      secureSocialAmount =  taxeSecureSocial.amount;
+      secure_social = (regular_pay - formData.tips) * (secureSocialAmount / 100);
+      if(sumTaxes.total_secure_social >= taxeSecureSocial.limit)  secure_social =  0;
+      else if((sumTaxes.total_secure_social + secure_social) > taxeSecureSocial.limit) 
+        secure_social =  taxeSecureSocial.limit - sumTaxes.total_secure_social;          
+    }
 
     const withholdingValue = employerData.payment_percentage.replace("%", "");
     let tax_pr = regular_pay * (Number(withholdingValue) / 100);
-    let social_tips = formData.tips * (6.2 / 100);
+
+    let socialTipsAmount = 0;
+    let social_tips = 0;
+    sumTaxes.total_social_tips
+    const taxeTipsSocial = fixedTaxesData.find(tax => tax.id === 4);
+    
+    if(taxeTipsSocial) {     
+      socialTipsAmount =  taxeTipsSocial.amount;
+      social_tips = formData.tips * (socialTipsAmount / 100);
+      if(sumTaxes.total_social_tips >= taxeTipsSocial.limit)  social_tips =  0;
+      else if((sumTaxes.total_social_tips + social_tips) > taxeTipsSocial.limit) 
+        social_tips =  taxeTipsSocial.limit - sumTaxes.total_social_tips;                 
+    }
 
     let choferil = 0;
-    if (employerData.choferil === "SI") choferil = 0.5;
+    const taxeChoferil = fixedTaxesData.find(tax => tax.id === 5);
+    if(taxeChoferil && employerData.choferil === "SI") {
+      choferil = taxeChoferil.amount;
+    }
+
+
     if (formData.id == 0)
       taxesData.map((item) => {
         item.value = setAmountTaxe(item, regular_pay);
@@ -246,6 +311,7 @@ const Cargar = () => {
       formData.overtime_pay +
       formData.meal_time_pay;
     let inability = 0;
+
     let medicare = 0;
     let secure_social = 0;
 
