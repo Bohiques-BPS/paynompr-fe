@@ -1,6 +1,4 @@
-
 export const EMPLOYER_DATA = {
-  id: 0,
   name: "Andres",
   last_name: "Fernandez",
   mother_last_name: "Ortiz",
@@ -50,7 +48,6 @@ export const EMPLOYER_DATA = {
 };
 
 export interface EMPLOYEER {
-  id:number;
   name: string;
   last_name: string;
   mother_last_name: string;

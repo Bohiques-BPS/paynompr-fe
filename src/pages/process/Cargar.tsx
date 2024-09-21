@@ -66,17 +66,6 @@ const Cargar = () => {
     setIsOpen2(!isOpen2);
   };
 
-useEffect(() => {
-  getFixedTaxes().then((response) => {
-    setFixedTaxesData(response.data.result);
-  });
-  getSumFixedTaxesByID(employerData.id).then((response) => {
-    setSumTaxes(response.data.result);
-  });
-
-}, []);
-
-
   const recalculate = () => {
     let regular_amount = 0;
     let over_amount = 0;
@@ -344,6 +333,7 @@ useEffect(() => {
     }
   }, [isOpen]);
 
+
   const getTotal = () => {
     var total = 0;
 
@@ -509,28 +499,18 @@ useEffect(() => {
     item.amount = parseFloat(e.currentTarget.value);
 
     const updatedItem = { ...item };
-    console.log("updatedItem", updatedItem);
 
     // Crea un nuevo array con el item actualizado
+    const updatedTaxesData = taxesData.map((el) =>
+      el === item ? updatedItem : el
+    );
 
-    let updatedTaxesData: any;
-    if (formData.id == 0) {
-      updatedTaxesData = taxesData.map((el) =>
-        el === item ? updatedItem : el
-      );
-    } else {
-      updatedTaxesData = formData.payment.map((el) =>
-        el === item ? updatedItem : el
-      );
-    }
-
-    console.log(updatedTaxesData);
     // Actualiza el estado con el nuevo array
     setTaxesData(updatedTaxesData);
 
     setFormData({
       ...formData,
-      ["payment"]: updatedTaxesData,
+      ["payment"]: taxesData,
     });
   };
 
@@ -634,10 +614,13 @@ useEffect(() => {
   };
 
   const handleCreate = () => {
+
     if (formData.id == 0) {
       if (selectedPeriod == 0)
         return showError("Por favor seleccione el Periodo");
 
+
+           
       setLoanding(true);
       setTime(formData, Number(params.id_employer))
         .then(() => {
@@ -651,7 +634,7 @@ useEffect(() => {
           recalculate();
           setLoanding(false);
           resetData(idEmployer);
-          handleModal();
+          handleModal();          
           // If the query fails, an error will be displayed on the terminal.
           showError(error.response.data.detail);
         });
@@ -759,6 +742,13 @@ useEffect(() => {
       });
     setIdEmployer(Number(params.id_employer));
     getData(Number(params.id_employer));
+
+    getFixedTaxes().then((response) => {
+      setFixedTaxesData(response.data.result);
+    });
+    getSumFixedTaxesByID((Number(params.id_employer))).then((response) => {
+      setSumTaxes(response.data.result);
+    });
   }, []);
 
   useEffect(() => {
@@ -1435,7 +1425,7 @@ useEffect(() => {
               <label>
                 <span>
                   {" "}
-                  Aportaciones a planes Calificados
+                  AFLAC
                   <span>( - )</span>
                 </span>
 
