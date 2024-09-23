@@ -266,8 +266,9 @@ export function getCounterFoil(
 
 export function getW2PFoil(employer_id: number, employer: any) {
   return Axios({
-    url: BASE_URL + `/reports/form_w2pr_pdf/${employer_id}/2024`,
-    method: "GET",
+    url: BASE_URL + `/reports/form_w2pr_pdf`,
+    method: "POST",
+    data: { employer_id: employer_id, year: 2024, period: null },
     responseType: "blob", // importante
   }).then((response) => {
     const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -284,8 +285,9 @@ export function getW2PFoil(employer_id: number, employer: any) {
 
 export function get940Foil(company_id: number, company: any) {
   return Axios({
-    url: BASE_URL + `/reports/form_940_pdf/${company_id}/2024`,
-    method: "GET",
+    url: BASE_URL + `/reports/form_940_pdf`,
+    method: "POST",
+    data: { company_id: company_id, year: 2024, period: null },
     responseType: "blob", // importante
   }).then((response) => {
     const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -299,8 +301,14 @@ export function get940Foil(company_id: number, company: any) {
 
 export function get941Foil(company_id: number, company: any, trimestre: any) {
   return Axios({
-    url: BASE_URL + `/reports/form_941_pdf/${company_id}/2024/${trimestre}`,
-    method: "GET",
+    url: BASE_URL + `/reports/form_941_pdf`,
+    method: "POST",
+    data: {
+      company_id: company_id,
+      year: 2024,
+      trimestre: trimestre,
+      period: null,
+    },
     responseType: "blob", // importante
   }).then((response) => {
     const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -318,10 +326,14 @@ export function getHaciendaFoil(
   trimestre: any
 ) {
   return Axios({
-    url:
-      BASE_URL +
-      `/reports/form_withheld_499_pdf/${company_id}/2024/${trimestre}`,
-    method: "GET",
+    url: BASE_URL + `/reports/form_withheld_499_pdf`,
+    data: {
+      company_id: company_id,
+      year: 2024,
+      trimestre: trimestre,
+      period: null,
+    },
+    method: "POST",
     responseType: "blob", // importante
   }).then((response) => {
     const url = window.URL.createObjectURL(new Blob([response.data]));

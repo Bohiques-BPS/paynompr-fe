@@ -585,6 +585,7 @@ const Cargar = () => {
           handleModal();
           // If the query fails, an error will be displayed on the terminal.
           showError(error.response.data.detail);
+          setLoanding(false);
         });
     } else {
       if (selectedPeriod == 0)
@@ -603,6 +604,7 @@ const Cargar = () => {
         .catch((error) => {
           // If the query fails, an error will be displayed on the terminal.
           showError(error.response.data.detail);
+          setLoanding(false);
         });
     }
   };
