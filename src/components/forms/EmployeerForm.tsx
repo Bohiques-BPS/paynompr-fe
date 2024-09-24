@@ -12,12 +12,15 @@ import {
 } from "../../utils/consts";
 import { NumericFormat, PatternFormat } from "react-number-format";
 import CustomCheckBox from "./CustomCheckBox";
+import { useEffect } from "react";
+import { calculateServiceYears }  from '../../utils/functions';
 
 type Props = {
   formData: any;
   setFormData: Dispatch<SetStateAction<any>>;
   onChange: (e: React.ChangeEvent<any>) => void;
 };
+
 
 const EmployeerForm = (props: Props) => {
   const handleRegularTime = (e: React.ChangeEvent<any>) => {
@@ -32,6 +35,40 @@ const EmployeerForm = (props: Props) => {
       ["overtime"]: Number(overtime.toFixed(2)),
     });
   };
+
+  useEffect(() => {
+    const dateAdmission = new Date(2017, 1, 26);
+    let vacationHours, vacationHoursMonthly;
+
+
+    vacationHoursMonthly = 130;
+    
+    if( props.formData.date_admission < dateAdmission ){
+      vacationHours = 10;
+
+    }else{
+
+      const serviceYears = calculateServiceYears(props.formData.date_admission);
+
+      if (serviceYears <= 1) {
+        vacationHours = 4;
+      } else if (serviceYears <= 5) {
+        vacationHours = 6;
+      } else if (serviceYears <= 15) {
+        vacationHours = 8;
+      } else {
+        vacationHours = 10;
+      }
+    }
+
+    props.setFormData({
+      ...props.formData,
+      ["vacation_hours"]: vacationHours,
+      ["vacation_hours_monthly"]: vacationHoursMonthly,
+    });    
+
+  }, [props.formData.date_admission]);
+
   return (
     <>
       <div className="xl:w-1/2 w-full ">
@@ -327,7 +364,7 @@ const EmployeerForm = (props: Props) => {
 
         <CustomInputs
           class="xl:w-1/5 w-1/2 mx-auto pe-1  inline-block   "
-          label=""
+          label="Horas acumuladas de vacaciones"
           name="vacation_time"
           onChange={props.onChange}
           value={props.formData.vacation_time}
@@ -337,7 +374,7 @@ const EmployeerForm = (props: Props) => {
 
         <CustomInputs
           class="xl:w-4/5 w-1/2 mx-auto ps-2  inline-block xl:inline-flex  justify-between items-center  "
-          label="Horas acumuladas de vacaciones"
+          label="Fecha de vacaciones"
           inputCss="xl:inline-block xl:w-1/3  mt-0"
           name="vacation_date"
           onChange={props.onChange}
@@ -348,7 +385,7 @@ const EmployeerForm = (props: Props) => {
 
         <CustomInputs
           class="xl:w-1/5 w-1/2 mx-auto   inline-block  "
-          label=""
+          label="Horas acumuladas de Enfermedad"
           placeholder=""
           onChange={props.onChange}
           value={props.formData.sick_time}
@@ -357,7 +394,7 @@ const EmployeerForm = (props: Props) => {
         />
         <CustomInputs
           class="xl:w-4/5 w-1/2 mx-auto   ps-2 inline-block xl:inline-flex  justify-between items-center  "
-          label="Horas acumuladas de Enfermedad"
+          label="fecha de Enfermedad"
           value={props.formData.sicks_date}
           name="sicks_date"
           inputCss="xl:inline-block xl:w-1/3  mt-0"

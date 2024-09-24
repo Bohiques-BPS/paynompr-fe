@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 
 import CustomSelect from "../../components/forms/CustomSelect";
-import { useState } from "react";
+import { useState, } from "react";
 import { showError, showSuccess } from "../../utils/functions";
 import { setEmployers } from "../../utils/requestOptions";
 
@@ -23,6 +23,8 @@ const AddEmployee = () => {
       [e.currentTarget.name]: getValue(e),
     });
   };
+  
+
 
   const getValue = (e: React.FormEvent<any>) => {
     if (e.currentTarget.type === "number")

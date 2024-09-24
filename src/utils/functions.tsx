@@ -71,8 +71,8 @@ export function subtractHoursMinutes(hora1: string, hora2: string) {
 
 export function addHoursMinutes(hora1: string, hora2: string): string {
   // Convertir las horas y minutos a números
-  const [horas1, minutos1] = hora1.split(":").map(Number);
-  const [horas2, minutos2] = hora2.split(":").map(Number);
+  const [horas1, minutos1] = hora1.split(':').map(Number);
+  const [horas2, minutos2] = hora2.split(':').map(Number);
 
   // Sumar los minutos
   let minutosTotales = minutos1 + minutos2;
@@ -80,7 +80,6 @@ export function addHoursMinutes(hora1: string, hora2: string): string {
   // Si los minutos superan 60, llevar una hora
   if (minutosTotales >= 60) {
     minutosTotales -= 60;
-    /*   hora = horas1 + 1; */
   }
 
   // Sumar las horas
@@ -110,4 +109,31 @@ export function majorHour(hora1: string, hora2: string): string {
     // Si ambas horas son iguales, puedes devolver cualquiera de las dos o un mensaje indicando igualdad
     return "Ambas horas son iguales";
   }
+}
+
+export function calculateServiceYears(dateAdmission:any) {
+  /**
+   * Calculates the number of service years from an admission date.
+   *
+   * @param {Date} dateAdmission - The admission date.
+   * @returns {number} The number of service years.
+   */
+  // Convert the date to a Date object if it's a string
+  const admissionDate = typeof dateAdmission === 'string' ? new Date(dateAdmission) : dateAdmission;
+
+  if (!(admissionDate instanceof Date)) {
+    throw new Error('dateAdmission must be a Date object or a string');
+  }
+
+  const today = new Date();
+  let years = today.getFullYear() - admissionDate.getFullYear();
+
+  // If the current month is before the birth month, or if it's the same month but before the birth day,
+  // subtract a year.
+  if (today.getMonth() < admissionDate.getMonth() || 
+      (today.getMonth() === admissionDate.getMonth() && today.getDate() < admissionDate.getDate())) {
+    years--;
+  }
+
+  return years;
 }
