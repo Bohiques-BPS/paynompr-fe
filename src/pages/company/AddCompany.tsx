@@ -47,9 +47,12 @@ const AddCompany = () => {
         showSuccess("Creado exitosamente.");
         navigate("../empresas");
       })
-      .catch((error) => {
+      .catch(() => {
         // If the query fails, an error will be displayed on the terminal.
-        showError(error.response.data.detail);
+        showError(
+          "Ha ocurrido un error al procesar tus datos. Por favor, verifica la información ingresada y vuelve a intentarlo."
+        );
+        setLoanding(false);
       });
   };
 

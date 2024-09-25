@@ -25,7 +25,6 @@ import FixedTaxes from "./pages/fixedtaxes/taxes";
 import AddFixedTaxes from "./pages/fixedtaxes/AddTaxes";
 import EditFixedTaxes from "./pages/fixedtaxes/EditTaxes";
 
-
 import OutEmployers from "./pages/outemployers/OutEmployers";
 import AddOutEmployee from "./pages/outemployers/AddOutEmployers";
 import EditOutEmployee from "./pages/outemployers/EditOutEmployers";
@@ -33,6 +32,9 @@ import OutEmployeHours from "./pages/process/OutEmployeHours";
 import Accountants from "./pages/accountants/Accountants";
 import AddCounter from "./pages/accountants/AddAccountants";
 import EditAccountants from "./pages/accountants/EditAccountants";
+import Codes from "./pages/code/Codes";
+import AddCode from "./pages/code/AddCodes";
+import EditCodes from "./pages/code/EditCodes";
 
 const App = () => {
   return (
@@ -69,8 +71,7 @@ const App = () => {
               element={<EditTaxes />}
             />
 
-
-          <Route path="fixed-taxes" element={<FixedTaxes />} />
+            <Route path="fixed-taxes" element={<FixedTaxes />} />
             <Route path="fixed-taxes/agregar" element={<AddFixedTaxes />} />
             <Route
               path="fixed-taxes/:id_taxes/editar"
@@ -100,9 +101,9 @@ const App = () => {
               path="empresas/:id/terceros/:id_employer/editar"
               element={<EditOutEmployee />}
             />
-            {/*   <Route path="codigos" element={<Codes />} />
+            <Route path="codigos" element={<Codes />} />
             <Route path="codigos/agregar" element={<AddCode />} />
-            <Route path="codigos/editar/:id" element={<EditCodes />} /> */}
+            <Route path="codigos/editar/:id" element={<EditCodes />} />
           </Route>
         </Route>
       </Routes>

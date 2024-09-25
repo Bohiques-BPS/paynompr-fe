@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 
 import CustomSelect from "../../components/forms/CustomSelect";
-import { useState, } from "react";
+import { useState } from "react";
 import { showError, showSuccess } from "../../utils/functions";
 import { setEmployers } from "../../utils/requestOptions";
 
@@ -23,8 +23,6 @@ const AddEmployee = () => {
       [e.currentTarget.name]: getValue(e),
     });
   };
-  
-
 
   const getValue = (e: React.FormEvent<any>) => {
     if (e.currentTarget.type === "number")
@@ -56,7 +54,9 @@ const AddEmployee = () => {
           navigate(-1);
         })
         .catch((error) => {
-          // If the query fails, an error will be displayed on the terminal.
+          // If the query fails, an error will b
+
+          setLoanding(false);
           showError(error.response.data.detail);
         });
     } else {

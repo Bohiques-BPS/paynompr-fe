@@ -5,12 +5,14 @@ import {
   faHouse,
   faBuilding,
   faUsers,
+  faBarcode,
+  faMoneyBill,
   faDiagramProject,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { blockPage } from "../../utils/permision";
+import { blockPage, ownerLevel } from "../../utils/permision";
 
 interface SidebarProps {
   sidebarOpen: string;
@@ -23,6 +25,7 @@ const Sidebar = ({
   sidebarOpen,
   toggleSidebar,
   toggleSidebarOption,
+  role,
 }: SidebarProps) => {
   return (
     <div
@@ -60,6 +63,28 @@ const Sidebar = ({
                 </div>
                 {sidebarOpen === "true" && (
                   <span className="ms-3 text-white">Escritorio</span>
+                )}
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                onClick={toggleSidebar}
+                to="/escritorio/contadores"
+                className={({ isActive }) =>
+                  [
+                    "flex items-center py-4 justify-items-center  text-gray-900 rounded-lg text-white ",
+                    isActive ? " active group" : "",
+                  ].join("")
+                }
+              >
+                <div className="p-3 rounded-lg border-white border group-[.active]:bg-[#a29dc5ad]">
+                  <FontAwesomeIcon
+                    className="text-2xl text-white fa-fw"
+                    icon={faUsers}
+                  />
+                </div>
+                {sidebarOpen === "true" && (
+                  <span className="ms-3 text-white">Contadores</span>
                 )}
               </NavLink>
             </li>
@@ -109,30 +134,31 @@ const Sidebar = ({
               </NavLink>
             </li>
 
-            <li>
-              <NavLink
-                onClick={toggleSidebar}
-                to="/escritorio/contadores"
-                className={({ isActive }) =>
-                  [
-                    "flex items-center py-4 justify-items-center  text-gray-900 rounded-lg text-white ",
-                    isActive ? " active group" : "",
-                  ].join("")
-                }
-              >
-                <div className="p-3 rounded-lg border-white border group-[.active]:bg-[#a29dc5ad]">
-                  <FontAwesomeIcon
-                    className="text-2xl text-white fa-fw"
-                    icon={faUsers}
-                  />
-                </div>
-                {sidebarOpen === "true" && (
-                  <span className="ms-3 text-white">Contadores</span>
-                )}
-              </NavLink>
-            </li>
-
-            {/*   {ownerLevel(role) && (
+            {ownerLevel(role) && (
+              <li>
+                <NavLink
+                  onClick={toggleSidebar}
+                  to="fixed-taxes"
+                  className={({ isActive }) =>
+                    [
+                      "flex items-center py-4 justify-items-center  text-gray-900 rounded-lg text-white ",
+                      isActive ? " active group" : "",
+                    ].join("")
+                  }
+                >
+                  <div className="p-3 rounded-lg border-white border group-[.active]:bg-[#a29dc5ad]">
+                    <FontAwesomeIcon
+                      className="text-2xl fa-fw text-white"
+                      icon={faMoneyBill}
+                    />
+                  </div>
+                  {sidebarOpen === "true" && (
+                    <span className="ms-3 text-white">Taxes fijos</span>
+                  )}
+                </NavLink>
+              </li>
+            )}
+            {ownerLevel(role) && (
               <li>
                 <NavLink
                   onClick={toggleSidebar}
@@ -155,7 +181,7 @@ const Sidebar = ({
                   )}
                 </NavLink>
               </li>
-            )}  */}
+            )}
 
             <li className=" block xl:hidden">
               <NavLink

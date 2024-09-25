@@ -64,6 +64,7 @@ const EditEmployee = () => {
       })
       .catch((error) => {
         // If the query fails, an error will be displayed on the terminal.
+        setLoanding(false);
         showError(error.response.data.detail);
       });
   };

@@ -4,10 +4,11 @@ import { Outlet, useNavigate } from "react-router-dom";
 import Footer from "../components/nav/Footer";
 import { useLocalStorage } from "../utils/UseLocalStorage";
 import { useEffect } from "react";
-import { getCurrentUser } from "../utils/requestOptions";
+import { getAccountants, getCurrentUser } from "../utils/requestOptions";
 import { removeToken } from "../services/auth.services";
 import { faCaretLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { blockPage } from "../utils/permision";
 
 const InLayout = () => {
   const navigate = useNavigate();
@@ -36,13 +37,16 @@ const InLayout = () => {
         navigate("../");
         // If the query fails, an error will be displayed on the terminal.
       });
-    /*getAccountants()
-      .then(() => {
-     
+    getAccountants()
+      .then((response) => {
+        // TODO Declarar un modelo para user
+        if (blockPage(response.data.result.length == 0)) {
+          navigate("/escritorio/contadores/agregar");
+        }
       })
       .catch(() => {
-     
-      });*/
+        // If the query fails, an error will be displayed on the terminal.
+      });
   }, []);
 
   const toggleSidebarOption = () => {

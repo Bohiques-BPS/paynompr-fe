@@ -13,7 +13,7 @@ export const data_company = [
 export const FILES = [
   {
     id: 1,
-    name: "W2P",
+    name: "W-2PR",
   },
   {
     id: 2,
