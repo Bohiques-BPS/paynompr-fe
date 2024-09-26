@@ -78,7 +78,7 @@ const Process = () => {
     if (selectedFile == 0) return;
     if (selectedFile == 1) {
       var employer = filterById(employers, employerId);
-      getW2PFoil(employerId, employer, companyId)
+      getW2PFoil(employerId, employer, companyId, year)
         .then(() => {
           // Data retrieval and processing
 
@@ -91,7 +91,7 @@ const Process = () => {
     }
     if (selectedFile == 2) {
       var companies = filterById(data, companyId);
-      get940Foil(companyId, companies)
+      get940Foil(companyId, companies, year)
         .then(() => {
           // Data retrieval and processing
 
@@ -104,7 +104,7 @@ const Process = () => {
     }
     if (selectedFile == 3) {
       var companies = filterById(data, companyId);
-      get941Foil(companyId, companies, selectedTrimestre)
+      get941Foil(companyId, companies, selectedTrimestre, year)
         .then(() => {
           // Data retrieval and processing
 
@@ -117,7 +117,7 @@ const Process = () => {
     }
     if (selectedFile == 4) {
       var companies = filterById(data, companyId);
-      getHaciendaFoil(companyId, companies, selectedTrimestre)
+      getHaciendaFoil(companyId, companies, selectedTrimestre, year)
         .then(() => {
           // Data retrieval and processing
 
