@@ -12,7 +12,6 @@ import {
   getFixedTaxes,
   setTime,
   getSumFixedTaxesByID,
-
 } from "../../utils/requestOptions";
 import { useParams } from "react-router-dom";
 import { COMPANY_DATA } from "../../models/company";
@@ -37,6 +36,10 @@ const Cargar = () => {
   const params = useParams();
   const [loanding, setLoanding] = useState(false);
   const [selectedPeriod, setSelectedPeriod] = useState(0);
+  const [year, setYear] = useState(() => {
+    const currentYear = new Date().getFullYear().toString(); // Convertimos el año a string
+    return currentYear;
+  });
   const [employerData, setEmployerData] = useState(EMPLOYER_DATA);
   const [companyData, setCompanyData] = useState(COMPANY_DATA);
   const [timesData, setTimesData] = useState([TIME_DATA]);
@@ -55,7 +58,7 @@ const Cargar = () => {
   const [message, setMessage] = useState("");
   const [vacationTimeInit, setVacationTimeInit] = useState("");
   const [sickTimeInit, setSickTimeInit] = useState("");
- 
+
   const [sumTaxes, setSumTaxes] = useState(SUM_DATA);
 
   const [isOpen2, setIsOpen2] = useState(false);
@@ -104,41 +107,46 @@ const Cargar = () => {
     let aux: any = [];
 
     let inabilityAmount = 0;
-    let inability = 0;    const taxeInability = fixedTaxesData.find(tax => tax.id === 1);
-    if(taxeInability){ 
-      inabilityAmount =  taxeInability.amount;
+    let inability = 0;
+    const taxeInability = fixedTaxesData.find((tax) => tax.id === 1);
+    if (taxeInability) {
+      inabilityAmount = taxeInability.amount;
 
       if (employerData.choferil != "SI") {
         inability = regular_pay * (inabilityAmount / 100);
 
-        if(sumTaxes.total_inability >= taxeInability.limit)  inability =  0;
-        else if((sumTaxes.total_inability + inability) > taxeInability.limit) 
-          inability =  taxeInability.limit - sumTaxes.total_inability;        
+        if (sumTaxes.total_inability >= taxeInability.limit) inability = 0;
+        else if (sumTaxes.total_inability + inability > taxeInability.limit)
+          inability = taxeInability.limit - sumTaxes.total_inability;
       }
     }
 
     let medicareAmount = 0;
     let medicare = 0;
-    const taxeMedicare = fixedTaxesData.find(tax => tax.id === 2);
-    if(taxeMedicare){ 
-      medicareAmount =  taxeMedicare.amount;
+    const taxeMedicare = fixedTaxesData.find((tax) => tax.id === 2);
+    if (taxeMedicare) {
+      medicareAmount = taxeMedicare.amount;
       medicare = regular_pay * (medicareAmount / 100);
-      if(sumTaxes.total_medicare >= taxeMedicare.limit)  medicare =  0;
-      else if((sumTaxes.total_medicare + medicare) > taxeMedicare.limit) 
-        medicare =  taxeMedicare.limit - sumTaxes.total_medicare;              
+      if (sumTaxes.total_medicare >= taxeMedicare.limit) medicare = 0;
+      else if (sumTaxes.total_medicare + medicare > taxeMedicare.limit)
+        medicare = taxeMedicare.limit - sumTaxes.total_medicare;
     }
-
 
     let secureSocialAmount = 0;
     let secure_social = 0;
-    const taxeSecureSocial = fixedTaxesData.find(tax => tax.id === 3);
-    
-    if(taxeSecureSocial){ 
-      secureSocialAmount =  taxeSecureSocial.amount;
-      secure_social = (regular_pay - formData.tips) * (secureSocialAmount / 100);
-      if(sumTaxes.total_secure_social >= taxeSecureSocial.limit)  secure_social =  0;
-      else if((sumTaxes.total_secure_social + secure_social) > taxeSecureSocial.limit) 
-        secure_social =  taxeSecureSocial.limit - sumTaxes.total_secure_social;          
+    const taxeSecureSocial = fixedTaxesData.find((tax) => tax.id === 3);
+
+    if (taxeSecureSocial) {
+      secureSocialAmount = taxeSecureSocial.amount;
+      secure_social =
+        (regular_pay - formData.tips) * (secureSocialAmount / 100);
+      if (sumTaxes.total_secure_social >= taxeSecureSocial.limit)
+        secure_social = 0;
+      else if (
+        sumTaxes.total_secure_social + secure_social >
+        taxeSecureSocial.limit
+      )
+        secure_social = taxeSecureSocial.limit - sumTaxes.total_secure_social;
     }
 
     const withholdingValue = employerData.payment_percentage.replace("%", "");
@@ -146,23 +154,22 @@ const Cargar = () => {
 
     let socialTipsAmount = 0;
     let social_tips = 0;
-    sumTaxes.total_social_tips
-    const taxeTipsSocial = fixedTaxesData.find(tax => tax.id === 4);
-    
-    if(taxeTipsSocial) {     
-      socialTipsAmount =  taxeTipsSocial.amount;
+    sumTaxes.total_social_tips;
+    const taxeTipsSocial = fixedTaxesData.find((tax) => tax.id === 4);
+
+    if (taxeTipsSocial) {
+      socialTipsAmount = taxeTipsSocial.amount;
       social_tips = formData.tips * (socialTipsAmount / 100);
-      if(sumTaxes.total_social_tips >= taxeTipsSocial.limit)  social_tips =  0;
-      else if((sumTaxes.total_social_tips + social_tips) > taxeTipsSocial.limit) 
-        social_tips =  taxeTipsSocial.limit - sumTaxes.total_social_tips;                 
+      if (sumTaxes.total_social_tips >= taxeTipsSocial.limit) social_tips = 0;
+      else if (sumTaxes.total_social_tips + social_tips > taxeTipsSocial.limit)
+        social_tips = taxeTipsSocial.limit - sumTaxes.total_social_tips;
     }
 
     let choferil = 0;
-    const taxeChoferil = fixedTaxesData.find(tax => tax.id === 5);
-    if(taxeChoferil && employerData.choferil === "SI") {
+    const taxeChoferil = fixedTaxesData.find((tax) => tax.id === 5);
+    if (taxeChoferil && employerData.choferil === "SI") {
       choferil = taxeChoferil.amount;
     }
-
 
     if (formData.id == 0)
       taxesData.map((item) => {
@@ -332,7 +339,6 @@ const Cargar = () => {
       setMessage(messageOk);
     }
   }, [isOpen]);
-
 
   const getTotal = () => {
     var total = 0;
@@ -613,14 +619,18 @@ const Cargar = () => {
     getData(Number(value));
   };
 
+  const handleYearChange = (e: React.FormEvent<any>) => {
+    const value = e.currentTarget.value;
+    setYear(value);
+  };
+  useEffect(() => {
+    getData(idEmployer);
+  }, [year]);
   const handleCreate = () => {
-
     if (formData.id == 0) {
       if (selectedPeriod == 0)
         return showError("Por favor seleccione el Periodo");
 
-
-           
       setLoanding(true);
       setTime(formData, Number(params.id_employer))
         .then(() => {
@@ -634,7 +644,7 @@ const Cargar = () => {
           recalculate();
           setLoanding(false);
           resetData(idEmployer);
-          handleModal();          
+          handleModal();
           // If the query fails, an error will be displayed on the terminal.
           showError(error.response.data.detail);
           setLoanding(false);
@@ -690,7 +700,7 @@ const Cargar = () => {
   };
   const getData = (id_employer: any) => {
     setLoanding(true);
-    getCompanyWithEmployer(Number(params.id_company), id_employer)
+    getCompanyWithEmployer(Number(params.id_company), id_employer, year)
       .then((response) => {
         // Data retrieval and processing
         setLoanding(false);
@@ -714,7 +724,7 @@ const Cargar = () => {
 
   const resetData = (id_employer: any) => {
     setLoanding(true);
-    getCompanyWithEmployer(Number(params.id_company), id_employer)
+    getCompanyWithEmployer(Number(params.id_company), id_employer, year)
       .then((response) => {
         // Data retrieval and processing
         setLoanding(false);
@@ -748,7 +758,7 @@ const Cargar = () => {
     getFixedTaxes().then((response) => {
       setFixedTaxesData(response.data.result);
     });
-    getSumFixedTaxesByID((Number(params.id_employer))).then((response) => {
+    getSumFixedTaxesByID(Number(params.id_employer)).then((response) => {
       setSumTaxes(response.data.result);
     });
   }, []);
@@ -766,7 +776,20 @@ const Cargar = () => {
     <>
       <div className="text-[#EED102] bg-[#333160] p-6 rounded-lg text-center">
         <h3 className="text-2xl">Cargar Tiempo</h3>
-
+        <select
+          name="year"
+          onChange={handleYearChange}
+          value={year}
+          className={` bg-gray-50 border xl:w-2/12 mt-4  w-full pe-1 border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 inline-block  p-3`}
+        >
+          <option value="2024">2024</option>
+          <option value="2025">2025</option>
+          <option value="2026">2026</option>
+          <option value="2027">2027</option>
+          <option value="2028">2028</option>
+          <option value="2029">2029</option>
+          <option value="2030">2030</option>
+        </select>
         <p className="text-white mt-4">Seleccionar período de trabajo</p>
         <div
           className={` justify-center block mb-2 text-sm font-medium text-gray-700 xl:w-2/3 xl-full mx-auto mt-4 flex xl:flex-row flex-col gap-2 align-middle items-center`}
@@ -958,7 +981,7 @@ const Cargar = () => {
             </div>
             <div className="w-1/2  mx-auto ps-1 inline-block  ">
               <label className="block" htmlFor="">
-                Horas de Vacaciones
+                Horas de Vacaciones ({employerData.vacation_time})
               </label>
               <CustomInputs
                 class="w-5/12 mx-auto pe-1 text-center  inline-block time-input"
@@ -998,7 +1021,7 @@ const Cargar = () => {
             </div>
             <div className="w-1/2  mx-auto ps-1 inline-block  ">
               <label className="block" htmlFor="">
-                Horas de Enfermedad
+                Horas de Enfermedad ({employerData.sick_time})
               </label>
               <CustomInputs
                 class="w-5/12 mx-auto pe-1 text-center   inline-block time-input"

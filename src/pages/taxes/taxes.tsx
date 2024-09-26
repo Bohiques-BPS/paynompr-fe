@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faBan } from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -8,7 +8,7 @@ import ModalAlert from "../../components/dashboard/ModalAlert";
 import FloatButton from "../../components/dashboard/FloatButton";
 
 import CustomInputs from "../../components/forms/CustomInputs";
-import { disableTaxe, getTaxes } from "../../utils/requestOptions";
+import { deleteTaxe, disableTaxe, getTaxes } from "../../utils/requestOptions";
 
 import { Link, useParams } from "react-router-dom";
 import { showError, showSuccess } from "../../utils/functions";
@@ -17,6 +17,7 @@ const Taxes = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [row, setRow] = useState({ name: "", id: 0, is_deleted: false });
+  const [isOpen2, setIsOpen2] = useState(false);
 
   const [data, setData] = useState([]);
   const params = useParams();
@@ -48,7 +49,14 @@ const Taxes = () => {
       </span>
     );
   };
-
+  const handleModalClick2 = (data: {
+    name: string;
+    id: number;
+    is_deleted: boolean;
+  }) => {
+    setRow(data);
+    setIsOpen2(!isOpen2);
+  };
   const columns: any = [
     {
       name: "Nombre",
@@ -110,7 +118,42 @@ const Taxes = () => {
 
       selector: (row: RowData) => row.is_deleted,
     },
+    {
+      name: "Eliminar",
+      button: true,
+      cell: (row: { name: string; id: number; is_deleted: boolean }) => (
+        <>
+          <a onClick={() => handleModalClick2(row)} rel="noopener noreferrer">
+            <FontAwesomeIcon icon={faBan} className="text-2xl text-red-800" />
+          </a>
+        </>
+      ),
+      selector: (row: { year: any }) => row.year,
+    },
   ];
+  const handleModal2 = () => {
+    setIsOpen2(!isOpen2);
+  };
+  const deleteTaxeModal = () => {
+    deleteTaxe(row.id)
+      .then((data: any) => {
+        data = data.data;
+
+        // Data retrieval and processing
+        if (data.ok) {
+          showSuccess("Cambiado exitosamente");
+          getData();
+          handleModal2();
+        } else {
+          showError(data.msg);
+          handleModal2();
+        }
+      })
+      .catch((error) => {
+        // If the query fails, an error will be displayed on the terminal.
+        showError(error.response.data.detail);
+      });
+  };
 
   const changeStatus = () => {
     disableTaxe(row.id)
@@ -182,6 +225,13 @@ const Taxes = () => {
             />
           </div>
         </div>
+        <ModalAlert
+          isOpen={isOpen2}
+          action={deleteTaxeModal}
+          setIsOpen={handleModal2}
+          title={`Eliminar`}
+          description={`¿Esta seguro que desea ELIMINAR el empleado: ${row.name}?`}
+        />
         <ModalAlert
           isOpen={isOpen}
           action={changeStatus}

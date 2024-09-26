@@ -29,6 +29,36 @@ export const FILES = [
     name: "Hacienda",
   },
 ];
+export const YEARS = [
+  {
+    id: "2024",
+    name: "2024",
+  },
+  {
+    id: "2025",
+    name: "2025",
+  },
+  {
+    id: "2026",
+    name: "2026",
+  },
+  {
+    id: "2027",
+    name: "2027",
+  },
+  {
+    id: "2028",
+    name: "2028",
+  },
+  {
+    id: "2029",
+    name: "2029",
+  },
+  {
+    id: "2030",
+    name: "2030",
+  },
+];
 
 export const TRIMESTRE = [
   {

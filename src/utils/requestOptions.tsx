@@ -70,9 +70,7 @@ export function getFixedTaxes() {
 }
 
 export function getFixedTaxesByID(id_taxes: number) {
-  return Axios.request(
-    setOptions("fixed-taxes/" + id_taxes, "GET")
-  ); // Using a post request, specifying the user
+  return Axios.request(setOptions("fixed-taxes/" + id_taxes, "GET")); // Using a post request, specifying the user
 }
 
 export function getSumFixedTaxesByID(employer_id: number) {
@@ -89,8 +87,6 @@ export function setFixedTaxe(data: object) {
   return Axios.request(setOptions("fixed-taxes/", "POST", data)); // Using a post request, specifying the user
 }
 
-
-
 export function editTaxe(data: object, id_taxes: number) {
   return Axios.request(setOptions("taxes/" + id_taxes, "PUT", data)); // Using a post request, specifying the user
 }
@@ -98,7 +94,6 @@ export function editTaxe(data: object, id_taxes: number) {
 export function editFixedTaxe(data: object, id_taxes: number) {
   return Axios.request(setOptions("fixed-taxes/" + id_taxes, "PUT", data)); // Using a post request, specifying the user
 }
-
 
 export function disableTaxe(id_taxes: number) {
   return Axios.request(setOptions("taxes/" + id_taxes, "DELETE")); // Using a post request, specifying the user
@@ -122,10 +117,14 @@ export function getCompanyWithOutEmployerTime(
 }
 export function getCompanyWithEmployer(
   id_company: number,
-  id_employer: number
+  id_employer: number,
+  _year: string
 ) {
   return Axios.request(
-    setOptions("companies/" + id_company + "/employer/" + id_employer, "GET")
+    setOptions(
+      "companies/" + id_company + "/employer/" + id_employer + "/year/" + _year,
+      "GET"
+    )
   ); // Using a post request, specifying the user
 }
 export function getTalonario(
@@ -171,7 +170,9 @@ export function changeStatusOutEmployer(id: number) {
 export function deleteOutEmployer(id: number) {
   return Axios.request(setOptions("outemployers/delete/" + id, "DELETE"));
 }
-
+export function deleteTaxe(id: number) {
+  return Axios.request(setOptions("taxes/delete/" + id, "DELETE"));
+}
 export function deleteAccountant(id: number) {
   return Axios.request(setOptions("accountant/delete/" + id, "DELETE"));
 }
@@ -292,11 +293,21 @@ export function getCounterFoil(
   });
 }
 
-export function getW2PFoil(employer_id: number, employer: any) {
+export function getW2PFoil(
+  employer_id: number,
+  employer: any,
+  companyId: number,
+  year: string
+) {
   return Axios({
     url: BASE_URL + `/reports/form_w2pr_pdf`,
     method: "POST",
-    data: { employer_id: employer_id, year: 2024, period: null },
+    data: {
+      employer_id: employer_id,
+      year: year,
+      period: null,
+      company_id: companyId,
+    },
     responseType: "blob", // importante
   }).then((response) => {
     const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -311,11 +322,11 @@ export function getW2PFoil(employer_id: number, employer: any) {
   });
 }
 
-export function get940Foil(company_id: number, company: any) {
+export function get940Foil(company_id: number, company: any, year: string) {
   return Axios({
     url: BASE_URL + `/reports/form_940_pdf`,
     method: "POST",
-    data: { company_id: company_id, year: 2024, period: null },
+    data: { company_id: company_id, year: year, period: null },
     responseType: "blob", // importante
   }).then((response) => {
     const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -327,13 +338,18 @@ export function get940Foil(company_id: number, company: any) {
   });
 }
 
-export function get941Foil(company_id: number, company: any, trimestre: any) {
+export function get941Foil(
+  company_id: number,
+  company: any,
+  trimestre: any,
+  year: string
+) {
   return Axios({
     url: BASE_URL + `/reports/form_941_pdf`,
     method: "POST",
     data: {
       company_id: company_id,
-      year: 2024,
+      year: year,
       trimestre: trimestre,
       period: null,
     },
@@ -351,13 +367,14 @@ export function get941Foil(company_id: number, company: any, trimestre: any) {
 export function getHaciendaFoil(
   company_id: number,
   company: any,
-  trimestre: any
+  trimestre: any,
+  year: string
 ) {
   return Axios({
     url: BASE_URL + `/reports/form_withheld_499_pdf`,
     data: {
       company_id: company_id,
-      year: 2024,
+      year: year,
       trimestre: trimestre,
       period: null,
     },

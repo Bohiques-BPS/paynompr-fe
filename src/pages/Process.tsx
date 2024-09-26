@@ -14,14 +14,17 @@ import {
   faClock,
   faMoneyCheckDollar,
 } from "@fortawesome/free-solid-svg-icons";
-import { FILES, TRIMESTRE } from "../utils/consts";
+import { FILES, TRIMESTRE, YEARS } from "../utils/consts";
 import { showError, showSuccess } from "../utils/functions";
 
 const Process = () => {
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(0);
   const [selectedTrimestre, setSelectedTrimestre] = useState(0);
-
+  const [year, setYear] = useState(() => {
+    const currentYear = new Date().getFullYear().toString(); // Convertimos el año a string
+    return currentYear;
+  });
   const [data, setData] = useState([]);
   const [companyId, setCompanyId] = useState(0);
   const [employerId, setEmployerId] = useState(0);
@@ -52,6 +55,12 @@ const Process = () => {
     setSelectedFile(Number(value));
   };
 
+  const handleYearChange = (e: React.FormEvent<HTMLSelectElement>) => {
+    const value = e.currentTarget.value;
+
+    setYear(value);
+  };
+
   const handleTrimestre = (e: React.FormEvent<HTMLSelectElement>) => {
     const value = e.currentTarget.value;
 
@@ -64,10 +73,12 @@ const Process = () => {
   };
 
   const downloadFile = () => {
+    if (year == "0")
+      showError("Debe seleccionar un año para generar el documento");
     if (selectedFile == 0) return;
     if (selectedFile == 1) {
       var employer = filterById(employers, employerId);
-      getW2PFoil(employerId, employer)
+      getW2PFoil(employerId, employer, companyId)
         .then(() => {
           // Data retrieval and processing
 
@@ -170,6 +181,17 @@ const Process = () => {
               placeholder="Seleccione un archivo"
               type="text"
             />
+            {selectedFile != 0 && (
+              <CustomSelect
+                class="w-full mx-auto  inline-block "
+                label="Seleccione el año"
+                disabled={false}
+                onChange={handleYearChange}
+                options={YEARS}
+                placeholder="Seleccione un año"
+                type="text"
+              />
+            )}
             {selectedFile == 3 || selectedFile == 4 ? (
               <>
                 {" "}
