@@ -351,7 +351,7 @@ export function get941Foil(
       company_id: company_id,
       year: year,
       trimestre: trimestre,
-      period: null,
+      period: trimestre,
     },
     responseType: "blob", // importante
   }).then((response) => {
@@ -372,6 +372,84 @@ export function getHaciendaFoil(
 ) {
   return Axios({
     url: BASE_URL + `/reports/form_withheld_499_pdf`,
+    data: {
+      company_id: company_id,
+      year: year,
+      trimestre: trimestre,
+      period: trimestre,
+    },
+    method: "POST",
+    responseType: "blob", // importante
+  }).then((response) => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "Company-" + company.name + ".pdf");
+    document.body.appendChild(link);
+    link.click();
+  });
+}
+
+export function getCFSEFoil(
+  company_id: number,
+  company: any,
+  trimestre: any,
+  year: string
+) {
+  return Axios({
+    url: BASE_URL + `/reports/get_report_cfse_pdf`,
+    data: {
+      company_id: company_id,
+      year: year,
+      trimestre: trimestre,
+      period: null,
+    },
+    method: "POST",
+    responseType: "blob", // importante
+  }).then((response) => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "Company-" + company.name + ".pdf");
+    document.body.appendChild(link);
+    link.click();
+  });
+}
+
+export function getUnemploymentFoil(
+  company_id: number,
+  company: any,
+  trimestre: any,
+  year: string
+) {
+  return Axios({
+    url: BASE_URL + `/reports/form_unemplo`,
+    data: {
+      company_id: company_id,
+      year: year,
+      trimestre: trimestre,
+      period: trimestre,
+    },
+    method: "POST",
+    responseType: "blob", // importante
+  }).then((response) => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "Company-" + company.name + ".pdf");
+    document.body.appendChild(link);
+    link.click();
+  });
+}
+
+export function getChoferilFoil(
+  company_id: number,
+  company: any,
+  trimestre: any,
+  year: string
+) {
+  return Axios({
+    url: BASE_URL + `/reports/form_choferil_pdf`,
     data: {
       company_id: company_id,
       year: year,

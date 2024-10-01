@@ -2,8 +2,11 @@ import { useEffect, useState } from "react";
 import {
   get940Foil,
   get941Foil,
+  getCFSEFoil,
+  getChoferilFoil,
   getCompanies,
   getHaciendaFoil,
+  getUnemploymentFoil,
   getW2PFoil,
 } from "../utils/requestOptions";
 import CustomSelect from "../components/forms/CustomSelect";
@@ -128,6 +131,45 @@ const Process = () => {
           showError(error.response.data.detail);
         });
     }
+    if (selectedFile == 5) {
+      var companies = filterById(data, companyId);
+      getUnemploymentFoil(companyId, companies, selectedTrimestre, year)
+        .then(() => {
+          // Data retrieval and processing
+
+          showSuccess("Creado exitosamente.");
+        })
+        .catch((error) => {
+          // If the query fails, an error will be displayed on the terminal.
+          showError(error.response.data.detail);
+        });
+    }
+    if (selectedFile == 6) {
+      var companies = filterById(data, companyId);
+      getChoferilFoil(companyId, companies, selectedTrimestre, year)
+        .then(() => {
+          // Data retrieval and processing
+
+          showSuccess("Creado exitosamente.");
+        })
+        .catch((error) => {
+          // If the query fails, an error will be displayed on the terminal.
+          showError(error.response.data.detail);
+        });
+    }
+    if (selectedFile == 7) {
+      var companies = filterById(data, companyId);
+      getCFSEFoil(companyId, companies, selectedTrimestre, year)
+        .then(() => {
+          // Data retrieval and processing
+
+          showSuccess("Creado exitosamente.");
+        })
+        .catch((error) => {
+          // If the query fails, an error will be displayed on the terminal.
+          showError(error.response.data.detail);
+        });
+    }
   };
 
   function filterById(jsonObject: any[], id: any) {
@@ -169,6 +211,7 @@ const Process = () => {
               disabled={false}
               onChange={handleEmployerChange}
               options={employers}
+              all={true}
               placeholder="Nombre de la compañía"
               type="text"
             />
@@ -192,7 +235,7 @@ const Process = () => {
                 type="text"
               />
             )}
-            {selectedFile == 3 || selectedFile == 4 ? (
+            {selectedFile == 3 || selectedFile == 4 || selectedFile == 5 ? (
               <>
                 {" "}
                 <CustomSelect

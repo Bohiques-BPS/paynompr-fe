@@ -8,6 +8,7 @@ type Props = {
   disabled?: boolean;
   class?: string;
   value?: any;
+  all?: any;
   onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 } & typeof defaultProps;
 
@@ -16,6 +17,7 @@ const defaultProps = {
   class: "",
   options: [{ id: 0, name: "" }],
   disabled: false,
+  all: false,
 };
 
 const CustomSelect = (props: Props) => {
@@ -33,7 +35,8 @@ const CustomSelect = (props: Props) => {
         value={props.value}
         disabled={props.disabled}
       >
-        <option value={0}>Seleccione una opción</option>
+        {props.all == false && <option value={0}>Seleccione una opción</option>}
+        {props.all == true && <option value={0}>Todos los usuarios</option>}
         {props.options.map((item: any, i: number) => (
           <option key={i} value={item.id}>
             {item.name}

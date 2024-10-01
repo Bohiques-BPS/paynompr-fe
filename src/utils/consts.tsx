@@ -28,6 +28,20 @@ export const FILES = [
     id: 4,
     name: "Hacienda",
   },
+  ,
+  {
+    id: 5,
+    name: "Desempleo",
+  },
+  ,
+  {
+    id: 6,
+    name: "Choferil",
+  },
+  {
+    id: 7,
+    name: "CSFE",
+  },
 ];
 export const YEARS = [
   {
