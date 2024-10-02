@@ -981,7 +981,7 @@ const Cargar = () => {
             </div>
             <div className="w-1/2  mx-auto ps-1 inline-block  ">
               <label className="block" htmlFor="">
-                Horas de Vacaciones ({employerData.vacation_time})
+                Horas de Vacaciones ({employerData.vacation_acum_hours})
               </label>
               <CustomInputs
                 class="w-5/12 mx-auto pe-1 text-center  inline-block time-input"
@@ -1021,7 +1021,7 @@ const Cargar = () => {
             </div>
             <div className="w-1/2  mx-auto ps-1 inline-block  ">
               <label className="block" htmlFor="">
-                Horas de Enfermedad ({employerData.sick_time})
+                Horas de Enfermedad ({employerData.sicks_acum_hours})
               </label>
               <CustomInputs
                 class="w-5/12 mx-auto pe-1 text-center   inline-block time-input"

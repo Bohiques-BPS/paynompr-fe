@@ -31,6 +31,9 @@ export const EMPLOYER_DATA = {
   sicks_hours_monthly: 0,
   vacation_date: null,
   sick_time: "00:00",
+  sicks_acum_hours: "00:00",
+  vacation_acum_hours: "00:00",
+
   sicks_hours: 0,
   sicks_date: null,
   number_dependents: 0,
