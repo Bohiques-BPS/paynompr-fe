@@ -10,6 +10,11 @@ export const COMPANY_DATA = {
   postal_address: "",
   zipcode_postal_address: "",
   number_patronal: "",
+  w2_first_control: "",
+  w2_last_control: "",
+  sp_first_control: "",
+  sp_last_control: "",
+
   coml: null,
   special_contribution: "1",
   country_postal_address: "",
@@ -47,6 +52,10 @@ export interface COMPANY {
   sicks_hours: number;
   sicks_date: number;
   choferil_number: string;
+  w2_first_control: string;
+  w2_last_control: string;
+  sp_first_control: string;
+  sp_last_control: string;
   special_contribution: string;
   number_patronal: string;
   coml: any;

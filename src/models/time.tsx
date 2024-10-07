@@ -17,6 +17,8 @@ export const TIME_DATA = {
   asume: 0,
   aflac: 0,
   donation: 0,
+  vacation_acum_hours: "00:00",
+  sicks_acum_hours: "00:00",
 
   regular_pay: 0,
   created_at: new Date(),
@@ -79,7 +81,8 @@ export interface TIME {
   payment: [PAYMENT];
   regular_time: string;
   memo: string;
-
+  vacation_acum_hours: string;
+  sicks_acum_hours: string;
   over_time: string;
   holiday_time: string;
 

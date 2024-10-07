@@ -332,6 +332,42 @@ const CompanyForm = (props: Props) => {
               placeholder="00820"
               type="text"
             />
+            <CustomInputs
+              name="w2_first_control"
+              onChange={props.onChange}
+              value={props.formData.w2_first_control}
+              class="w-1/2 mx-auto pe-1  inline-block "
+              label="W-2 PRIMER # CONTROL"
+              placeholder=""
+              type="text"
+            />
+            <CustomInputs
+              name="w2_last_control"
+              onChange={props.onChange}
+              value={props.formData.w2_last_control}
+              class="w-1/2 mx-auto   inline-block "
+              label="W-2 ULTIMO # CONTROL"
+              placeholder=""
+              type="text"
+            />
+            <CustomInputs
+              name="sp_first_control"
+              onChange={props.onChange}
+              value={props.formData.sp_first_control}
+              class="w-1/2 mx-auto pe-1 inline-block "
+              label="480.6 SP PRIMER #CONTROL"
+              placeholder=""
+              type="text"
+            />
+            <CustomInputs
+              name="sp_last_control"
+              onChange={props.onChange}
+              value={props.formData.sp_last_control}
+              class="w-1/2 mx-auto   inline-block "
+              label="480.6 SP ULTIMO #CONTROL"
+              placeholder=""
+              type="text"
+            />
           </div>
         </div>
         <div className="xl:w-full block  w-full">
