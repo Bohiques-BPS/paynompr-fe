@@ -36,6 +36,40 @@ const AddCompany = () => {
         showError(error.response.data.detail);
       });
   }, []);
+  useEffect(() => {
+    const generateRandomDigits = () => {
+      return Math.floor(Math.random() * 100000); // 9 dígitos aleatorios
+    };
+
+    const currentYear = new Date().getFullYear();
+    const formattedYear = currentYear.toString().padStart(4, "0");
+
+    const firstRandomDigits = generateRandomDigits();
+    const lastRandomDigits = generateRandomDigits();
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      w2_first_control: formattedYear + firstRandomDigits,
+      w2_last_control: formattedYear + lastRandomDigits,
+    }));
+  }, []);
+  useEffect(() => {
+    const generateRandomDigits = () => {
+      return Math.floor(Math.random() * 100000); // 9 dígitos aleatorios
+    };
+
+    const currentYear = new Date().getFullYear();
+    const formattedYear = currentYear.toString().padStart(4, "0");
+
+    const firstRandomDigits = generateRandomDigits();
+    const lastRandomDigits = generateRandomDigits();
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      sp_first_control: formattedYear + firstRandomDigits,
+      sp_last_control: formattedYear + lastRandomDigits,
+    }));
+  }, []);
   const handleModal = () => {
     setIsOpen(!isOpen);
   };

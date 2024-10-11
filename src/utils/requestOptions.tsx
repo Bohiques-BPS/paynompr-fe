@@ -454,7 +454,7 @@ export function getChoferilFoil(
       company_id: company_id,
       year: year,
       trimestre: trimestre,
-      period: null,
+      period: trimestre,
     },
     method: "POST",
     responseType: "blob", // importante

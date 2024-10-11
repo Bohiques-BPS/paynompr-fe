@@ -1,9 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
 
 import CustomSelect from "../../components/forms/CustomSelect";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { showError, showSuccess } from "../../utils/functions";
-import { setEmployers } from "../../utils/requestOptions";
+import { getCompanie, setEmployers } from "../../utils/requestOptions";
 
 import { EMPLOYER_DATA } from "../../models/employeer";
 import EmployeerForm from "../../components/forms/EmployeerForm";
@@ -16,6 +16,26 @@ const AddEmployee = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [loanding, setLoanding] = useState(false);
   const [formData, setFormData] = useState(EMPLOYER_DATA);
+
+  useEffect(() => {
+    getCompanie(Number(params.id))
+      .then((response) => {
+        console.log(response.data);
+        setFormData({
+          ...formData,
+          vacation_hours: response.data.result.vacation_hours,
+          vacation_hours_monthly: response.data.result.vacation_date,
+          sicks_hours: response.data.result.sicks_hours,
+          sicks_hours_monthly: response.data.result.sicks_date,
+        });
+
+        // Data retrieval and processing
+      })
+      .catch((error) => {
+        // If the query fails, an error will be displayed on the terminal.
+        showError(error.response.data.detail);
+      });
+  }, []);
 
   const handleInputChange = (e: React.FormEvent<any>) => {
     setFormData({

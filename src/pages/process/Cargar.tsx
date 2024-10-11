@@ -69,7 +69,7 @@ const Cargar = () => {
     setIsOpen2(!isOpen2);
   };
 
-  const recalculate = () => {
+  const recalculate = (id: number = 0) => {
     let regular_amount = 0;
     let over_amount = 0;
     let salary = 0;
@@ -90,6 +90,9 @@ const Cargar = () => {
       over_amount = formData.over_amount;
       meal_amount = formData.meal_amount;
     }
+    let _id;
+    if (id == 0) _id = formData.id;
+    else _id = id;
 
     const regular_pay =
       regular_amount * convertTimeToHoursWithDecimals(formData.vacation_time) +
@@ -181,6 +184,7 @@ const Cargar = () => {
 
     setFormData({
       ...formData,
+      ["id"]: _id,
       ["payment"]: aux,
       ["salary"]: salary,
       ["accountant_id"]: accountant_id,
@@ -215,6 +219,12 @@ const Cargar = () => {
   };
 
   useEffect(() => {
+    if (formData.id != 0) {
+      recalculate(formData.id);
+    }
+  }, [formData.id]);
+
+  useEffect(() => {
     if (formData.id == 0) {
       recalculate();
     }
@@ -236,7 +246,6 @@ const Cargar = () => {
   ]);
 
   useEffect(() => {
-    recalculate();
     setVacationTimeInit(formData.vacation_time);
     setSickTimeInit(formData.sick_time);
   }, [formData.id]);
@@ -641,7 +650,6 @@ const Cargar = () => {
           showSuccess("Creado exitosamente.");
         })
         .catch((error) => {
-          recalculate();
           setLoanding(false);
           resetData(idEmployer);
           handleModal();
@@ -657,7 +665,7 @@ const Cargar = () => {
       editTime(formData, Number(formData.id))
         .then(() => {
           // Data retrieval and processing
-          recalculate();
+
           setLoanding(false);
           resetData(idEmployer);
           handleModal();
@@ -728,15 +736,46 @@ const Cargar = () => {
       .then((response) => {
         // Data retrieval and processing
         setLoanding(false);
-        setFlag(flag + 1);
+
         setTimesData([]);
 
         setTimesData([...response.data.result.periods]);
+
+        setFlag(flag + 1);
       })
       .catch(() => {
         // If the query fails, an error will be displayed on the terminal.
       });
   };
+
+  useEffect(() => {
+    if (flag > 0) {
+      setPeriodChange();
+
+      setTimeout(() => {
+        const value = period;
+
+        setPeriod(value);
+        let times = [];
+        if (timesData) times = filterById(timesData, value).times;
+        recalculate(times[0].id);
+      }, 1000);
+    }
+  }, [timesData]);
+
+  useEffect(() => {
+    if (period != 0) {
+      setTimeout(() => {
+        const value = period;
+
+        setPeriod(value);
+        let times = [];
+
+        if (timesData) times = filterById(timesData, value).times;
+        if (times[0] != null) recalculate(times[0].id);
+      }, 1000);
+    }
+  }, [period]);
 
   useEffect(() => {
     getAccountants()
@@ -763,15 +802,6 @@ const Cargar = () => {
     });
   }, []);
 
-  useEffect(() => {
-    recalculate();
-  }, [period]);
-  useEffect(() => {
-    if (flag > 0) {
-      setPeriodChange();
-      recalculate();
-    }
-  }, [flag]);
   return (
     <>
       <div className="text-[#EED102] bg-[#333160] p-6 rounded-lg text-center">
@@ -982,8 +1012,6 @@ const Cargar = () => {
             <div className="w-1/2  mx-auto ps-1 inline-block  ">
               <label className="block" htmlFor="">
                 Horas de Vacaciones{" "}
-                {formData.id == 0 && <>({employerData.vacation_acum_hours})</>}{" "}
-                {formData.id != 0 && <>({formData.vacation_acum_hours})</>}
               </label>
               <CustomInputs
                 class="w-5/12 mx-auto pe-1 text-center  inline-block time-input"
@@ -1024,10 +1052,6 @@ const Cargar = () => {
             <div className="w-1/2  mx-auto ps-1 inline-block  ">
               <label className="block" htmlFor="">
                 Horas de Enfermedad
-                {formData.id == 0 && (
-                  <>({employerData.sicks_acum_hours})</>
-                )}{" "}
-                {formData.id != 0 && <>({formData.sicks_acum_hours})</>}
               </label>
               <CustomInputs
                 class="w-5/12 mx-auto pe-1 text-center   inline-block time-input"
@@ -1574,7 +1598,7 @@ const Cargar = () => {
           )}
           {formData.id != 0 && (
             <button
-              onClick={recalculate}
+              onClick={() => recalculate()}
               className="w-auto mt-4  mx-auto bg-[#333160] py-4 text-[#EED102] bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-8 text-center "
             >
               Recalcular

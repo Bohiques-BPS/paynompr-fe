@@ -17,7 +17,7 @@ import {
   faClock,
   faMoneyCheckDollar,
 } from "@fortawesome/free-solid-svg-icons";
-import { FILES, TRIMESTRE, YEARS } from "../utils/consts";
+import { FILES, TRIMESTRE, YEARS, YEARS_CFSE } from "../utils/consts";
 import { showError, showSuccess } from "../utils/functions";
 
 const Process = () => {
@@ -224,7 +224,7 @@ const Process = () => {
               placeholder="Seleccione un archivo"
               type="text"
             />
-            {selectedFile != 0 && (
+            {selectedFile != 0 && selectedFile != 7 && (
               <CustomSelect
                 class="w-full mx-auto  inline-block "
                 label="Seleccione el año"
@@ -235,7 +235,22 @@ const Process = () => {
                 type="text"
               />
             )}
-            {selectedFile == 3 || selectedFile == 4 || selectedFile == 5 ? (
+
+            {selectedFile == 7 && (
+              <CustomSelect
+                class="w-full mx-auto  inline-block "
+                label="Seleccione el año"
+                disabled={false}
+                onChange={handleYearChange}
+                options={YEARS_CFSE}
+                placeholder="Seleccione un año"
+                type="text"
+              />
+            )}
+            {selectedFile == 3 ||
+            selectedFile == 4 ||
+            selectedFile == 5 ||
+            selectedFile == 6 ? (
               <>
                 {" "}
                 <CustomSelect
