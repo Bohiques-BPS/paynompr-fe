@@ -80,7 +80,8 @@ const Process = () => {
       showError("Debe seleccionar un año para generar el documento");
     if (selectedFile == 0) return;
     if (selectedFile == 1) {
-      var employer = filterById(employers, employerId);
+      var employer = null;
+      if (employerId == 0) employer = filterById(employers, employerId);
       getW2PFoil(employerId, employer, companyId, year)
         .then(() => {
           // Data retrieval and processing

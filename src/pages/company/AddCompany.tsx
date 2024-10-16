@@ -38,36 +38,34 @@ const AddCompany = () => {
   }, []);
   useEffect(() => {
     const generateRandomDigits = () => {
-      return Math.floor(Math.random() * 100000); // 9 dígitos aleatorios
+      return Math.floor(Math.random() * 1000000); // 9 dígitos aleatorios
     };
 
     const currentYear = new Date().getFullYear();
     const formattedYear = currentYear.toString().padStart(4, "0");
 
     const firstRandomDigits = generateRandomDigits();
-    const lastRandomDigits = generateRandomDigits();
 
     setFormData((prevFormData) => ({
       ...prevFormData,
       w2_first_control: formattedYear + firstRandomDigits,
-      w2_last_control: formattedYear + lastRandomDigits,
+      w2_last_control: formattedYear + firstRandomDigits + 50,
     }));
   }, []);
   useEffect(() => {
     const generateRandomDigits = () => {
-      return Math.floor(Math.random() * 100000); // 9 dígitos aleatorios
+      return Math.floor(Math.random() * 1000000); // 9 dígitos aleatorios
     };
 
     const currentYear = new Date().getFullYear();
     const formattedYear = currentYear.toString().padStart(4, "0");
 
     const firstRandomDigits = generateRandomDigits();
-    const lastRandomDigits = generateRandomDigits();
 
     setFormData((prevFormData) => ({
       ...prevFormData,
       sp_first_control: formattedYear + firstRandomDigits,
-      sp_last_control: formattedYear + lastRandomDigits,
+      sp_last_control: formattedYear + firstRandomDigits + 50,
     }));
   }, []);
   const handleModal = () => {

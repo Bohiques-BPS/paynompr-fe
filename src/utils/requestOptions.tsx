@@ -313,10 +313,12 @@ export function getW2PFoil(
     const url = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute(
-      "download",
-      "Empleado-" + employer.first_name + "-" + employer.last_name + ".pdf"
-    );
+    if (employer != null)
+      link.setAttribute(
+        "download",
+        "Empleado-" + employer.first_name + "-" + employer.last_name + ".pdf"
+      );
+    else link.setAttribute("download", "W2-PR-ALL.pdf");
     document.body.appendChild(link);
     link.click();
   });

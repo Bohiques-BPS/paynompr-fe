@@ -36,7 +36,7 @@ const CustomSelect = (props: Props) => {
         disabled={props.disabled}
       >
         {props.all == false && <option value={0}>Seleccione una opción</option>}
-        {props.all == true && <option value={0}>Todos los usuarios</option>}
+        {props.all == true && <option value={0}>Todos los Empleados</option>}
         {props.options.map((item: any, i: number) => (
           <option key={i} value={item.id}>
             {item.name}
