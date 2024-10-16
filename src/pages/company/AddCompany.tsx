@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import CustomInputs from "../../components/forms/CustomInputs";
 
-import { getAccountants, setCompanies } from "../../utils/requestOptions";
+import {
+  getAccountants,
+  getCompanies,
+  setCompanies,
+} from "../../utils/requestOptions";
 import { showError, showSuccess } from "../../utils/functions";
 import { useNavigate } from "react-router-dom";
 
@@ -27,6 +31,43 @@ const AddCompany = () => {
   };
 
   useEffect(() => {
+    const getData = async () => {
+      try {
+        setLoanding(true);
+        const companiesResponse = await getCompanies(); // Assuming getCompanies returns a Promise
+        const companies = companiesResponse.data;
+        const companyCount = companies.length + 1;
+
+        // Calcular el primer número de control basado en la cantidad de empresas
+        const baseNumber =
+          new Date().getFullYear().toString().padStart(4, "0") + "00001";
+        const firstControlNumber =
+          parseInt(baseNumber) + (companyCount - 1) * 50;
+        const lastControlNumber = firstControlNumber + 50;
+
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          w2_first_control: firstControlNumber.toString().padStart(9, "0"),
+          w2_last_control: lastControlNumber.toString().padStart(9, "0"),
+          sp_first_control: firstControlNumber.toString().padStart(9, "0"),
+          sp_last_control: lastControlNumber.toString().padStart(9, "0"),
+        }));
+      } catch (error) {
+        console.error("Error fetching companies:", error); // Log the error for debugging
+      } finally {
+        setLoanding(false);
+      }
+    };
+
+    getData(); // Call getData on component mount
+
+    // Cleanup function (optional, prevents unnecessary re-fetches on unmount)
+    return () => {
+      // Add code to cancel any ongoing requests or subscriptions here (if applicable)
+    };
+  }, []);
+
+  useEffect(() => {
     getAccountants()
       .then((data) => {
         setAccountants(data.data.result);
@@ -36,38 +77,7 @@ const AddCompany = () => {
         showError(error.response.data.detail);
       });
   }, []);
-  useEffect(() => {
-    const generateRandomDigits = () => {
-      return Math.floor(Math.random() * 1000000); // 9 dígitos aleatorios
-    };
 
-    const currentYear = new Date().getFullYear();
-    const formattedYear = currentYear.toString().padStart(4, "0");
-
-    const firstRandomDigits = generateRandomDigits();
-
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      w2_first_control: formattedYear + firstRandomDigits,
-      w2_last_control: formattedYear + firstRandomDigits + 50,
-    }));
-  }, []);
-  useEffect(() => {
-    const generateRandomDigits = () => {
-      return Math.floor(Math.random() * 1000000); // 9 dígitos aleatorios
-    };
-
-    const currentYear = new Date().getFullYear();
-    const formattedYear = currentYear.toString().padStart(4, "0");
-
-    const firstRandomDigits = generateRandomDigits();
-
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      sp_first_control: formattedYear + firstRandomDigits,
-      sp_last_control: formattedYear + firstRandomDigits + 50,
-    }));
-  }, []);
   const handleModal = () => {
     setIsOpen(!isOpen);
   };
