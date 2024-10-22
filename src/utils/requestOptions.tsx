@@ -293,6 +293,37 @@ export function getCounterFoil(
   });
 }
 
+export function getCounterFoilbyDateRange(
+  id_company: number,
+  employer_id: number,
+  start: any,
+  end: any,
+  employer: any
+) {
+  return Axios({
+    url: BASE_URL + `/reports/counterfoil/range`,
+    method: "POST",
+    data: {
+      employer_id: employer_id,
+      start: start,
+      end: end,
+      company_id: id_company,
+    },
+    responseType: "blob", // importante
+  }).then((response) => {
+    console.log(response);
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute(
+      "download",
+      "Empleado-" + employer.first_name + "-" + employer.last_name + ".pdf"
+    );
+    document.body.appendChild(link);
+    link.click();
+  });
+}
+
 export function getW2PFoil(
   employer_id: number,
   employer: any,
@@ -310,6 +341,7 @@ export function getW2PFoil(
     },
     responseType: "blob", // importante
   }).then((response) => {
+    console.log(response);
     const url = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement("a");
     link.href = url;

@@ -5,6 +5,7 @@ import {
   getCFSEFoil,
   getChoferilFoil,
   getCompanies,
+  getCounterFoilbyDateRange,
   getHaciendaFoil,
   getUnemploymentFoil,
   getW2PFoil,
@@ -19,11 +20,26 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FILES, TRIMESTRE, YEARS, YEARS_CFSE } from "../utils/consts";
 import { showError, showSuccess } from "../utils/functions";
+import LoadingOverlay from "../components/utils/LoadingOverlay";
+import { DateRangePicker } from "react-date-range";
 
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
+import { addDays } from "date-fns";
 const Process = () => {
   const navigate = useNavigate();
+  const [state, setState] = useState([
+    {
+      startDate: new Date(),
+      endDate: addDays(new Date(), 7),
+      key: "selection",
+    },
+  ]);
+
   const [selectedFile, setSelectedFile] = useState(0);
   const [selectedTrimestre, setSelectedTrimestre] = useState(0);
+  const [loanding, setLoanding] = useState(false);
+
   const [year, setYear] = useState(() => {
     const currentYear = new Date().getFullYear().toString(); // Convertimos el año a string
     return currentYear;
@@ -44,6 +60,11 @@ const Process = () => {
       return jsonObject["id"] == value;
     })[0];
     setEmployers(company["employers"]);
+  };
+
+  const handleSelect = (item: any) => {
+    console.log(item.selection);
+    setState([item.selection]);
   };
 
   const handleEmployerChange = (e: React.FormEvent<HTMLSelectElement>) => {
@@ -78,17 +99,22 @@ const Process = () => {
   const downloadFile = () => {
     if (year == "0")
       showError("Debe seleccionar un año para generar el documento");
+
     if (selectedFile == 0) return;
+    setLoanding(true);
+
     if (selectedFile == 1) {
       var employer = null;
-      if (employerId == 0) employer = filterById(employers, employerId);
+      if (employerId != 0) employer = filterById(employers, employerId);
       getW2PFoil(employerId, employer, companyId, year)
         .then(() => {
           // Data retrieval and processing
-
+          setLoanding(false);
           showSuccess("Creado exitosamente.");
         })
         .catch((error) => {
+          setLoanding(false);
+
           // If the query fails, an error will be displayed on the terminal.
           showError(error.response.data.detail);
         });
@@ -98,10 +124,13 @@ const Process = () => {
       get940Foil(companyId, companies, year)
         .then(() => {
           // Data retrieval and processing
+          setLoanding(false);
 
           showSuccess("Creado exitosamente.");
         })
         .catch((error) => {
+          setLoanding(false);
+
           // If the query fails, an error will be displayed on the terminal.
           showError(error.response.data.detail);
         });
@@ -111,10 +140,13 @@ const Process = () => {
       get941Foil(companyId, companies, selectedTrimestre, year)
         .then(() => {
           // Data retrieval and processing
+          setLoanding(false);
 
           showSuccess("Creado exitosamente.");
         })
         .catch((error) => {
+          setLoanding(false);
+
           // If the query fails, an error will be displayed on the terminal.
           showError(error.response.data.detail);
         });
@@ -124,10 +156,13 @@ const Process = () => {
       getHaciendaFoil(companyId, companies, selectedTrimestre, year)
         .then(() => {
           // Data retrieval and processing
+          setLoanding(false);
 
           showSuccess("Creado exitosamente.");
         })
         .catch((error) => {
+          setLoanding(false);
+
           // If the query fails, an error will be displayed on the terminal.
           showError(error.response.data.detail);
         });
@@ -137,10 +172,13 @@ const Process = () => {
       getUnemploymentFoil(companyId, companies, selectedTrimestre, year)
         .then(() => {
           // Data retrieval and processing
+          setLoanding(false);
 
           showSuccess("Creado exitosamente.");
         })
         .catch((error) => {
+          setLoanding(false);
+
           // If the query fails, an error will be displayed on the terminal.
           showError(error.response.data.detail);
         });
@@ -150,10 +188,13 @@ const Process = () => {
       getChoferilFoil(companyId, companies, selectedTrimestre, year)
         .then(() => {
           // Data retrieval and processing
+          setLoanding(false);
 
           showSuccess("Creado exitosamente.");
         })
         .catch((error) => {
+          setLoanding(false);
+
           // If the query fails, an error will be displayed on the terminal.
           showError(error.response.data.detail);
         });
@@ -163,12 +204,39 @@ const Process = () => {
       getCFSEFoil(companyId, companies, selectedTrimestre, year)
         .then(() => {
           // Data retrieval and processing
+          setLoanding(false);
 
           showSuccess("Creado exitosamente.");
         })
         .catch((error) => {
+          setLoanding(false);
+
           // If the query fails, an error will be displayed on the terminal.
           showError(error.response.data.detail);
+        });
+    }
+    if (selectedFile == 8) {
+      var employer = null;
+      if (employerId != 0) employer = filterById(employers, employerId);
+      setLoanding(true);
+      getCounterFoilbyDateRange(
+        companyId,
+        employerId,
+        state[0].startDate,
+        state[0].endDate,
+        employer
+      )
+        .then(() => {
+          // Data retrieval and processing
+          setLoanding(false);
+
+          showSuccess("Creado exitosamente.");
+        })
+        .catch((error) => {
+          setLoanding(false);
+          console.log(error);
+          showError("Usuario no posee data.");
+          // If the query fails, an error will be displayed on the terminal.
         });
     }
   };
@@ -191,6 +259,7 @@ const Process = () => {
   }, []);
   return (
     <>
+      <LoadingOverlay show={loanding} />
       <div className="text-[#EED102] bg-[#333160] p-6 rounded-lg text-center shadow-xl ">
         <h3>Procesos</h3>
       </div>
@@ -225,7 +294,7 @@ const Process = () => {
               placeholder="Seleccione un archivo"
               type="text"
             />
-            {selectedFile != 0 && selectedFile != 7 && (
+            {selectedFile != 0 && selectedFile != 7 && selectedFile != 8 && (
               <CustomSelect
                 class="w-full mx-auto  inline-block "
                 label="Seleccione el año"
@@ -246,6 +315,12 @@ const Process = () => {
                 options={YEARS_CFSE}
                 placeholder="Seleccione un año"
                 type="text"
+              />
+            )}
+            {selectedFile == 8 && (
+              <DateRangePicker
+                ranges={state}
+                onChange={(item: any) => handleSelect(item)}
               />
             )}
             {selectedFile == 3 ||

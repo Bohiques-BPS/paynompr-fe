@@ -5,7 +5,7 @@ import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import CustomInputs from "../../components/forms/CustomInputs";
-import {  getFixedTaxes } from "../../utils/requestOptions";
+import { getFixedTaxes } from "../../utils/requestOptions";
 
 import { Link } from "react-router-dom";
 
@@ -18,7 +18,7 @@ const FixedTaxes = () => {
   const columns: any = [
     {
       name: "Nombre",
-      selector: (row: { name: string }) => row.name,
+      selector: (row: { name: string }) => row.name.toUpperCase(),
     },
     {
       name: "Porcentaje",
@@ -42,9 +42,7 @@ const FixedTaxes = () => {
       ),
       selector: (row: { year: any }) => row.year,
     },
-   
   ];
-
 
   useEffect(() => {
     getData();
@@ -58,7 +56,6 @@ const FixedTaxes = () => {
       })
       .catch(() => {});
   };
-
 
   const handleSearch = (e: React.FormEvent<HTMLInputElement>) => {
     setSearch(e.currentTarget.value);
@@ -90,7 +87,6 @@ const FixedTaxes = () => {
             />
           </div>
         </div>
-
       </div>
     </>
   );

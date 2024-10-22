@@ -52,6 +52,7 @@ const Cargar = () => {
 
   const [period, setPeriod] = useState(0);
   const [flag, setFlag] = useState(0);
+
   const [isOpen, setIsOpen] = useState(false);
   const [idEmployer, setIdEmployer] = useState(0);
   const [employers, setEmployers] = useState([]);
@@ -219,6 +220,7 @@ const Cargar = () => {
   };
 
   useEffect(() => {
+    console.log(formData);
     if (formData.id != 0) {
       recalculate(formData.id);
     }
@@ -625,7 +627,7 @@ const Cargar = () => {
   const handleChangeEmployer = (e: React.FormEvent<any>) => {
     const value = e.currentTarget.value;
     setIdEmployer(Number(value));
-    getData(Number(value));
+    resetData(Number(value));
   };
 
   const handleYearChange = (e: React.FormEvent<any>) => {
@@ -758,7 +760,12 @@ const Cargar = () => {
         setPeriod(value);
         let times = [];
         if (timesData) times = filterById(timesData, value).times;
-        recalculate(times[0].id);
+        console.log(times[0]);
+        setFormData({
+          ...times[0],
+          id: times[0].id,
+          period_id: filterById(timesData, value).id,
+        });
       }, 1000);
     }
   }, [timesData]);
