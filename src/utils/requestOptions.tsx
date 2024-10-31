@@ -335,7 +335,7 @@ export function getCounterFoilbyDateRange(
   employer: any
 ) {
   return Axios({
-    url: BASE_URL + `/reports/counterfoil/range/`,
+    url: BASE_URL + `/reports/counterfoil/range`,
     method: "POST",
     data: {
       employer_id: employer_id,
@@ -365,7 +365,7 @@ export function getW2PFoil(
   year: string
 ) {
   return Axios({
-    url: BASE_URL + `/reports/form_w2pr_pdf/`,
+    url: BASE_URL + `/reports/form_w2pr_pdf`,
     method: "POST",
     data: {
       employer_id: employer_id,
@@ -397,7 +397,7 @@ export function getWagesTxt(
   selectedTrimestre: any
 ) {
   return Axios({
-    url: BASE_URL + `/reports/wages_txt/`,
+    url: BASE_URL + `/reports/wages_txt`,
     method: "POST",
     data: { company_id: company_id, year: year, period: selectedTrimestre },
     responseType: "blob", // importante
@@ -413,7 +413,7 @@ export function getWagesTxt(
 
 export function get940Foil(company_id: number, company: any, year: string) {
   return Axios({
-    url: BASE_URL + `/reports/form_940_pdf/`,
+    url: BASE_URL + `/reports/form_940_pdf`,
     method: "POST",
     data: { company_id: company_id, year: year, period: null },
     responseType: "blob", // importante
@@ -434,7 +434,7 @@ export function get941Foil(
   year: string
 ) {
   return Axios({
-    url: BASE_URL + `/reports/form_941_pdf/`,
+    url: BASE_URL + `/reports/form_941_pdf`,
     method: "POST",
     data: {
       company_id: company_id,
@@ -460,7 +460,7 @@ export function getHaciendaFoil(
   year: string
 ) {
   return Axios({
-    url: BASE_URL + `/reports/form_withheld_499_pdf/`,
+    url: BASE_URL + `/reports/form_withheld_499_pdf`,
     data: {
       company_id: company_id,
       year: year,
@@ -486,7 +486,7 @@ export function getCFSEFoil(
   year: string
 ) {
   return Axios({
-    url: BASE_URL + `/reports/get_report_cfse_pdf/`,
+    url: BASE_URL + `/reports/get_report_cfse_pdf`,
     data: {
       company_id: company_id,
       year: year,
@@ -512,7 +512,7 @@ export function getUnemploymentFoil(
   year: string
 ) {
   return Axios({
-    url: BASE_URL + `/reports/form_unemplo/`,
+    url: BASE_URL + `/reports/form_unemplo`,
     data: {
       company_id: company_id,
       year: year,
@@ -538,7 +538,7 @@ export function getChoferilFoil(
   year: string
 ) {
   return Axios({
-    url: BASE_URL + `/reports/form_choferil_pdf/`,
+    url: BASE_URL + `/reports/form_choferil_pdf`,
     data: {
       company_id: company_id,
       year: year,
