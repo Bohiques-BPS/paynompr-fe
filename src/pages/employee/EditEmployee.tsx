@@ -88,13 +88,12 @@ const EditEmployee = () => {
         />
       </div>
       <div className="w-full  mt-4 bg-white rounded-lg shadow p-4 ">
-        <div className="flex xl:flex-row flex-col gap-4">
-          <EmployeerForm
-            setFormData={setFormData}
-            formData={formData}
-            onChange={handleInputChange}
-          />
-        </div>
+        <EmployeerForm
+          setFormData={setFormData}
+          formData={formData}
+          onChange={handleInputChange}
+        />
+
         <div className="w-full text-center">
           <button
             onClick={handleModal}

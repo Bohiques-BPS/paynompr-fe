@@ -2,7 +2,11 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import CustomSelect from "../../components/forms/CustomSelect";
 import { useEffect, useState } from "react";
-import { showError, showSuccess } from "../../utils/functions";
+import {
+  calculateServiceYears,
+  showError,
+  showSuccess,
+} from "../../utils/functions";
 import { getCompanie, setEmployers } from "../../utils/requestOptions";
 
 import { EMPLOYER_DATA } from "../../models/employeer";
@@ -16,6 +20,37 @@ const AddEmployee = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [loanding, setLoanding] = useState(false);
   const [formData, setFormData] = useState(EMPLOYER_DATA);
+
+  useEffect(() => {
+    const dateAdmission = new Date(2017, 1, 26);
+    let vacationHours: any, vacationHoursMonthly;
+
+    vacationHoursMonthly = 130;
+    if (formData.date_admission) {
+      var date: any = formData.date_admission;
+      if (date < dateAdmission) {
+        vacationHours = 10;
+      } else {
+        const serviceYears = calculateServiceYears(formData.date_admission);
+
+        if (serviceYears <= 1) {
+          vacationHours = 4;
+        } else if (serviceYears <= 5) {
+          vacationHours = 6;
+        } else if (serviceYears <= 15) {
+          vacationHours = 8;
+        } else {
+          vacationHours = 10;
+        }
+      }
+    }
+
+    setFormData({
+      ...formData,
+      ["vacation_hours"]: vacationHours,
+      ["vacation_hours_monthly"]: vacationHoursMonthly,
+    });
+  }, [formData.date_admission]);
 
   useEffect(() => {
     getCompanie(Number(params.id))
@@ -103,13 +138,13 @@ const AddEmployee = () => {
         />
       </div>
       <div className="w-full  mt-4 bg-white rounded-lg shadow p-4 ">
-        <div className="flex xl:flex-row flex-col gap-4">
+       
           <EmployeerForm
             setFormData={setFormData}
             formData={formData}
             onChange={handleInputChange}
           />
-        </div>
+      
         <div className="w-full text-center">
           <button
             onClick={handleModal}

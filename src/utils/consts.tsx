@@ -46,6 +46,11 @@ export const FILES = [
     id: 8,
     name: "Talonario",
   },
+  ,
+  {
+    id: 9,
+    name: "Wages - TXT",
+  },
 ];
 export const YEARS = [
   {

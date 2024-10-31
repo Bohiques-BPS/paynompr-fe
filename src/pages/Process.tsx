@@ -5,10 +5,13 @@ import {
   getCFSEFoil,
   getChoferilFoil,
   getCompanies,
-  getCounterFoilbyDateRange,
+  getCounterFoil,
+  getCounterFoilAll,
   getHaciendaFoil,
+  getPeriodByType,
   getUnemploymentFoil,
   getW2PFoil,
+  getWagesTxt,
 } from "../utils/requestOptions";
 import CustomSelect from "../components/forms/CustomSelect";
 import { useNavigate } from "react-router-dom";
@@ -21,20 +24,12 @@ import {
 import { FILES, TRIMESTRE, YEARS, YEARS_CFSE } from "../utils/consts";
 import { showError, showSuccess } from "../utils/functions";
 import LoadingOverlay from "../components/utils/LoadingOverlay";
-import { DateRangePicker } from "react-date-range";
 
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
-import { addDays } from "date-fns";
+
 const Process = () => {
   const navigate = useNavigate();
-  const [state, setState] = useState([
-    {
-      startDate: new Date(),
-      endDate: addDays(new Date(), 7),
-      key: "selection",
-    },
-  ]);
 
   const [selectedFile, setSelectedFile] = useState(0);
   const [selectedTrimestre, setSelectedTrimestre] = useState(0);
@@ -45,7 +40,11 @@ const Process = () => {
     return currentYear;
   });
   const [data, setData] = useState([]);
+  const [periods, setPeriods] = useState([]);
+
   const [companyId, setCompanyId] = useState(0);
+  const [period, setPeriod] = useState(0);
+
   const [employerId, setEmployerId] = useState(0);
   const [employers, setEmployers] = useState([]);
 
@@ -62,11 +61,6 @@ const Process = () => {
     setEmployers(company["employers"]);
   };
 
-  const handleSelect = (item: any) => {
-    console.log(item.selection);
-    setState([item.selection]);
-  };
-
   const handleEmployerChange = (e: React.FormEvent<HTMLSelectElement>) => {
     const value = e.currentTarget.value;
     console.log(Number(value));
@@ -75,12 +69,47 @@ const Process = () => {
 
   const handleFileChange = (e: React.FormEvent<HTMLSelectElement>) => {
     const value = e.currentTarget.value;
+    if (Number(value) == 8) {
+      var employer = null;
+      if (employerId != 0) employer = filterById(employers, employerId);
 
+      getPeriodByType(value, employer.period_norma)
+        .then((data: any) => {
+          console.log(data.data);
+          setPeriods(data.data);
+
+          setLoanding(false);
+        })
+        .catch(() => {
+          setLoanding(false);
+        });
+    }
     setSelectedFile(Number(value));
+  };
+  const handlePeriodChange = (e: React.FormEvent<HTMLSelectElement>) => {
+    const value = e.currentTarget.value;
+
+    setPeriod(Number(value));
   };
 
   const handleYearChange = (e: React.FormEvent<HTMLSelectElement>) => {
     const value = e.currentTarget.value;
+
+    if (selectedFile == 8) {
+      var employer = null;
+      if (employerId != 0) employer = filterById(employers, employerId);
+
+      getPeriodByType(value, employer.period_norma)
+        .then((data: any) => {
+          console.log(data.data);
+          setPeriods(data.data);
+
+          setLoanding(false);
+        })
+        .catch(() => {
+          setLoanding(false);
+        });
+    }
 
     setYear(value);
   };
@@ -135,6 +164,25 @@ const Process = () => {
           showError(error.response.data.detail);
         });
     }
+
+    if (selectedFile == 9) {
+      var companies = filterById(data, companyId);
+      setLoanding(false);
+      getWagesTxt(companyId, companies, year, selectedTrimestre)
+        .then(() => {
+          // Data retrieval and processing
+          setLoanding(false);
+
+          showSuccess("Creado exitosamente.");
+        })
+        .catch((error) => {
+          setLoanding(false);
+
+          // If the query fails, an error will be displayed on the terminal.
+          showError(error.response.data.detail);
+        });
+    }
+
     if (selectedFile == 3) {
       var companies = filterById(data, companyId);
       get941Foil(companyId, companies, selectedTrimestre, year)
@@ -216,28 +264,44 @@ const Process = () => {
         });
     }
     if (selectedFile == 8) {
-      var employer = null;
-      if (employerId != 0) employer = filterById(employers, employerId);
-      setLoanding(true);
-      getCounterFoilbyDateRange(
-        companyId,
-        employerId,
-        state[0].startDate,
-        state[0].endDate,
-        employer
-      )
-        .then(() => {
-          // Data retrieval and processing
-          setLoanding(false);
+      if (employerId == 0) {
+        setLoanding(true);
+        getCounterFoilAll(companyId, period)
+          .then(() => {
+            // Data retrieval and processing
+            setLoanding(false);
 
-          showSuccess("Creado exitosamente.");
-        })
-        .catch((error) => {
-          setLoanding(false);
-          console.log(error);
-          showError("Usuario no posee data.");
-          // If the query fails, an error will be displayed on the terminal.
-        });
+            showSuccess("Creado exitosamente.");
+          })
+          .catch((error) => {
+            setLoanding(false);
+            console.log(error);
+            showError("Usuario no posee data.");
+            // If the query fails, an error will be displayed on the terminal.
+          });
+      } else {
+        var employer = null;
+        if (employerId != 0) employer = filterById(employers, employerId);
+        setLoanding(true);
+        getCounterFoil(
+          Number(companyId),
+          Number(employerId),
+          period,
+          period,
+          employer
+        )
+          .then(() => {
+            // Data retrieval and processing
+            setLoanding(false);
+
+            showSuccess("Generado exitosamente.");
+          })
+          .catch((error) => {
+            setLoanding(false);
+            // If the query fails, an error will be displayed on the terminal.
+            showError(error.response.data.detail);
+          });
+      }
     }
   };
 
@@ -294,7 +358,7 @@ const Process = () => {
               placeholder="Seleccione un archivo"
               type="text"
             />
-            {selectedFile != 0 && selectedFile != 7 && selectedFile != 8 && (
+            {selectedFile != 0 && selectedFile != 7 && (
               <CustomSelect
                 class="w-full mx-auto  inline-block "
                 label="Seleccione el año"
@@ -318,15 +382,32 @@ const Process = () => {
               />
             )}
             {selectedFile == 8 && (
-              <DateRangePicker
-                ranges={state}
-                onChange={(item: any) => handleSelect(item)}
-              />
+              <label
+                className={` block mb-2 text-sm font-medium text-gray-700 w-full mx-auto  inline-block `}
+              >
+                <span> Seleccione un Periodo</span>
+
+                <select
+                  className={` bg-gray-50 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-3 `}
+                  tabIndex={0}
+                  name="period_id"
+                  onChange={handlePeriodChange}
+                  value={period}
+                >
+                  {periods.map((item: any, i: number) => (
+                    <option key={i} value={item.id}>
+                      Periodo Numero {item.period_number} Fecha{" "}
+                      {item.period_start} {item.period_end}
+                    </option>
+                  ))}
+                </select>
+              </label>
             )}
             {selectedFile == 3 ||
             selectedFile == 4 ||
             selectedFile == 5 ||
-            selectedFile == 6 ? (
+            selectedFile == 6 ||
+            selectedFile == 9 ? (
               <>
                 {" "}
                 <CustomSelect

@@ -11,6 +11,7 @@ export const EMPLOYER_DATA = {
   marbete: "",
   type: 1,
   salary: 0,
+  work_hours: 0,
   date_marb: null,
   clipboard: "",
   exec_personal: 1,
@@ -65,6 +66,7 @@ export interface EMPLOYEER {
   date_marb: any;
   clipboard: string;
   salary: number;
+  work_hours: number;
   exec_personal: number;
   choferil: string;
   regular_time: number;
