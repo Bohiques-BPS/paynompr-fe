@@ -242,7 +242,7 @@ export function getCompanies() {
   return Axios.request(setOptions("companies/", "GET")); // Using a post request, specifying the user
 }
 export function getCompanie(id: number) {
-  return Axios.request(setOptions("companies/" + id + "/", "GET")); // Using a post request, specifying the user
+  return Axios.request(setOptions("companies/" + id, "GET")); // Using a post request, specifying the user
 }
 
 export function setCompanies(data: object) {
