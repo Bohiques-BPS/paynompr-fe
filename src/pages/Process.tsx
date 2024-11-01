@@ -7,6 +7,7 @@ import {
   getCompanies,
   getCounterFoil,
   getCounterFoilAll,
+  getCounterFoilPeriod,
   getHaciendaFoil,
   getPeriodByType,
   getUnemploymentFoil,
@@ -21,7 +22,13 @@ import {
   faClock,
   faMoneyCheckDollar,
 } from "@fortawesome/free-solid-svg-icons";
-import { FILES, TRIMESTRE, YEARS, YEARS_CFSE } from "../utils/consts";
+import {
+  FILES,
+  PERIOD_PAYROLL,
+  TRIMESTRE,
+  YEARS,
+  YEARS_CFSE,
+} from "../utils/consts";
 import { showError, showSuccess } from "../utils/functions";
 import LoadingOverlay from "../components/utils/LoadingOverlay";
 
@@ -41,7 +48,7 @@ const Process = () => {
   });
   const [data, setData] = useState([]);
   const [periods, setPeriods] = useState([]);
-
+  const [periodNorma, setPeriodNorma] = useState(0);
   const [companyId, setCompanyId] = useState(0);
   const [period, setPeriod] = useState(0);
 
@@ -67,13 +74,10 @@ const Process = () => {
     setEmployerId(Number(value));
   };
 
-  const handleFileChange = (e: React.FormEvent<HTMLSelectElement>) => {
+  const handlePeriodNormaChange = (e: React.FormEvent<HTMLSelectElement>) => {
     const value = e.currentTarget.value;
-    if (Number(value) == 8) {
-      var employer = null;
-      if (employerId != 0) employer = filterById(employers, employerId);
-
-      getPeriodByType(value, employer.period_norma)
+    if (selectedFile == 8) {
+      getPeriodByType(year, Number(value))
         .then((data: any) => {
           console.log(data.data);
           setPeriods(data.data);
@@ -83,6 +87,26 @@ const Process = () => {
         .catch(() => {
           setLoanding(false);
         });
+      setPeriodNorma(Number(value));
+    }
+  };
+
+  const handleFileChange = (e: React.FormEvent<HTMLSelectElement>) => {
+    const value = e.currentTarget.value;
+    if (Number(value) == 8) {
+      var employer = null;
+      if (employerId != 0) employer = filterById(employers, employerId);
+      if (employer)
+        getPeriodByType(value, employer.period_norma)
+          .then((data: any) => {
+            console.log(data.data);
+            setPeriods(data.data);
+
+            setLoanding(false);
+          })
+          .catch(() => {
+            setLoanding(false);
+          });
     }
     setSelectedFile(Number(value));
   };
@@ -98,17 +122,17 @@ const Process = () => {
     if (selectedFile == 8) {
       var employer = null;
       if (employerId != 0) employer = filterById(employers, employerId);
+      if (employer)
+        getPeriodByType(value, employer.period_norma)
+          .then((data: any) => {
+            console.log(data.data);
+            setPeriods(data.data);
 
-      getPeriodByType(value, employer.period_norma)
-        .then((data: any) => {
-          console.log(data.data);
-          setPeriods(data.data);
-
-          setLoanding(false);
-        })
-        .catch(() => {
-          setLoanding(false);
-        });
+            setLoanding(false);
+          })
+          .catch(() => {
+            setLoanding(false);
+          });
     }
 
     setYear(value);
@@ -283,7 +307,7 @@ const Process = () => {
         var employer = null;
         if (employerId != 0) employer = filterById(employers, employerId);
         setLoanding(true);
-        getCounterFoil(
+        getCounterFoilPeriod(
           Number(companyId),
           Number(employerId),
           period,
@@ -381,6 +405,18 @@ const Process = () => {
                 type="text"
               />
             )}
+            {selectedFile == 8 && employerId == 0 && (
+              <CustomSelect
+                options={PERIOD_PAYROLL}
+                class="w-full mx-auto inline-block"
+                label="Período de norma"
+                onChange={handlePeriodNormaChange}
+                name="period_norma"
+                value={periodNorma}
+                placeholder=""
+                type="number"
+              />
+            )}
             {selectedFile == 8 && (
               <label
                 className={` block mb-2 text-sm font-medium text-gray-700 w-full mx-auto  inline-block `}
@@ -403,6 +439,7 @@ const Process = () => {
                 </select>
               </label>
             )}
+
             {selectedFile == 3 ||
             selectedFile == 4 ||
             selectedFile == 5 ||

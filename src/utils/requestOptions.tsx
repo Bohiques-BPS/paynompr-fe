@@ -122,13 +122,7 @@ export function getCompanyWithEmployer(
 ) {
   return Axios.request(
     setOptions(
-      "companies/" +
-        id_company +
-        "/employer/" +
-        id_employer +
-        "/year/" +
-        _year +
-        "/",
+      "companies/" + id_company + "/employer/" + id_employer + "/year/" + _year,
       "GET"
     )
   ); // Using a post request, specifying the user
@@ -213,7 +207,7 @@ export function getAccountant(id: number) {
 export function getPeriodByType(year: any, type: any) {
   if (type == 1) type = "weekly";
   if (type == 2) type = "biweekly";
-  if (type == 3) type = "monthly";
+  if (type == 4) type = "monthly";
 
   return Axios.request(
     setOptions("period/periods_by_year_and_type/" + year + "/" + type, "GET")
@@ -276,6 +270,38 @@ export function setOutTime(data: object, id_employer: number) {
 
 export function editOutTime(data: object, id_time: number) {
   return Axios.request(setOptions("outtime/" + id_time, "PUT", data)); // Using a post request, specifying the user
+}
+
+export function getCounterFoilPeriod(
+  id_company: number,
+  employer_id: number,
+  id_period: number,
+  period: any,
+  employer: any
+) {
+  return Axios({
+    url:
+      BASE_URL +
+      `/reports/counterfoil/${id_company}/${employer_id}/period/${id_period}`,
+    method: "GET",
+    responseType: "blob", // importante
+  }).then((response) => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute(
+      "download",
+      "Empleado-" +
+        employer.first_name +
+        "-" +
+        employer.last_name +
+        "-Periodo-" +
+        period.period_number +
+        ".pdf"
+    );
+    document.body.appendChild(link);
+    link.click();
+  });
 }
 
 export function getCounterFoil(
