@@ -5,7 +5,6 @@ import {
   getCFSEFoil,
   getChoferilFoil,
   getCompanies,
-  getCounterFoil,
   getCounterFoilAll,
   getCounterFoilPeriod,
   getHaciendaFoil,
