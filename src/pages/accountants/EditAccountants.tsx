@@ -159,6 +159,43 @@ const EditAccountants = () => {
               type="text"
             />
             <CustomInputs
+              class="w-full mx-auto pe-1  inline-block "
+              label="Dirección Física"
+              name="physical_address"
+              onChange={handleInputChange}
+              value={formData.physical_address}
+              placeholder=""
+              type="text"
+            />
+            <CustomSelect
+              class="w-1/3 mx-auto  inline-block "
+              label=""
+              name="physical_country"
+              options={COUNTRY}
+              onChange={handleInputChange}
+              value={formData.physical_country}
+              placeholder=""
+              type="text"
+            />
+            <CustomInputs
+              class="w-1/3 mx-auto ps-1  inline-block "
+              label=""
+              name="physical_state"
+              onChange={handleInputChange}
+              value={formData.physical_state}
+              placeholder=""
+              type="text"
+            />
+            <CustomInputs
+              class="w-1/3 mx-auto ps-1  inline-block "
+              label=""
+              name="physical_zip_code"
+              onChange={handleInputChange}
+              value={formData.physical_zip_code}
+              placeholder=""
+              type="text"
+            />
+            <CustomInputs
               class="w-1/4 mx-auto pe-1  inline-block "
               label="Correo electrónico"
               name="email"

@@ -51,6 +51,10 @@ export const FILES = [
     id: 9,
     name: "Wages - TXT",
   },
+  {
+    id: 10,
+    name: "W2-PR - TXT",
+  },
 ];
 export const YEARS = [
   {
@@ -192,16 +196,6 @@ export const PAYER = [
   {
     id: 4,
     name: "Doméstico",
-  },
-
-  {
-    id: 5,
-    name: "Comp, por enferm",
-  },
-
-  {
-    id: 6,
-    name: "Sólo empleados Med",
   },
 ];
 

@@ -12,6 +12,7 @@ import {
   getPeriodByType,
   getUnemploymentFoil,
   getW2PFoil,
+  getW2PTxt,
   getWagesTxt,
 } from "../utils/requestOptions";
 import CustomSelect from "../components/forms/CustomSelect";
@@ -274,6 +275,22 @@ const Process = () => {
     if (selectedFile == 7) {
       var companies = filterById(data, companyId);
       getCFSEFoil(companyId, companies, selectedTrimestre, year)
+        .then(() => {
+          // Data retrieval and processing
+          setLoanding(false);
+
+          showSuccess("Creado exitosamente.");
+        })
+        .catch((error) => {
+          setLoanding(false);
+
+          // If the query fails, an error will be displayed on the terminal.
+          showError(error.response.data.detail);
+        });
+    }
+    if (selectedFile == 10) {
+      var companies = filterById(data, companyId);
+      getW2PTxt(companyId, companies, year)
         .then(() => {
           // Data retrieval and processing
           setLoanding(false);
