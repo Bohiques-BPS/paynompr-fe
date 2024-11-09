@@ -12,6 +12,7 @@ import {
   getUnemploymentFoil,
   getW2PFoil,
   getW2PTxt,
+  getW2SSEPTxt,
   getWagesTxt,
 } from "../utils/requestOptions";
 import CustomSelect from "../components/forms/CustomSelect";
@@ -25,6 +26,7 @@ import {
 import {
   FILES,
   PERIOD_PAYROLL,
+  REIMBURSED,
   TRIMESTRE,
   YEARS,
   YEARS_CFSE,
@@ -34,6 +36,7 @@ import LoadingOverlay from "../components/utils/LoadingOverlay";
 
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
+import CustomInputs from "../components/forms/CustomInputs";
 
 const Process = () => {
   const navigate = useNavigate();
@@ -49,6 +52,9 @@ const Process = () => {
   const [data, setData] = useState([]);
   const [periods, setPeriods] = useState([]);
   const [periodNorma, setPeriodNorma] = useState(0);
+  const [reimbursedCode, setReimbursedCode] = useState("");
+  const [reimbursed, setReimbursed] = useState(0);
+
   const [companyId, setCompanyId] = useState(0);
   const [period, setPeriod] = useState(0);
 
@@ -68,6 +74,16 @@ const Process = () => {
     setEmployers(company["employers"]);
   };
 
+  const handleReimbursed = (e: React.FormEvent<HTMLSelectElement>) => {
+    const value = e.currentTarget.value;
+    console.log(Number(value));
+    setReimbursed(Number(value));
+  };
+  const handleReimbursedCode = (e: React.FormEvent<any>) => {
+    const value = e.currentTarget.value;
+    console.log(value);
+    setReimbursedCode(value);
+  };
   const handleEmployerChange = (e: React.FormEvent<HTMLSelectElement>) => {
     const value = e.currentTarget.value;
     console.log(Number(value));
@@ -289,7 +305,23 @@ const Process = () => {
     }
     if (selectedFile == 10) {
       var companies = filterById(data, companyId);
-      getW2PTxt(companyId, companies, year)
+      getW2PTxt(companyId, companies, year, reimbursed, reimbursedCode)
+        .then(() => {
+          // Data retrieval and processing
+          setLoanding(false);
+
+          showSuccess("Creado exitosamente.");
+        })
+        .catch((error) => {
+          setLoanding(false);
+
+          // If the query fails, an error will be displayed on the terminal.
+          showError(error.response.data.detail);
+        });
+    }
+    if (selectedFile == 11) {
+      var companies = filterById(data, companyId);
+      getW2SSEPTxt(companyId, companies, year, reimbursed, reimbursedCode)
         .then(() => {
           // Data retrieval and processing
           setLoanding(false);
@@ -433,6 +465,7 @@ const Process = () => {
                 type="number"
               />
             )}
+
             {selectedFile == 8 && (
               <label
                 className={` block mb-2 text-sm font-medium text-gray-700 w-full mx-auto  inline-block `}
@@ -454,6 +487,31 @@ const Process = () => {
                   ))}
                 </select>
               </label>
+            )}
+
+            {selectedFile >= 10 && (
+              <CustomSelect
+                options={REIMBURSED}
+                class="w-full mx-auto inline-block"
+                label="Período de norma"
+                name="period_norma"
+                value={reimbursed}
+                onChange={handleReimbursed}
+                placeholder=""
+                type="number"
+              />
+            )}
+
+            {reimbursed > 1 && (
+              <CustomInputs
+                class="w-full mx-auto inline-block"
+                label="Codigo"
+                name="period_norma"
+                value={reimbursedCode}
+                onChange={handleReimbursedCode}
+                placeholder=""
+                type="text"
+              />
             )}
 
             {selectedFile == 3 ||

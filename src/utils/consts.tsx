@@ -55,6 +55,11 @@ export const FILES = [
     id: 10,
     name: "W2-PR - TXT",
   },
+
+  {
+    id: 11,
+    name: "W2SSE-PR - TXT",
+  },
 ];
 export const YEARS = [
   {
@@ -604,7 +609,21 @@ export const PERIOD_PAYROLL = [
     name: "MENSUAL / MONTHLY",
   },
 ];
+export const REIMBURSED = [
+  {
+    id: 1,
+    name: 0,
+  },
+  {
+    id: 2,
+    name: 1,
+  },
 
+  {
+    id: 4,
+    name: 2,
+  },
+];
 export const STATUS_CIVIL = [
   {
     id: 1,

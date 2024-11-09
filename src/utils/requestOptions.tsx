@@ -504,12 +504,13 @@ export function getHaciendaFoil(
     link.click();
   });
 }
-
-export function getW2PTxt(
+export function getW2SSEPTxt(
   company_id: number,
   company: any,
 
-  year: string
+  year: string,
+  reimbursed: number,
+  code: string
 ) {
   return Axios({
     url: BASE_URL + `/reports/get_w2p_txt`,
@@ -517,6 +518,36 @@ export function getW2PTxt(
       company_id: company_id,
       year: year,
       period: null,
+      reimbursed: reimbursed,
+      code: code,
+    },
+    method: "POST",
+    responseType: "blob", // importante
+  }).then((response) => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "Company-" + company.name + ".txt");
+    document.body.appendChild(link);
+    link.click();
+  });
+}
+export function getW2PTxt(
+  company_id: number,
+  company: any,
+
+  year: string,
+  reimbursed: number,
+  code: string
+) {
+  return Axios({
+    url: BASE_URL + `/reports/get_w2p_txt`,
+    data: {
+      company_id: company_id,
+      year: year,
+      period: null,
+      reimbursed: reimbursed,
+      code: code,
     },
     method: "POST",
     responseType: "blob", // importante
