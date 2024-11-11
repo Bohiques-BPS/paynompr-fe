@@ -1,9 +1,9 @@
 export const BONUS = {
   max_employers: 0,
-  percent_to_max: 0,
+  percent_to_max: 3,
   amount_max: 0,
   min_employers: 0,
-  percent_to_min: 0,
+  percent_to_min: 6,
   amount_min: 0,
 };
 
