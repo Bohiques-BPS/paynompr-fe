@@ -452,7 +452,31 @@ export function get940Foil(company_id: number, company: any, year: string) {
     link.click();
   });
 }
-
+export function get943Foil(
+  company_id: number,
+  company: any,
+  trimestre: any,
+  year: string
+) {
+  return Axios({
+    url: BASE_URL + `/reports/form_943_pdf`,
+    method: "POST",
+    data: {
+      company_id: company_id,
+      year: year,
+      trimestre: trimestre,
+      period: trimestre,
+    },
+    responseType: "blob", // importante
+  }).then((response) => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "Company-" + company.name + ".pdf");
+    document.body.appendChild(link);
+    link.click();
+  });
+}
 export function get941Foil(
   company_id: number,
   company: any,
@@ -478,7 +502,32 @@ export function get941Foil(
     link.click();
   });
 }
+export function getBonus(
+  company_id: number,
+  /* company: any, */
 
+  year: string,
+  bonus: any
+) {
+  return Axios({
+    url: BASE_URL + `/reports/bonus_pdf`,
+    method: "POST",
+    data: {
+      company_id: company_id,
+      year: year,
+      bonus: bonus,
+    },
+    responseType: "blob", // importante
+  }).then((response) => {
+    alert(response.data);
+    /*  const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "Company-" + company.name + ".pdf");
+    document.body.appendChild(link);
+    link.click(); */
+  });
+}
 export function getHaciendaFoil(
   company_id: number,
   company: any,
@@ -513,7 +562,7 @@ export function getW2SSEPTxt(
   code: string
 ) {
   return Axios({
-    url: BASE_URL + `/reports/get_w2p_txt`,
+    url: BASE_URL + `/reports/get_w2psse_txt`,
     data: {
       company_id: company_id,
       year: year,

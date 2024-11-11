@@ -23,7 +23,10 @@ export const FILES = [
     id: 3,
     name: "941",
   },
-
+  {
+    id: 13,
+    name: "943",
+  },
   {
     id: 4,
     name: "Hacienda",
@@ -41,6 +44,10 @@ export const FILES = [
   {
     id: 7,
     name: "CSFE",
+  },
+  {
+    id: 12,
+    name: "Bonus",
   },
   {
     id: 8,
@@ -612,16 +619,11 @@ export const PERIOD_PAYROLL = [
 export const REIMBURSED = [
   {
     id: 1,
-    name: 0,
+    name: "Nuevo",
   },
   {
     id: 2,
-    name: 1,
-  },
-
-  {
-    id: 4,
-    name: 2,
+    name: "Correcciones W2-C",
   },
 ];
 export const STATUS_CIVIL = [

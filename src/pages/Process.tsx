@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import {
   get940Foil,
   get941Foil,
+  get943Foil,
+  getBonus,
   getCFSEFoil,
   getChoferilFoil,
   getCompanies,
@@ -37,6 +39,7 @@ import LoadingOverlay from "../components/utils/LoadingOverlay";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import CustomInputs from "../components/forms/CustomInputs";
+import { BONUS } from "../models/bonus";
 
 const Process = () => {
   const navigate = useNavigate();
@@ -44,6 +47,7 @@ const Process = () => {
   const [selectedFile, setSelectedFile] = useState(0);
   const [selectedTrimestre, setSelectedTrimestre] = useState(0);
   const [loanding, setLoanding] = useState(false);
+  const [bonus, setBonus] = useState(BONUS);
 
   const [year, setYear] = useState(() => {
     const currentYear = new Date().getFullYear().toString(); // Convertimos el año a string
@@ -61,6 +65,14 @@ const Process = () => {
   const [employerId, setEmployerId] = useState(0);
   const [employers, setEmployers] = useState([]);
 
+  const handleInputChange = (e: React.ChangeEvent<any>) => {
+    const value = e.currentTarget.value;
+
+    setBonus({
+      ...bonus,
+      [e.currentTarget.name]: value,
+    });
+  };
   const handleCompanyChange = (e: React.FormEvent<HTMLSelectElement>) => {
     const value = e.currentTarget.value;
     if (value == "0") {
@@ -226,6 +238,38 @@ const Process = () => {
     if (selectedFile == 3) {
       var companies = filterById(data, companyId);
       get941Foil(companyId, companies, selectedTrimestre, year)
+        .then(() => {
+          // Data retrieval and processing
+          setLoanding(false);
+
+          showSuccess("Creado exitosamente.");
+        })
+        .catch((error) => {
+          setLoanding(false);
+
+          // If the query fails, an error will be displayed on the terminal.
+          showError(error.response.data.detail);
+        });
+    }
+    if (selectedFile == 12) {
+      var companies = filterById(data, companyId);
+      getBonus(companyId, /* companies */ year, bonus)
+        .then(() => {
+          // Data retrieval and processing
+          setLoanding(false);
+
+          showSuccess("Creado exitosamente.");
+        })
+        .catch((error) => {
+          setLoanding(false);
+
+          // If the query fails, an error will be displayed on the terminal.
+          showError(error.response.data.detail);
+        });
+    }
+    if (selectedFile == 13) {
+      var companies = filterById(data, companyId);
+      get943Foil(companyId, companies, selectedTrimestre, year)
         .then(() => {
           // Data retrieval and processing
           setLoanding(false);
@@ -422,9 +466,10 @@ const Process = () => {
               type="text"
             />
             <CustomSelect
-              class="w-full mx-auto  inline-block "
+              class="w-full mx-auto  inline-block  "
               label="Seleccione tipo de archivo"
               disabled={false}
+              inputCss="uppercase"
               onChange={handleFileChange}
               options={FILES}
               placeholder="Seleccione un archivo"
@@ -479,6 +524,7 @@ const Process = () => {
                   onChange={handlePeriodChange}
                   value={period}
                 >
+                  <option value={0}>Seleccione un Periodo</option>
                   {periods.map((item: any, i: number) => (
                     <option key={i} value={item.id}>
                       Periodo Numero {item.period_number} Fecha{" "}
@@ -489,7 +535,7 @@ const Process = () => {
               </label>
             )}
 
-            {selectedFile >= 10 && (
+            {(selectedFile == 11 || selectedFile == 10) && (
               <CustomSelect
                 options={REIMBURSED}
                 class="w-full mx-auto inline-block"
@@ -513,12 +559,72 @@ const Process = () => {
                 type="text"
               />
             )}
+            {selectedFile == 12 && (
+              <>
+                <CustomInputs
+                  class="md:w-2/5 w-full mx-auto inline-block pe-1"
+                  label={`Las Empresas con mas de ${bonus.max_employers} Empleados pagaran un bono`}
+                  name="max_employers"
+                  value={bonus.max_employers}
+                  onChange={handleInputChange}
+                  placeholder=""
+                  type="number"
+                />
+                <CustomInputs
+                  class="md:w-2/5 w-full mx-auto inline-block pe-1"
+                  label={`Equivalente al ${bonus.percent_to_max}% del total de Salarios computados`}
+                  name="percent_to_max"
+                  value={bonus.percent_to_max}
+                  onChange={handleInputChange}
+                  placeholder=""
+                  type="number"
+                />
+                <CustomInputs
+                  class="md:w-1/5 w-full mx-auto inline-block"
+                  label={`Hasta un maximo de ${bonus.amount_max} Dolares`}
+                  name="amount_max"
+                  value={bonus.amount_max}
+                  onChange={handleInputChange}
+                  placeholder=""
+                  type="number"
+                />
+
+                <CustomInputs
+                  class="md:w-2/5 w-full mx-auto inline-block pe-1"
+                  label={`Las Empresas con hasta ${bonus.min_employers} Empleados pagaran un bono`}
+                  name="min_employers"
+                  value={bonus.min_employers}
+                  onChange={handleInputChange}
+                  placeholder=""
+                  type="number"
+                />
+                <CustomInputs
+                  class="md:w-2/5 w-full mx-auto inline-block pe-1"
+                  label={`Equivalente al ${bonus.percent_to_min}% del total de Salarios computados`}
+                  name="percent_to_min"
+                  value={bonus.percent_to_min}
+                  onChange={handleInputChange}
+                  placeholder=""
+                  type="number"
+                />
+                <CustomInputs
+                  class="md:w-1/5 w-full mx-auto inline-block"
+                  label={`Hasta un maximo de ${bonus.amount_min} Dolares`}
+                  name="amount_min"
+                  value={bonus.amount_min}
+                  onChange={handleInputChange}
+                  placeholder=""
+                  type="number"
+                />
+              </>
+            )}
 
             {selectedFile == 3 ||
             selectedFile == 4 ||
             selectedFile == 5 ||
             selectedFile == 6 ||
-            selectedFile == 9 ? (
+            selectedFile == 9 ||
+            selectedFile == 13 ? (
               <>
                 {" "}
                 <CustomSelect

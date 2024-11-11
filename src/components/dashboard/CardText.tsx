@@ -18,14 +18,15 @@ const CardText = (props: Props) => {
       {props.items.slice(0, 3).map((item, i) => (
         <div
           key={i}
-          className="mt-4 flex justify-between flex-row content-center items-center"
+          className="mt-4 flex  flex-row content-center items-center"
         >
-          <p className="ms-4">{item.name}</p>
+          <p className="ms-4 flex-1">{item.name}</p>
           <Link
             to={`../../escritorio/empresas/editar/${item.id}`}
             rel="noopener noreferrer"
+            className="flex-1 text-center"
           >
-            <FontAwesomeIcon icon={faEdit} className="text-2xl" />
+            <FontAwesomeIcon icon={faEdit} className="text-2xl " />
           </Link>
           <Link className="px-1" to={getRoute(item.id)}>
             <button className="  rounded-lg px-4 py-3 font-bold bg-[#FED102]  content-center items-center">
