@@ -67,10 +67,20 @@ const Process = () => {
 
   const handleInputChange = (e: React.ChangeEvent<any>) => {
     const value = e.currentTarget.value;
+    console.log(value);
 
     setBonus({
       ...bonus,
       [e.currentTarget.name]: value,
+    });
+  };
+  const handleInputCheckChange = (e: React.ChangeEvent<any>) => {
+    const { checked } = e.target;
+
+    console.log(checked);
+    setBonus({
+      ...bonus,
+      [e.currentTarget.name]: checked,
     });
   };
   const handleCompanyChange = (e: React.FormEvent<HTMLSelectElement>) => {
@@ -237,6 +247,11 @@ const Process = () => {
 
     if (selectedFile == 3) {
       var companies = filterById(data, companyId);
+      if (companies.payer == "2") {
+        setLoanding(false);
+        showError("Esta compañia no posee 941");
+        return;
+      }
       get941Foil(companyId, companies, selectedTrimestre, year)
         .then(() => {
           // Data retrieval and processing
@@ -269,6 +284,11 @@ const Process = () => {
     }
     if (selectedFile == 13) {
       var companies = filterById(data, companyId);
+      if (companies.payer == "1") {
+        setLoanding(false);
+        showError("Esta compañia no posee 943");
+        return;
+      }
       get943Foil(companyId, companies, selectedTrimestre, year)
         .then(() => {
           // Data retrieval and processing
@@ -591,9 +611,11 @@ const Process = () => {
 
                 <CustomInputs
                   class="md:w-2/5 w-full mx-auto inline-block pe-1"
-                  label={`Las Empresas con hasta ${bonus.min_employers} Empleados pagaran un bono`}
-                  name="min_employers"
-                  value={bonus.min_employers}
+                  label={`Las Empresas con hasta ${Number(
+                    bonus.max_employers
+                  )} Empleados pagaran un bono`}
+                  disabled={true}
+                  value={Number(bonus.max_employers)}
                   onChange={handleInputChange}
                   placeholder=""
                   type="number"
@@ -616,6 +638,44 @@ const Process = () => {
                   placeholder=""
                   type="number"
                 />
+                <div className="mt-2">
+                  <label className=" p-4 ps-0">
+                    <input
+                      type="checkbox"
+                      checked={bonus.reg}
+                      name="reg"
+                      onChange={handleInputCheckChange}
+                    />{" "}
+                    REGULAR PAY
+                  </label>
+                  <label className=" p-4">
+                    <input
+                      type="checkbox"
+                      checked={bonus.over}
+                      name="over"
+                      onChange={handleInputCheckChange}
+                    />{" "}
+                    OVER PAY
+                  </label>
+                  <label className=" p-4">
+                    <input
+                      type="checkbox"
+                      checked={bonus.vacations}
+                      name="vacations"
+                      onChange={handleInputCheckChange}
+                    />{" "}
+                    VACATIONS PAY
+                  </label>
+                  <label className=" p-4">
+                    <input
+                      type="checkbox"
+                      checked={bonus.sick}
+                      name="sick"
+                      onChange={handleInputCheckChange}
+                    />{" "}
+                    SICK PAY
+                  </label>
+                </div>
               </>
             )}
 

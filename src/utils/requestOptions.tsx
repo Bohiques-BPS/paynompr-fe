@@ -519,13 +519,12 @@ export function getBonus(
     },
     responseType: "blob", // importante
   }).then((response) => {
-    alert(response.data);
-    /*  const url = window.URL.createObjectURL(new Blob([response.data]));
+    const url = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute("download", "Company-" + company.name + ".pdf");
+    link.setAttribute("download", "Bonus.pdf");
     document.body.appendChild(link);
-    link.click(); */
+    link.click();
   });
 }
 export function getHaciendaFoil(

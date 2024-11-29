@@ -239,10 +239,18 @@ const CompanyForm = (props: Props) => {
             />
             <CustomInputs
               class="w-1/2 mx-auto pe-1  inline-block "
-              label="COML (mm/dd/yyyy)"
+              label="Fecha de inicio"
               onChange={props.onChange}
               value={props.formData.coml}
               name="coml"
+              type="date"
+            />
+            <CustomInputs
+              class="w-1/2 mx-auto pe-1  inline-block "
+              label="Fecha de cierre"
+              onChange={props.onChange}
+              value={props.formData.date_close}
+              name="date_close"
               type="date"
             />
 

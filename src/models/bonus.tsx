@@ -5,6 +5,10 @@ export const BONUS = {
   min_employers: 0,
   percent_to_min: 6,
   amount_min: 0,
+  reg: false,
+  over: false,
+  vacations: false,
+  sick: false,
 };
 
 export interface BONUS {
@@ -14,4 +18,8 @@ export interface BONUS {
   min_employers: 0;
   percent_to_min: Number;
   amount_min: Number;
+  reg: Boolean;
+  over: Boolean;
+  vacations: Boolean;
+  sick: Boolean;
 }

@@ -285,17 +285,16 @@ const EmployeerForm = (props: Props) => {
             placeholder=""
             type="number"
           />
-          {props.formData.salary > 0 && (
-            <CustomInputs
-              class="xl:w-1/3 w-1/3 mx-auto pe-1  inline-block "
-              label="Horas a Trabajar"
-              name="work_hours"
-              onChange={props.onChange}
-              value={props.formData.work_hours}
-              placeholder=""
-              type="number"
-            />
-          )}
+
+          <CustomInputs
+            class="xl:w-1/3 w-1/3 mx-auto pe-1  inline-block "
+            label="Horas a Trabajar"
+            name="work_hours"
+            onChange={props.onChange}
+            value={props.formData.work_hours}
+            placeholder=""
+            type="number"
+          />
 
           <CustomInputs
             class="xl:w-1/3 w-1/3 mx-auto pe-1  inline-block "

@@ -643,7 +643,7 @@ const Cargar = () => {
         return showError("Por favor seleccione el Periodo");
 
       setLoanding(true);
-      setTime(formData, Number(params.id_employer))
+      setTime(formData, idEmployer)
         .then(() => {
           // Data retrieval and processing
           setLoanding(false);

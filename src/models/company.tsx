@@ -14,7 +14,7 @@ export const COMPANY_DATA = {
   w2_last_control: "",
   sp_first_control: "",
   sp_last_control: "",
-
+  date_close: null,
   coml: null,
   special_contribution: "1",
   country_postal_address: "",
@@ -59,6 +59,7 @@ export interface COMPANY {
   special_contribution: string;
   number_patronal: string;
   coml: any;
+  date_close: any;
   contact: string;
   contact_number: string;
   website: string;
