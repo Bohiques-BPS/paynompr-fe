@@ -683,8 +683,7 @@ const Process = () => {
             selectedFile == 4 ||
             selectedFile == 5 ||
             selectedFile == 6 ||
-            selectedFile == 9 ||
-            selectedFile == 13 ? (
+            selectedFile == 9 ? (
               <>
                 {" "}
                 <CustomSelect

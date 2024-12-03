@@ -9,6 +9,7 @@ import {
   EXENCIÓN_PERSONAL,
   PERIOD_PAYROLL,
   SELECT_SIMPLE,
+  TYPE_RETENTION,
 } from "../../utils/consts";
 import { NumericFormat, PatternFormat } from "react-number-format";
 import CustomCheckBox from "./CustomCheckBox";
@@ -31,6 +32,43 @@ const EmployeerForm = (props: Props) => {
       ["mealtime"]: Number(mealtime.toFixed(2)),
       ["overtime"]: Number(overtime.toFixed(2)),
     });
+  };
+
+  const getSalaryRegular = (data: any) => {
+    if (data.salary == 0) {
+      if (props.formData.period_norma == 1) {
+        return data.work_hours * 4 * data.regular_time;
+      }
+      if (props.formData.period_norma == 2) {
+        return data.work_hours * 2 * data.regular_time;
+      }
+      if (props.formData.period_norma == 4) {
+        return data.work_hours * data.regular_time;
+      }
+    } else return data.salary;
+  };
+
+  const getReteinedSalary = (salary: any) => {
+    if (props.formData.retention_type == 1)
+      return salary * (parseFloat(props.formData.payment_percentage) / 100);
+    if (props.formData.retention_type == 2) {
+      if (salary < 9000) {
+        return 0;
+      }
+      if (salary <= 25000) {
+        return (salary - 9000) * 0.07;
+      }
+      if (salary <= 41500) {
+        return (salary - 25000) * 0.14 + 1120;
+      }
+      if (salary <= 61500) {
+        return (salary - 41500) * 0.25 + 3430;
+      }
+      if (salary > 61500) {
+        return (salary - 61500) * 0.33 + 8430;
+      }
+    }
+    return 0;
   };
 
   return (
@@ -323,20 +361,61 @@ const EmployeerForm = (props: Props) => {
             placeholder=""
             type="number"
           />
-          <label className=" mb-2  font-medium text-gray-700 w-1/2 xl:w-1/3 mx-auto ps-1  inline-block">
-            <span>% de Retención</span>
+          <CustomInputs
+            class="xl:w-1/3 w-1/3 mx-auto pe-1  inline-block "
+            label="Salario Regular"
+            inputCss="bg-gray-300"
+            disabled={true}
+            value={getSalaryRegular(props.formData)}
+            placeholder=""
+            type="number"
+          />
 
-            <NumericFormat
-              name="payment_percentage"
-              allowNegative={false}
-              max={100}
-              maxLength={6}
-              onChange={props.onChange}
-              value={props.formData.payment_percentage}
-              className="bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 "
-              suffix={"%"}
-            />
-          </label>
+          <CustomInputs
+            class="xl:w-1/3 w-1/3 mx-auto pe-1  inline-block "
+            label="Salario Anual"
+            inputCss="bg-gray-300"
+            disabled={true}
+            value={getSalaryRegular(props.formData) * 12}
+            placeholder=""
+            type="number"
+          />
+          <CustomSelect
+            options={TYPE_RETENTION}
+            class="w-1/3 mx-auto pe-1  inline-block "
+            label="Tipo de Retención"
+            name="retention_type"
+            onChange={props.onChange}
+            value={props.formData.retention_type}
+            placeholder=""
+            type="number"
+          />
+          {props.formData.retention_type == 1 && (
+            <label className=" mb-2  font-medium text-gray-700 w-1/2 xl:w-1/3 mx-auto pe-1  inline-block">
+              <span>% de Retención</span>
+
+              <NumericFormat
+                name="payment_percentage"
+                allowNegative={false}
+                max={100}
+                maxLength={6}
+                onChange={props.onChange}
+                value={props.formData.payment_percentage}
+                className="bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 "
+                suffix={"%"}
+              />
+            </label>
+          )}
+
+          <CustomInputs
+            class="xl:w-1/3 w-1/3 mx-auto pe-1  inline-block "
+            label="Retencion Anual"
+            inputCss="bg-gray-300"
+            disabled={true}
+            value={getReteinedSalary(getSalaryRegular(props.formData) * 12)}
+            placeholder=""
+            type="number"
+          />
           <data className="w-1/2">
             {" "}
             <br />

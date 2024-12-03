@@ -536,6 +536,17 @@ export const SELECT_SIMPLE = [
   },
 ];
 
+export const TYPE_RETENTION = [
+  {
+    id: 1,
+    name: "Fija",
+  },
+  {
+    id: 2,
+    name: "Tabla",
+  },
+];
+
 export const ENTITY = [
   {
     id: 1,
