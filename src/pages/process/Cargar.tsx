@@ -152,9 +152,50 @@ const Cargar = () => {
       )
         secure_social = taxeSecureSocial.limit - sumTaxes.total_secure_social;
     }
+    var exed_amount = 0;
+    var withholdingValue = "";
+    if (employerData.retention_type == 1)
+      withholdingValue = employerData.payment_percentage.replace("%", "");
+    else {
+      var count = 0;
+      var amount = 0;
+      if (employerData.period_norma == "1") {
+        count = 52;
+      }
+      if (employerData.period_norma == "2") {
+        count = 26;
+      }
+      if (employerData.period_norma == "4") {
+        count = 12;
+      }
+      amount = regular_pay * count;
 
-    const withholdingValue = employerData.payment_percentage.replace("%", "");
-    let tax_pr = regular_pay * (Number(withholdingValue) / 100);
+      if (amount <= 12500) withholdingValue = "0";
+      if (amount > 12500 && amount <= 25000) {
+        withholdingValue = "7";
+        exed_amount = amount - 12500;
+      }
+      if (amount > 25000 && amount <= 36000) {
+        withholdingValue = "14";
+        exed_amount = amount - 25000;
+      }
+      if (amount > 36000 && amount <= 50000) {
+        withholdingValue = "19";
+        exed_amount = amount - 36000;
+      }
+      if (amount > 50000 && amount <= 66000) {
+        withholdingValue = "25";
+        exed_amount = amount - 50000;
+      }
+      if (amount > 66000) {
+        withholdingValue = "33";
+        exed_amount = amount - 66000;
+      }
+    }
+    let tax_pr = 0;
+    if (employerData.retention_type == 1)
+      tax_pr = regular_pay * (Number(withholdingValue) / 100);
+    else tax_pr = exed_amount * (Number(withholdingValue) / 100);
 
     let socialTipsAmount = 0;
     let social_tips = 0;

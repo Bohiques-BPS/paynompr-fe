@@ -52,7 +52,7 @@ const EmployeerForm = (props: Props) => {
     if (props.formData.retention_type == 1)
       return salary * (parseFloat(props.formData.payment_percentage) / 100);
     if (props.formData.retention_type == 2) {
-      if (salary < 9000) {
+      if (salary < 12500) {
         return 0;
       }
       if (salary <= 25000) {
@@ -361,25 +361,7 @@ const EmployeerForm = (props: Props) => {
             placeholder=""
             type="number"
           />
-          <CustomInputs
-            class="xl:w-1/3 w-1/3 mx-auto pe-1  inline-block "
-            label="Salario Regular"
-            inputCss="bg-gray-300"
-            disabled={true}
-            value={getSalaryRegular(props.formData)}
-            placeholder=""
-            type="number"
-          />
 
-          <CustomInputs
-            class="xl:w-1/3 w-1/3 mx-auto pe-1  inline-block "
-            label="Salario Anual"
-            inputCss="bg-gray-300"
-            disabled={true}
-            value={getSalaryRegular(props.formData) * 12}
-            placeholder=""
-            type="number"
-          />
           <CustomSelect
             options={TYPE_RETENTION}
             class="w-1/3 mx-auto pe-1  inline-block "
@@ -407,15 +389,6 @@ const EmployeerForm = (props: Props) => {
             </label>
           )}
 
-          <CustomInputs
-            class="xl:w-1/3 w-1/3 mx-auto pe-1  inline-block "
-            label="Retencion Anual"
-            inputCss="bg-gray-300"
-            disabled={true}
-            value={getReteinedSalary(getSalaryRegular(props.formData) * 12)}
-            placeholder=""
-            type="number"
-          />
           <data className="w-1/2">
             {" "}
             <br />
