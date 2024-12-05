@@ -195,7 +195,7 @@ const Cargar = () => {
     let tax_pr = 0;
     if (employerData.retention_type == 1)
       tax_pr = regular_pay * (Number(withholdingValue) / 100);
-    else tax_pr = exed_amount * (Number(withholdingValue) / 100);
+    else tax_pr = (exed_amount * (Number(withholdingValue) / 100)) / 12;
 
     let socialTipsAmount = 0;
     let social_tips = 0;

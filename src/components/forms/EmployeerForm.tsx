@@ -34,43 +34,6 @@ const EmployeerForm = (props: Props) => {
     });
   };
 
-  const getSalaryRegular = (data: any) => {
-    if (data.salary == 0) {
-      if (props.formData.period_norma == 1) {
-        return data.work_hours * 4 * data.regular_time;
-      }
-      if (props.formData.period_norma == 2) {
-        return data.work_hours * 2 * data.regular_time;
-      }
-      if (props.formData.period_norma == 4) {
-        return data.work_hours * data.regular_time;
-      }
-    } else return data.salary;
-  };
-
-  const getReteinedSalary = (salary: any) => {
-    if (props.formData.retention_type == 1)
-      return salary * (parseFloat(props.formData.payment_percentage) / 100);
-    if (props.formData.retention_type == 2) {
-      if (salary < 12500) {
-        return 0;
-      }
-      if (salary <= 25000) {
-        return (salary - 9000) * 0.07;
-      }
-      if (salary <= 41500) {
-        return (salary - 25000) * 0.14 + 1120;
-      }
-      if (salary <= 61500) {
-        return (salary - 41500) * 0.25 + 3430;
-      }
-      if (salary > 61500) {
-        return (salary - 61500) * 0.33 + 8430;
-      }
-    }
-    return 0;
-  };
-
   return (
     <>
       <div className="flex xl:flex-row flex-col gap-4">
