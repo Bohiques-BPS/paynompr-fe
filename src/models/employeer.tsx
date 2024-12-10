@@ -44,7 +44,7 @@ export const EMPLOYER_DATA = {
   veteran: false,
   type_payroll: 1,
   schedule_type: 1,
-  payment_percentage: "",
+  payment_percentage: "0%",
   address_state: "",
   address_country: "",
   address_number: "",

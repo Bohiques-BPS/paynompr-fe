@@ -29,9 +29,11 @@ const AddEmployee = () => {
     "number_concessions",
     "veteran",
     "name",
-    "work_hours"
-    
-
+    "work_hours",
+    "clipboard",
+    "type",
+    "marbete",
+    "date_marb"   
   ];
 
   const initialErrors = Object.keys(EMPLOYER_DATA).reduce<Record<keyof EMPLOYEER, string>>((acc, key) => {

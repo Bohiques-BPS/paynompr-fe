@@ -180,7 +180,7 @@ const EmployeerForm = (props: Props) => {
           />
           <CustomInputs
             class="w-1/3 mx-auto   inline-block "
-            label="Tipo *"
+            label="Tipo"
             error={props.errors.type}  // Pass the error for this field
             
             name="type"
@@ -191,7 +191,7 @@ const EmployeerForm = (props: Props) => {
           />
           <CustomInputs
             class="w-1/3 mx-auto pe-1  inline-block "
-            label="Marbete *"
+            label="Marbete"
             error={props.errors.marbete}  // Pass the error for this field
             
             name="marbete"
@@ -202,7 +202,7 @@ const EmployeerForm = (props: Props) => {
           />
           <CustomInputs
             class="w-1/3 mx-auto pe-1  inline-block "
-            label="Fecha de pago MARB *"
+            label="Fecha de pago MARB"
             error={props.errors.date_marb}  // Pass the error for this field
             
             name="date_marb"
@@ -213,7 +213,7 @@ const EmployeerForm = (props: Props) => {
           />
           <CustomInputs
             class="w-1/3 mx-auto   inline-block "
-            label="Tablilla *"
+            label="Tablilla"
             error={props.errors.clipboard}  // Pass the error for this field
             
             name="clipboard"
