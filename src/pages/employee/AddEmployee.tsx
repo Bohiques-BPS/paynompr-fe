@@ -33,7 +33,9 @@ const AddEmployee = () => {
     "clipboard",
     "type",
     "marbete",
-    "date_marb"   
+    "date_marb",
+    "licence",
+    "category_cfse",
   ];
 
   const initialErrors = Object.keys(EMPLOYER_DATA).reduce<Record<keyof EMPLOYEER, string>>((acc, key) => {
@@ -187,6 +189,7 @@ const AddEmployee = () => {
           showError(error.response.data.detail);
         });
        } else {
+        setLoanding(false);
         handleModal();
           showError("Debe llenar todos los campos para poder guardar los datos."); // Show a generic error message if needed
       }
