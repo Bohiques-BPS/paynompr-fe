@@ -73,7 +73,7 @@ const EmployeerForm = (props: Props) => {
           />
           <CustomInputs
             class="w-1/2 mx-auto ps-1  inline-block "
-            label="Inicial de segundo nombre *"
+            label="Inicial de segundo nombre"
             error={props.errors.middle_name}  // Pass the error for this field
             
             name="middle_name"
