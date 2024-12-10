@@ -7,6 +7,7 @@ type Props = {
   inputCss?: string;
   name?: string;
   patters?: string;
+  error?: string; // Add the error prop.
 
   disabled?: boolean;
   class?: string;
@@ -23,9 +24,12 @@ const defaultProps = {
 
 const CustomInputs = (props: Props) => {
   return (
-    <label className={` block mb-2  font-medium text-gray-700 ${props.class} `}>
+    <div className={` block  text-sm font-medium text-gray-700 ${props.class} `}>
+    <label
+      className={` text-sm font-medium text-gray-700 `}
+    >
       <span> {props.label}</span>
-
+</label>
       <input
         className={` bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 ${props.inputCss} `}
         tabIndex={0}
@@ -38,7 +42,12 @@ const CustomInputs = (props: Props) => {
         value={props.value}
         disabled={props.disabled}
       />
-    </label>
+      <div className="h-2" >
+      <span className="text-red-500 text-xs mt-1"> {props.error && props.error}</span> 
+      <span className="text-red-500 text-xs mt-1"></span> 
+      </div>
+     
+      </div>
   );
 };
 CustomInputs.defaultProps = defaultProps;

@@ -7,6 +7,7 @@ type Props = {
   inputCss?: string;
   name?: string;
   patters?: string;
+  error?: string; // Add the error prop.
 
   disabled?: boolean;
   class?: string;
@@ -23,7 +24,10 @@ const defaultProps = {
 
 const CustomCheckBox = (props: Props) => {
   return (
-    <label className={` block mb-2  font-medium text-gray-700 ${props.class} `}>
+    <div className={` block mb-2 text-sm font-medium text-gray-700 ${props.class} `}>
+    <label
+      className={` text-sm font-medium text-gray-700 `}
+    >
       <span> {props.label}</span>
 
       <input
@@ -39,6 +43,9 @@ const CustomCheckBox = (props: Props) => {
         disabled={props.disabled}
       />
     </label>
+    <span className="text-red-500 text-xs mt-1">{props.error && props.error}</span> 
+
+    </div>
   );
 };
 CustomCheckBox.defaultProps = defaultProps;

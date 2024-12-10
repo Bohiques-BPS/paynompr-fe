@@ -9,7 +9,7 @@ import {
 } from "../../utils/functions";
 import { getCompanie, setEmployers } from "../../utils/requestOptions";
 
-import { EMPLOYER_DATA } from "../../models/employeer";
+import { EMPLOYEER, EMPLOYER_DATA } from "../../models/employeer";
 import EmployeerForm from "../../components/forms/EmployeerForm";
 import { TYPE_EMPLOYER } from "../../utils/consts";
 import ModalAlert from "../../components/dashboard/ModalAlert";
@@ -19,8 +19,76 @@ const AddEmployee = () => {
   const params = useParams();
   const [isOpen, setIsOpen] = useState(false);
   const [loanding, setLoanding] = useState(false);
-  const [formData, setFormData] = useState(EMPLOYER_DATA);
+  const [formData, setFormData] = useState<EMPLOYEER>(EMPLOYER_DATA); // Type the state
 
+  const optionalFields: (keyof EMPLOYEER)[] = [
+    "salary",  // Example optional fields
+    "date_egress",
+    "number_dependents",
+    "shared_custody",
+    "number_concessions",
+    "veteran",
+    "name",
+    "work_hours"
+    
+
+  ];
+
+  const initialErrors = Object.keys(EMPLOYER_DATA).reduce<Record<keyof EMPLOYEER, string>>((acc, key) => {
+    acc[key as keyof EMPLOYEER] = ""; // or null
+    return acc;
+  }, {} as Record<keyof EMPLOYEER, string>);
+
+  const [errors, setErrors] = useState<Record<keyof EMPLOYEER, string>>(initialErrors);
+
+  const validateForm = (): boolean => {
+    const newErrors: Record<keyof EMPLOYEER, string> = { ...initialErrors }; // Correctly typed newErrors
+
+   var count_error = 0;
+    for (const key in EMPLOYER_DATA) {
+      if (optionalFields.includes(key as keyof EMPLOYEER)) {
+        continue; // Skip optional fields
+      }
+
+      const value = formData[key as keyof EMPLOYEER];
+
+      if (typeof value === 'string') {
+        if (!value.trim()) {
+           newErrors[key as keyof EMPLOYEER] = "Este campo es requerido.";
+           count_error++;
+        } else if (["first_name", "middle_name", "last_name", "mother_last_name"].includes(key)) {
+          // Validate names for special characters.  /^[a-zA-Z\s]*$/ 
+          if (!/^[a-zA-Z\s]*$/.test(value)) {
+            newErrors[key as keyof EMPLOYEER] = "Este campo no debe contener caracteres especiales.";
+            count_error++;
+          }
+        }
+
+      }else if (typeof value === 'number') {
+         if(isNaN(value) || value === 0) {  //Check for NaN or 0 in number fields.
+              newErrors[key as keyof EMPLOYEER] = "Este campo es requerido.";
+           count_error++;
+
+         }
+      }
+      else if (typeof value === "object" && value === null) { //Check for null in date fields
+          newErrors[key as keyof EMPLOYEER] = "Este campo es requerido.";
+          count_error++;
+
+       }
+    }
+
+
+    if (Object.keys(newErrors).length > 0) {
+      console.log(newErrors);
+      setErrors(newErrors); // Set errors only if validation fails
+      
+    }
+    if (count_error > 0)
+      return false
+    else
+      return true;
+  };
   useEffect(() => {
     const dateAdmission = new Date(2017, 1, 26);
     let vacationHours: any, vacationHoursMonthly;
@@ -78,6 +146,7 @@ const AddEmployee = () => {
       [e.currentTarget.name]: getValue(e),
     });
   };
+  
 
   const getValue = (e: React.FormEvent<any>) => {
     if (e.currentTarget.type === "number")
@@ -99,7 +168,8 @@ const AddEmployee = () => {
   };
 
   const handleCreate = () => {
-    if (formData.regular_time > 0) {
+    if (validateForm()) {  // Call validation function. Errors set here if needed.
+
       setLoanding(true);
       setEmployers(formData, Number(params.id))
         .then(() => {
@@ -114,9 +184,10 @@ const AddEmployee = () => {
           setLoanding(false);
           showError(error.response.data.detail);
         });
-    } else {
-      showError("Debe ingresar un monto de Hora regular.");
-    }
+       } else {
+        handleModal();
+          showError("Debe llenar todos los campos para poder guardar los datos."); // Show a generic error message if needed
+      }
   };
 
   return (
@@ -142,6 +213,7 @@ const AddEmployee = () => {
           <EmployeerForm
             setFormData={setFormData}
             formData={formData}
+            errors={errors}
             onChange={handleInputChange}
           />
       

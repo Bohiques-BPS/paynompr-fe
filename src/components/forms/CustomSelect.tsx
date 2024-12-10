@@ -5,6 +5,7 @@ type Props = {
   inputCss?: string;
   options: any;
   name?: string;
+  error?: string; // Add the error prop.
   disabled?: boolean;
   class?: string;
   value?: any;
@@ -22,11 +23,12 @@ const defaultProps = {
 
 const CustomSelect = (props: Props) => {
   return (
+    <div className={` block text-sm font-medium text-gray-700 ${props.class} `}>
     <label
-      className={` block mb-2 text-sm font-medium text-gray-700 ${props.class} `}
+      className={` text-sm font-medium text-gray-700 `}
     >
       <span> {props.label}</span>
-
+</label>
       <select
         className={` bg-gray-50 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-3 ${props.inputCss} `}
         tabIndex={0}
@@ -44,7 +46,8 @@ const CustomSelect = (props: Props) => {
           </option>
         ))}
       </select>
-    </label>
+      <span className="text-red-500 text-xs mt-1">{props.error && props.error}</span> 
+     </div>
   );
 };
 CustomSelect.defaultProps = defaultProps;
