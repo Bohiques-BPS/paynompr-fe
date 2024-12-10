@@ -252,7 +252,7 @@ const EmployeerForm = (props: Props) => {
         <div className="xl:w-1/2 w-full">
           <CustomInputs
             class="w-1/3 mx-auto pe-1  inline-block "
-            label="Licencia *"
+            label="Licencia"
             error={props.errors.licence}  // Pass the error for this field
             
             name="licence"
@@ -263,7 +263,7 @@ const EmployeerForm = (props: Props) => {
           />
           <CustomInputs
             class="w-1/3 mx-auto pe-1  inline-block "
-            label="Categoría CFSE *"
+            label="Categoría CFSE"
             error={props.errors.category_cfse}  // Pass the error for this field
             
             name="category_cfse"
