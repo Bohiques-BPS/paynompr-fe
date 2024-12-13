@@ -398,7 +398,7 @@ const EmployeerForm = (props: Props) => {
             onChange={props.onChange}
             value={props.formData.retention_type}
             placeholder=""
-            type="number"
+            type="text"
           />
           {props.formData.retention_type == 1 && (
             <label className=" mb-2  font-medium text-gray-700 w-1/2 xl:w-1/3 mx-auto pe-1  inline-block">

@@ -144,7 +144,8 @@ export function getAllEmployers() {
   return Axios.request(setOptions("employers/", "GET")); // Using a post request, specifying the user
 }
 
-export function setEmployers(data: object, id_company: number) {
+export function setEmployers(data: any, id_company: number) {
+  data.retention_type = data.retention_type.toString();
   return Axios.request(setOptions("employers/" + id_company, "POST", data)); // Using a post request, specifying the user
 }
 
@@ -152,7 +153,8 @@ export function setOutEmployers(data: object, id_company: number) {
   return Axios.request(setOptions("outemployers/" + id_company, "POST", data)); // Using a post request, specifying the user
 }
 
-export function editEmployers(data: object, id_employer: number) {
+export function editEmployers(data: any, id_employer: number) {
+  data.retention_type = data.retention_type.toString();
   return Axios.request(setOptions("employers/" + id_employer, "PUT", data)); // Using a post request, specifying the user
 }
 

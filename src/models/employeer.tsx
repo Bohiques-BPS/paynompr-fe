@@ -16,7 +16,7 @@ export const EMPLOYER_DATA = {
   date_marb: null,
   clipboard: "",
   exec_personal: 1,
-  choferil: "",
+  choferil: "0",
   regular_time: 0,
   period_norma: "1",
   licence: "",

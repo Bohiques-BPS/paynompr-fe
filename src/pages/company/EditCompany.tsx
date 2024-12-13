@@ -7,7 +7,7 @@ import {
 } from "../../utils/requestOptions";
 import { showError, showSuccess } from "../../utils/functions";
 import { useNavigate, useParams } from "react-router-dom";
-import { COMPANY_DATA } from "../../models/company";
+import { COMPANY, COMPANY_DATA } from "../../models/company";
 import CompanyForm from "../../components/forms/CompanyForm";
 import ModalAlert from "../../components/dashboard/ModalAlert";
 
@@ -19,6 +19,68 @@ const EditCompany = () => {
   const [accountants, setAccountants] = useState([]);
 
   const [formData, setFormData] = useState(COMPANY_DATA);
+
+  const optionalFields: (keyof COMPANY)[] = [
+    "date_close",
+    "website",
+    "fax_number",
+  ];
+
+  const initialErrors = Object.keys(COMPANY_DATA).reduce<Record<keyof COMPANY, string>>((acc, key) => {
+    acc[key as keyof COMPANY] = ""; // or null
+    return acc;
+  }, {} as Record<keyof COMPANY, string>);
+
+  const [errors, setErrors] = useState<Record<keyof COMPANY, string>>(initialErrors);
+
+  const validateForm = (): boolean => {
+    const newErrors: Record<keyof COMPANY, string> = { ...initialErrors }; // Correctly typed newErrors
+
+   var count_error = 0;
+    for (const key in COMPANY_DATA) {
+      if (optionalFields.includes(key as keyof COMPANY)) {
+        continue; // Skip optional fields
+      }
+
+      const value = formData[key as keyof COMPANY];
+
+      if (typeof value === 'string') {
+        if (!value.trim()) {
+           newErrors[key as keyof COMPANY] = "Este campo es requerido.";
+           count_error++;
+        } else if (["first_name", "middle_name", "last_name", "mother_last_name"].includes(key)) {
+          // Validate names for special characters.  /^[a-zA-Z\s]*$/ 
+          if (!/^[a-zA-Z\s]*$/.test(value)) {
+            newErrors[key as keyof COMPANY] = "Este campo no debe contener caracteres especiales.";
+            count_error++;
+          }
+        }
+
+      }else if (typeof value === 'number') {
+         if(isNaN(value) || value === 0) {  //Check for NaN or 0 in number fields.
+              newErrors[key as keyof COMPANY] = "Este campo es requerido.";
+           count_error++;
+
+         }
+      }
+      else if (typeof value === "object" && value === null) { //Check for null in date fields
+          newErrors[key as keyof COMPANY] = "Este campo es requerido.";
+          count_error++;
+
+       }
+    }
+
+
+    if (Object.keys(newErrors).length > 0) {
+      console.log(newErrors);
+      setErrors(newErrors); // Set errors only if validation fails
+      
+    }
+    if (count_error > 0)
+      return false
+    else
+      return true;
+  };
   useEffect(() => {
     getAccountants()
       .then((data) => {
@@ -55,6 +117,7 @@ const EditCompany = () => {
 
   const handleEdit = () => {
     setLoanding(true);
+    if (validateForm()) {  // Call validation function. Errors set here if needed.
     editCompanies(formData, Number(params.id))
       .then(() => {
         // Data retrieval and processing
@@ -69,6 +132,11 @@ const EditCompany = () => {
         );
         setLoanding(false);
       });
+    } else {
+      setLoanding(false);
+      handleModal();
+        showError("Debe llenar todos los campos para poder guardar los datos."); // Show a generic error message if needed
+    }
   };
 
   return (
@@ -113,6 +181,7 @@ const EditCompany = () => {
           <CompanyForm
             setFormData={setFormData}
             formData={formData}
+            errors={errors}
             onChange={handleInputChange}
           />
         </div>
