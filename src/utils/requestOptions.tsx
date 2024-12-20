@@ -420,7 +420,7 @@ export function getW2PFoil(
 
 export function getWagesTxt(
   company_id: number,
-  company: any,
+
   year: string,
   selectedTrimestre: any
 ) {
@@ -433,7 +433,7 @@ export function getWagesTxt(
     const url = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute("download", "Company-" + company.name + ".txt");
+    link.setAttribute("download", "WAGES" +year.slice(-2) + selectedTrimestre + ".txt");
     document.body.appendChild(link);
     link.click();
   });

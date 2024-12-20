@@ -48,12 +48,37 @@ const AddEmployee = () => {
 
   const validateForm = (): boolean => {
     const newErrors: Record<keyof EMPLOYEER, string> = { ...initialErrors }; // Correctly typed newErrors
+    let count_error = 0;
 
-   var count_error = 0;
-    for (const key in EMPLOYER_DATA) {
-      if (optionalFields.includes(key as keyof EMPLOYEER)) {
-        continue; // Skip optional fields
+     // Conditional validation for regular_time, overtime, meal_time, and work_hours
+     if (formData.salary === 0) {
+      if (!formData.regular_time) {
+          newErrors.regular_time = "Horas regulares requeridas cuando el salario es 0.";
+          count_error++;
       }
+      if (!formData.overtime) {  // Assuming "overtime" field for overtime rate
+          newErrors.overtime = "Tarifa de horas extras requerida cuando el salario es 0.";
+          count_error++;
+      }
+      if (!formData.mealtime) { // Assuming "mealtime" field for meal time rate
+          newErrors.mealtime = "Tarifa de comida requerida cuando el salario es 0.";
+          count_error++;
+      }
+  } else if (formData.salary > 0) {
+      if (formData.work_hours <= 0) {
+          newErrors.work_hours = "Las horas de trabajo deben ser mayor a 0 si el salario es mayor que 0.";
+          count_error++;
+      }
+  }
+   
+    for (const key in EMPLOYER_DATA) {
+      if (
+        optionalFields.includes(key as keyof EMPLOYEER) ||
+        (formData.salary !== 0 && ["regular_time", "overtime", "mealtime"].includes(key)) ||
+        (formData.salary <= 0 && key === "work_hours")
+    ) {
+        continue;
+    }
 
       const value = formData[key as keyof EMPLOYEER];
 

@@ -356,7 +356,7 @@ const EmployeerForm = (props: Props) => {
 
           <CustomInputs
             class="xl:w-1/3 w-1/3 mx-auto pe-1  inline-block "
-            label="Hora regular *"
+            label="Hora regular"
             error={props.errors.regular_time}  // Pass the error for this field
             
             name="regular_time"
@@ -367,7 +367,7 @@ const EmployeerForm = (props: Props) => {
           />
           <CustomInputs
             class="xl:w-1/3 w-1/3 mx-auto pe-1  inline-block "
-            label="Sobretiempo *"
+            label="Sobretiempo"
             error={props.errors.overtime}  // Pass the error for this field
             
             name="overtime"
@@ -378,7 +378,7 @@ const EmployeerForm = (props: Props) => {
           />
           <CustomInputs
             class="xl:w-1/3 w-1/2  mx-auto pe-1  inline-block "
-            label="Hora de comida *"
+            label="Hora de comida"
             error={props.errors.mealtime}  // Pass the error for this field
             
             name="mealtime"

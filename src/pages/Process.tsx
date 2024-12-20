@@ -230,7 +230,7 @@ const Process = () => {
     if (selectedFile == 9) {
       var companies = filterById(data, companyId);
       setLoanding(false);
-      getWagesTxt(companyId, companies, year, selectedTrimestre)
+      getWagesTxt(companyId,  year, selectedTrimestre)
         .then(() => {
           // Data retrieval and processing
           setLoanding(false);

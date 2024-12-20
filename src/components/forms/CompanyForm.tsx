@@ -40,7 +40,7 @@ const CompanyForm = (props: Props) => {
               onChange={props.onChange}
               value={props.formData.postal_address}
               class="w-full mx-auto  inline-block "
-              label="* Dirección postal"
+              label="Dirección postal *"
               error={props.errors.postal_address}  // Pass the error for this field
               placeholder="Dirección"
               type="text"
@@ -93,7 +93,7 @@ const CompanyForm = (props: Props) => {
               onChange={props.onChange}
               value={props.formData.physical_address}
               class="w-full mx-auto  inline-block "
-              label="Dirección física"
+              label="Dirección física *"
               error={props.errors.physical_address}  // Pass the error for this field
 
               placeholder="404 Calle Ensada"
@@ -135,7 +135,7 @@ const CompanyForm = (props: Props) => {
             />
 
             <label className=" mb-2  font-medium text-gray-700 w-1/2 mx-auto pe-1  inline-block">
-              <span>Numero de teléfono</span>
+              <span>Numero de teléfono *</span>
               <PatternFormat
                 className="bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 "
                 value={props.formData.phone_number}
@@ -164,7 +164,7 @@ const CompanyForm = (props: Props) => {
               onChange={props.onChange}
               value={props.formData.desem}
               class="w-1/2 mx-auto pe-1 inline-block "
-              label="NUM DE DESEMPLEO/INCAPACIDAD"
+              label="NUM DE DESEMPLEO/INCAPACIDAD *"
               error={props.errors.desem}  // Pass the error for this field
 
               placeholder="Puerto Rico"
@@ -172,7 +172,7 @@ const CompanyForm = (props: Props) => {
             />
 
             <label className=" mb-2  font-medium text-gray-700 w-1/2 mx-auto ps-1  inline-block">
-              <span>* Número patronal</span>
+              <span>Número patronal *</span>
               <PatternFormat
                 name="number_patronal"
                 value={props.formData.number_patronal}
@@ -185,7 +185,7 @@ const CompanyForm = (props: Props) => {
             </label>
 
             <label className=" mb-2  font-medium text-gray-700 w-1/3 mx-auto ps-1  inline-block">
-              <span>% DE Desempleo</span>
+              <span>% DE Desempleo *</span>
               <NumericFormat
                 name="unemployment_percentage"
                 allowNegative={false}
@@ -200,7 +200,7 @@ const CompanyForm = (props: Props) => {
 
             </label>
             <label className=" mb-2  font-medium text-gray-700 w-1/3 mx-auto ps-1  inline-block">
-              <span>% DE Incapacitados</span>
+              <span>% DE Incapacitados *</span>
               <NumericFormat
                 name="disabled_percent"
                 allowNegative={false}
@@ -216,7 +216,7 @@ const CompanyForm = (props: Props) => {
             </label>
 
             <label className="block mb-2  font-medium text-gray-700 w-1/3 mx-auto ps-1  inline-block">
-              <span>Registro Comerciante</span>
+              <span>Registro Comerciante *</span>
               <PatternFormat
                 className="bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 "
                 onChange={props.onChange}
@@ -234,7 +234,7 @@ const CompanyForm = (props: Props) => {
               onChange={props.onChange}
               value={props.formData.contact}
               class="w-1/2 mx-auto pe-1  inline-block "
-              label="Persona de Contacto"
+              label="Persona de Contacto *"
               placeholder=""
               error={props.errors.contact}  // Pass the error for this field
 
@@ -242,7 +242,7 @@ const CompanyForm = (props: Props) => {
             />
 
             <label className=" mb-2  font-medium text-gray-700 w-1/2 mx-auto ps-1  inline-block">
-              <span>Numero de teléfono</span>
+              <span>Numero de teléfono *</span>
               <PatternFormat
                 className="bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 "
                 value={props.formData.contact_number}
@@ -270,13 +270,13 @@ const CompanyForm = (props: Props) => {
               error={props.errors.email}  // Pass the error for this field
 
               class="w-1/2 mx-auto ps-1  inline-block "
-              label="Correo electrónico"
+              label="Correo electrónico *"
               placeholder=""
               type="text"
             />
             <CustomInputs
               class="w-1/2 mx-auto pe-1  inline-block "
-              label="Fecha de inicio"
+              label="Fecha de inicio *"
               onChange={props.onChange}
               error={props.errors.coml}  // Pass the error for this field
 
@@ -286,7 +286,7 @@ const CompanyForm = (props: Props) => {
             />
             <CustomInputs
               class="w-1/2 mx-auto pe-1  inline-block "
-              label="Fecha de cierre"
+              label="Fecha de cierre *"
               onChange={props.onChange}
               value={props.formData.date_close}
               name="date_close"
@@ -299,7 +299,7 @@ const CompanyForm = (props: Props) => {
               value={props.formData.jurisdiction}
               class="w-1/2 mx-auto ps-1  inline-block "
               options={JURISDICTION}
-              label="Jurisdicción"
+              label="Jurisdicción *"
               placeholder=""
               type="text"
             />
@@ -308,7 +308,7 @@ const CompanyForm = (props: Props) => {
               name="driver_code"
               onChange={props.onChange}
               value={props.formData.driver_code}
-              label="Aportación Patronal"
+              label="Aportación Patronal *"
               error={props.errors.driver_code}  // Pass the error for this field
 
               placeholder=""
@@ -320,7 +320,7 @@ const CompanyForm = (props: Props) => {
               onChange={props.onChange}
               value={props.formData.driver_rate}
               class="w-1/4 mx-auto ps-1  inline-block "
-              label="Rate Choferil"
+              label="Rate Choferil *"
               error={props.errors.driver_rate}  // Pass the error for this field
 
               placeholder="00820"
@@ -332,7 +332,7 @@ const CompanyForm = (props: Props) => {
               name="employed_contribution"
               onChange={props.onChange}
               value={props.formData.employed_contribution}
-              label="Aportación Empleado"
+              label="Aportación Empleado *"
               error={props.errors.employed_contribution}  // Pass the error for this field
 
               placeholder=""
@@ -345,7 +345,7 @@ const CompanyForm = (props: Props) => {
               value={props.formData.special_contribution}
               error={props.errors.special_contribution}  // Pass the error for this field
 
-              label="Contribución Especial"
+              label="Contribución Especial *"
               placeholder=""
               type="text"
             />
@@ -356,7 +356,7 @@ const CompanyForm = (props: Props) => {
               error={props.errors.choferil_number}  // Pass the error for this field
 
               class="w-1/2 mx-auto pe-1  inline-block "
-              label="# Choferil"
+              label="# Choferil *"
               placeholder=""
               type="text"
             />
@@ -368,7 +368,7 @@ const CompanyForm = (props: Props) => {
               error={props.errors.payer}  // Pass the error for this field
 
               class="w-1/2 mx-auto pe-1  inline-block "
-              label="Pagador"
+              label="Pagador *"
               placeholder=""
               type="text"
             />
@@ -380,7 +380,7 @@ const CompanyForm = (props: Props) => {
 
               value={props.formData.industrial_code}
               class="w-1/2 mx-auto pe-1  inline-block "
-              label="Código Industrial"
+              label="Código Industrial *"
               placeholder=""
               type="text"
             />
@@ -391,12 +391,12 @@ const CompanyForm = (props: Props) => {
 
               value={props.formData.polize_number}
               class="w-1/2 mx-auto inline-block "
-              label="Numero de póliza de fondo"
+              label="Numero de póliza de fondo *"
               placeholder="00820"
               type="text"
             />
             <label className=" mb-2  font-medium text-gray-700 w-1/2 mx-auto pe-1  inline-block">
-              <span>W-2 PRIMER # CONTROL</span>
+              <span>W-2 PRIMER # CONTROL *</span>
               <PatternFormat
                 className="bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 "
                 value={props.formData.w2_first_control}
@@ -408,7 +408,7 @@ const CompanyForm = (props: Props) => {
 
             </label>
             <label className=" mb-2  font-medium text-gray-700 w-1/2 mx-auto ps-1  inline-block">
-              <span>W-2 ULTIMO # CONTROL</span>
+              <span>W-2 ULTIMO # CONTROL *</span>
               <PatternFormat
                 className="bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 "
                 value={props.formData.w2_last_control}
@@ -420,7 +420,7 @@ const CompanyForm = (props: Props) => {
 
             </label>
             <label className=" mb-2  font-medium text-gray-700 w-1/2 mx-auto pe-1  inline-block">
-              <span>480.6 SP PRIMER #CONTROL</span>
+              <span>480.6 SP PRIMER #CONTROL *</span>
               <PatternFormat
                 className="bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 "
                 value={props.formData.sp_first_control}
@@ -432,7 +432,7 @@ const CompanyForm = (props: Props) => {
 
             </label>
             <label className=" mb-2  font-medium text-gray-700 w-1/2 mx-auto ps-1  inline-block">
-              <span>480.6 SP ULTIMO #CONTROL</span>
+              <span>480.6 SP ULTIMO #CONTROL *</span>
               <PatternFormat
                 className="bg-gray-50 text-sm invalid:border-red-500 border mt-2 w-full border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 "
                 value={props.formData.sp_last_control}

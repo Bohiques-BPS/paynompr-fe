@@ -154,49 +154,57 @@ const Cargar = () => {
     }
     var exed_amount = 0;
     var withholdingValue = "";
+    var count = 0;
+    var amount = 0;
+    if (employerData.period_norma == "1") {
+      count = 52;
+    }
+    if (employerData.period_norma == "2") {
+      count = 26;
+    }
+    if (employerData.period_norma == "4") {
+      count = 12;
+    }
+    var exed_sum= 0;
     if (employerData.retention_type == 1)
       withholdingValue = employerData.payment_percentage.replace("%", "");
     else {
-      var count = 0;
-      var amount = 0;
-      if (employerData.period_norma == "1") {
-        count = 52;
-      }
-      if (employerData.period_norma == "2") {
-        count = 26;
-      }
-      if (employerData.period_norma == "4") {
-        count = 12;
-      }
+     
       amount = regular_pay * count;
-
+      
       if (amount <= 12500) withholdingValue = "0";
       if (amount > 12500 && amount <= 25000) {
         withholdingValue = "7";
+        exed_sum = 0;
         exed_amount = amount - 12500;
       }
-      if (amount > 25000 && amount <= 36000) {
+      if (amount > 25000 && amount <= 41500) {
         withholdingValue = "14";
+        exed_sum = 1120;
+
         exed_amount = amount - 25000;
       }
-      if (amount > 36000 && amount <= 50000) {
-        withholdingValue = "19";
-        exed_amount = amount - 36000;
-      }
-      if (amount > 50000 && amount <= 66000) {
+      if (amount > 41500 && amount <= 61500) {
         withholdingValue = "25";
-        exed_amount = amount - 50000;
+        exed_sum = 3430;
+
+        exed_amount = amount - 41500;
       }
+     
       if (amount > 66000) {
         withholdingValue = "33";
+        exed_sum = 8430;
+        
         exed_amount = amount - 66000;
       }
     }
     let tax_pr = 0;
     if (employerData.retention_type == 1)
       tax_pr = regular_pay * (Number(withholdingValue) / 100);
-    else tax_pr = (exed_amount * (Number(withholdingValue) / 100)) / 12;
-
+    else{
+      tax_pr = (exed_amount * (Number(withholdingValue) / 100)) ;
+      tax_pr = (tax_pr + exed_sum) / count;
+    } 
     let socialTipsAmount = 0;
     let social_tips = 0;
     sumTaxes.total_social_tips;
